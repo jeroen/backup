@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'webp' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'webp'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">A New Format for Lossless and Lossy Image Compression</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Lossless webp images are 26% smaller in size compared to PNG. Lossy
+    webp images are 25-34% smaller in size compared to JPEG. This package reads
+    and writes webp images into a 3 (rgb) or 4 (rgba) channel bitmap array using
+    conventions from the 'jpeg' and 'png' packages.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms</span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.1.0</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-03 06:53:16 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/webp</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list"><li class="help-index-item"><a href="#read_webp">Webp image format</a></li></ul>
+
+    <hr>
+    <div class="manual-pages-content"><div class="container manual-page" id="read_webp">
+
+<a href="#read_webp" class="help-page-title"><h2 id="read_webp">Webp image format</h2></a>
+
+<h3>Description</h3>
+
+<p>Read and write webp images into a bitmap array. The bitmap array uses the same
+conventions as the <code>png</code> and <code>jpeg</code> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">read_webp<span class="token punctuation">(</span>source<span class="token punctuation">,</span> numeric <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+
+write_webp<span class="token punctuation">(</span>image<span class="token punctuation">,</span> target <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> quality <span class="token operator">=</span> <span class="token number">80</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="read_webp_:_source">source</code></td>
+<td>
+<p>raw vector or path to webp file</p>
+</td>
+</tr>
+<tr>
+<td><code id="read_webp_:_numeric">numeric</code></td>
+<td>
+<p>convert the image to 0-1 real numbers to be compatible with
+images from the jpeg or png package.</p>
+</td>
+</tr>
+<tr>
+<td><code id="read_webp_:_image">image</code></td>
+<td>
+<p>array of 3 dimensions (width * height * channel) with real numbers
+between 0 and 1.</p>
+</td>
+</tr>
+<tr>
+<td><code id="read_webp_:_target">target</code></td>
+<td>
+<p>path to a file or <code>NULL</code> to return the image as a raw vector</p>
+</td>
+</tr>
+<tr>
+<td><code id="read_webp_:_quality">quality</code></td>
+<td>
+<p>value between 0 and 100 for lossy compression, or <code>NA</code> for
+lossless compression.</p>
+</td>
+</tr>
+</table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Convert to webp</span>
+library<span class="token punctuation">(</span>png<span class="token punctuation">)</span>
+img <span class="token operator">&lt;-</span> readPNG<span class="token punctuation">(</span>system.file<span class="token punctuation">(</span><span class="token string">"img"</span><span class="token punctuation">,</span> <span class="token string">"Rlogo.png"</span><span class="token punctuation">,</span> package<span class="token operator">=</span><span class="token string">"png"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+out <span class="token operator">&lt;-</span> file.path<span class="token punctuation">(</span>tempdir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"rlogo.webp"</span><span class="token punctuation">)</span>
+write_webp<span class="token punctuation">(</span>img<span class="token punctuation">,</span> out<span class="token punctuation">)</span>
+<span class="token comment"># browseURL(out)</span>
+
+<span class="token comment"># Convert from webp</span>
+library<span class="token punctuation">(</span>jpeg<span class="token punctuation">)</span>
+img <span class="token operator">&lt;-</span> read_webp<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+jpeg <span class="token operator">&lt;-</span> file.path<span class="token punctuation">(</span>tempdir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"rlogo.jpeg"</span><span class="token punctuation">)</span>
+writeJPEG<span class="token punctuation">(</span>img<span class="token punctuation">,</span> jpeg<span class="token punctuation">)</span>
+<span class="token comment"># browseURL(jpeg)</span></code></pre>
+
+<hr>
+</div></div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

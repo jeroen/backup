@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'V8' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'V8'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Embedded JavaScript and WebAssembly Engine for R</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">An R interface to V8: Google's open source JavaScript and WebAssembly 
+    engine. This package can be compiled either with V8 version 6 and up or NodeJS
+    when built as a shared library.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a>,
+  Jan Marvin Garbuszus [ctb]</span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">4.3.0</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-08 06:54:18 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/v8</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#JS">Mark character strings as literal JavaScript code</a></li>
+<li class="help-index-item"><a href="#V8">Run JavaScript in a V8 context</a></li>
+<li class="help-index-item"><a href="#wasm">Experimental WebAssembly</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="JS">
+
+<a href="#JS" class="help-page-title"><h2 id="JS">Mark character strings as literal JavaScript code</h2></a>
+
+<h3>Description</h3>
+
+<p>This function <code>JS()</code> marks character vectors with a special class, so
+that it will be treated as literal JavaScript code. It was copied from the
+htmlwidgets package, and does exactly the same thing.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">JS<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="JS_:_...">...</code></td>
+<td>
+<p>character vectors as the JavaScript source code (all arguments
+will be pasted into one character string)</p>
+</td>
+</tr></table>
+<h3>Author(s)</h3>
+
+<p>Yihui Xie
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">ct <span class="token operator">&lt;-</span> v8<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ct<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"1+1"</span><span class="token punctuation">)</span>
+ct<span class="token operator">$</span>eval<span class="token punctuation">(</span>JS<span class="token punctuation">(</span><span class="token string">"1+1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+ct<span class="token operator">$</span>assign<span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">,</span> JS<span class="token punctuation">(</span><span class="token string">"2+3"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+ct<span class="token operator">$</span>get<span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="V8">
+
+<a href="#V8" class="help-page-title"><h2 id="V8">Run JavaScript in a V8 context</h2></a>
+
+<h3>Description</h3>
+
+<p>The <code><a href="#V8">v8()</a></code> function (formerly called <code>new_context</code>) creates a
+new V8 <em>context</em>. A context provides an execution environment that allows
+separate, unrelated, JavaScript code to run in a single instance of V8, like a
+tab in a browser.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">v8<span class="token punctuation">(</span>global <span class="token operator">=</span> <span class="token string">"global"</span><span class="token punctuation">,</span> console <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> typed_arrays <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+
+engine_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="V8_:_global">global</code></td>
+<td>
+<p>character vector indicating name(s) of the global environment. Use NULL for no name.</p>
+</td>
+</tr>
+<tr>
+<td><code id="V8_:_console">console</code></td>
+<td>
+<p>expose <code>console</code> API (<code>console.log</code>, <code>console.warn</code>, <code>console.error</code>).</p>
+</td>
+</tr>
+<tr>
+<td><code id="V8_:_typed_arrays">typed_arrays</code></td>
+<td>
+<p>(deprecated) enable typed arrays in legacy libv8. Deprecated because
+typed arrays are natively supported in recent versions of libv8.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>A V8 context cannot be saved or duplicated, but creating a new context and sourcing
+code is very cheap. You can run as many parallel v8 contexts as you want. R packages
+that use V8 can use a separate V8 context for each object or function call.
+</p>
+<p>The name of the global object (i.e. <code>global</code> in node and <code>window</code>
+in browsers) can be set with the global argument. A context always have a global
+scope, even when no name is set. When a context is initiated with <code>global = NULL</code>,
+the global environment can be reached by evaluating <code>this</code> in the global scope,
+for example: <code>ct$eval("Object.keys(this)")</code>.
+</p>
+
+
+<h3>V8 Context Methods</h3>
+
+<pre>
+## ctx &lt;- v8()
+&lt;V8 engine 7.8.279.23-node.56&gt; 
+ $assign(name, value, auto_unbox = TRUE, ...) 
+ $call(fun, ..., auto_unbox = TRUE, await = FALSE) 
+ $console() 
+ $eval(src, serialize = FALSE, await = FALSE) 
+ $get(name, ..., await = FALSE) 
+ $reset() 
+ $source(file) 
+ $validate(src) 
+</pre>
+<p>The <code>ct$eval</code> method evaluates a string of JavaScript code in the same way
+as <code>eval</code> in JavaScript. By default <code>eval()</code> returns a string with
+console output; but when the <code>serialize</code> parameter is set to <code>TRUE</code> it
+serializes the JavaScript return object to a JSON string or a raw buffer.
+</p>
+<p>The <code>ct$get</code>, <code>ct$assign</code> and <code>ct$call</code> functions automatically
+convert arguments and return value between R and JavaScript (using JSON). To pass
+literal JavaScript arguments that should not be converted to JSON, wrap them in
+<code>JS()</code>, see examples.
+</p>
+<p>If a call to <code>ct$eval()</code>,<code>ct$get()</code>, or <code>ct$call()</code> returns a JavaScript promise,
+you can set <code>await = TRUE</code> to wait for the promise to be resolved. It will then
+return the result of the promise, or an error in case the promise is rejected.
+</p>
+<p>The <code>ct$validate</code> function is used to test
+if a piece of code is valid JavaScript syntax within the context, and always
+returns TRUE or FALSE.
+</p>
+<p>In an interactive R session you can use <code>ct$console()</code> to switch to an
+interactive JavaScript console. Here you can use <code>console.log</code> to print
+objects, and there is some support for JS tab-completion. This is mostly for
+testing and debugging, it may not work perfectly in every IDE or R-frontend.
+</p>
+
+
+<h3>Data Interchange</h3>
+
+<p>JSON is used for data interchange between R and JavaScript. Therefore you can
+(and should) only exchange data types that have a sensible JSON representation.
+One exception is raw vectors which are converted to/from Uint8Array buffers, see
+below. All other arguments and objects are automatically converted according to the mapping
+described in <a href="https://arxiv.org/abs/1403.2805" target="_blank">Ooms (2014)</a>, and implemented
+by the jsonlite package in <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">fromJSON()</a></code> and <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">toJSON()</a></code>.
+</p>
+<p>As for version 3.0 of this R package, Raw vectors are converted to <code>Uint8Array</code>
+typed arrays, and vice versa. This makes it possible to efficiently copy large chunks
+binary data between R and JavaScript, which is useful for running <a href="#wasm">wasm</a>
+or emscripten.
+</p>
+
+
+<h3>Note about Linux and Legacy V8 engines</h3>
+
+<p>This R package can be compiled against modern (V8 version 6+) libv8 API, or the legacy
+libv8 API (V8 version 3.15 and below). You can check <code>V8::engine_info()</code> to see the version
+that is running. The legacy version does not support modern JS (ES6) or WASM, but it is
+still the default on older versions of Ubuntu and CentOS. The latest versions of all major
+Linux distributions now provide a modern version of V8. For Ubuntu 16.04 and 18.04
+we provide backports of libv8 (via libnode-dev), see the
+<a href="https://github.com/jeroen/v8#backports-for-xenial-and-bionic" target="_blank">readme</a> for details.
+</p>
+
+
+<h3>References</h3>
+
+<p>A Mapping Between JSON Data and R Objects (Ooms, 2014): <a href="https://arxiv.org/abs/1403.2805" target="_blank">https://arxiv.org/abs/1403.2805</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Create a new context</span>
+ctx <span class="token operator">&lt;-</span> v8<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment"># Evaluate some code</span>
+ctx<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"var foo = 123"</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"var bar = 456"</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"foo+bar"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Functions and closures</span>
+ctx<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"JSON.stringify({x:Math.random()})"</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"(function(x){return x+1;})(123)"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Objects (via JSON only)</span>
+ctx<span class="token operator">$</span>assign<span class="token punctuation">(</span><span class="token string">"mydata"</span><span class="token punctuation">,</span> mtcars<span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>get<span class="token punctuation">(</span><span class="token string">"mydata"</span><span class="token punctuation">)</span>
+outlist <span class="token operator">&lt;-</span> ctx<span class="token operator">$</span>get<span class="token punctuation">(</span><span class="token string">"mydata"</span><span class="token punctuation">,</span> simplifyVector <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+outlist<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+
+<span class="token comment"># Assign JavaScript</span>
+ctx<span class="token operator">$</span>assign<span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">,</span> JS<span class="token punctuation">(</span><span class="token string">"function(x){return x*x}"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>assign<span class="token punctuation">(</span><span class="token string">"bar"</span><span class="token punctuation">,</span> JS<span class="token punctuation">(</span><span class="token string">"foo(9)"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>get<span class="token punctuation">(</span><span class="token string">"bar"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Validate script without evaluating</span>
+ctx<span class="token operator">$</span>validate<span class="token punctuation">(</span><span class="token string">"function foo(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
+ctx<span class="token operator">$</span>validate<span class="token punctuation">(</span><span class="token string">"foo = function(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
+ctx<span class="token operator">$</span>validate<span class="token punctuation">(</span><span class="token string">"function(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#FALSE</span>
+
+<span class="token comment"># Use a JavaScript library</span>
+ctx<span class="token operator">$</span>source<span class="token punctuation">(</span><span class="token string">"https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>call<span class="token punctuation">(</span><span class="token string">"_.filter"</span><span class="token punctuation">,</span> mtcars<span class="token punctuation">,</span> JS<span class="token punctuation">(</span><span class="token string">"function(x){return x.mpg &lt; 15}"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Example from underscore manual</span>
+ctx<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"_.templateSettings = {interpolate: /\\{\\{(.+?)\\}\\}/g}"</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"var template = _.template('Hello {{ name }}!')"</span><span class="token punctuation">)</span>
+ctx<span class="token operator">$</span>call<span class="token punctuation">(</span><span class="token string">"template"</span><span class="token punctuation">,</span> list<span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Mustache"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Call anonymous function</span>
+ctx<span class="token operator">$</span>call<span class="token punctuation">(</span><span class="token string">"function(x, y){return x * y}"</span><span class="token punctuation">,</span> <span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+
+<span class="token comment">## Not run: </span>
+<span class="token comment">#CoffeeScript</span>
+ct2 <span class="token operator">&lt;-</span> v8<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ct2<span class="token operator">$</span>source<span class="token punctuation">(</span><span class="token string">"http://coffeescript.org/v1/browser-compiler/coffee-script.js"</span><span class="token punctuation">)</span>
+jscode <span class="token operator">&lt;-</span> ct2<span class="token operator">$</span>call<span class="token punctuation">(</span><span class="token string">"CoffeeScript.compile"</span><span class="token punctuation">,</span> <span class="token string">"square = (x) -&gt; x * x"</span><span class="token punctuation">,</span> list<span class="token punctuation">(</span>bare <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+ct2<span class="token operator">$</span>eval<span class="token punctuation">(</span>jscode<span class="token punctuation">)</span>
+ct2<span class="token operator">$</span>call<span class="token punctuation">(</span><span class="token string">"square"</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Interactive console</span>
+ct3 <span class="token operator">&lt;-</span> v8<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ct3<span class="token operator">$</span>console<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># //this is JavaScript</span>
+<span class="token comment"># var test = [1,2,3]</span>
+<span class="token comment"># JSON.stringify(test)</span>
+<span class="token comment"># exit</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="wasm">
+
+<a href="#wasm" class="help-page-title"><h2 id="wasm">Experimental WebAssembly</h2></a>
+
+<h3>Description</h3>
+
+<p>Experimental wrapper to load a WebAssembly program. Returns a list of
+exported functions. This will probably be moved into it's own package
+once WebAssembly matures.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">wasm<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+
+wasm_features<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="wasm_:_data">data</code></td>
+<td>
+<p>either raw vector or file path with the binary wasm program</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>The <code>wasm_features()</code> function uses the <a href="https://github.com/GoogleChromeLabs/wasm-feature-detect" target="_blank">wasm-feature-detect</a>
+JavaScript library to test which WASM capabilities are supported in the
+current version of libv8.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Load example wasm program</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>engine_info<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">$</span>numeric_version <span class="token operator">&gt;</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+instance <span class="token operator">&lt;-</span> wasm<span class="token punctuation">(</span>system.file<span class="token punctuation">(</span><span class="token string">'wasm/add.wasm'</span><span class="token punctuation">,</span> package <span class="token operator">=</span> <span class="token string">'V8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+instance<span class="token operator">$</span>exports<span class="token operator">$</span>add<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+wasm_features<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+Package: V8
+Version: 4.3.0
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-08 06:55:50 UTC; windows
+Archs: x64
+MD5sum: 616d606813b4d72a200c2c3c6b444cd6
+Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
+LinkingTo: Rcpp
+Suggests: testthat, knitr, rmarkdown
+
+Package: base64
+Version: 2.0.1
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.0; ; 2023-05-06 05:54:57 UTC; windows
+MD5sum: a1dc4e909f0d48f4791063655a80ca6a
+Imports: openssl
+
+Package: bcrypt
+Version: 1.2
+License: BSD_2_clause + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-02 05:09:04 UTC; windows
+Archs: x64
+MD5sum: 5af0d97535b66c0f359bde838cd61dc0
+Imports: openssl
+Suggests: spelling
+
+Package: brotli
+Version: 1.3.0
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-11 06:13:05 UTC; windows
+Archs: x64
+MD5sum: fd9be929c4e394a8f04f435c6d8b6353
+Suggests: spelling, knitr, R.rsp, microbenchmark, rmarkdown, ggplot2
+
+Package: curl
+Version: 5.0.9000
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-24 16:48:04 UTC; windows
+Archs: x64
+MD5sum: 219dd8de4743257410152d552a916b69
+Depends: R (>= 3.0.0)
+Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, rmarkdown, magrittr, httpuv (>= 1.4.4), webutils
+
+Package: gpg
+Version: 1.2.9
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-16 10:23:14 UTC; windows
+Archs: x64
+MD5sum: 91ccdf47ed4af204e2f2dffb5ae1f7ad
+Imports: curl, askpass
+Suggests: knitr, rmarkdown
+
+Package: js
+Version: 1.2
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.0; ; 2023-05-22 04:41:06 UTC; windows
+MD5sum: e2c45f397b79f0f25e92ab2d5d091396
+Imports: V8 (>= 0.5)
+Suggests: knitr, rmarkdown
+
+Package: jsonlite
+Version: 1.8.5
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-24 12:37:35 UTC; windows
+Archs: x64
+MD5sum: 4cddb512f7404003955f3aba0c64d0fe
+Depends: methods
+Suggests: httr, vctrs, testthat, knitr, rmarkdown, R.rsp, sf
+
+Package: maketools
+Version: 1.2.4
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.0; ; 2023-03-28 21:11:18 UTC; windows
+MD5sum: 56f70ef01d777609ce82d5b2fbcf44fa
+Imports: sys (>= 3.1)
+Suggests: curl, knitr, rmarkdown, testthat
+
+Package: mongolite
+Version: 2.7.2
+License: Apache License 2.0
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-29 06:57:35 UTC; windows
+Archs: x64
+MD5sum: 16ac610decd244e08ac6f14e395ef963
+Imports: jsonlite (>= 1.4), openssl (>= 1.0), mime
+Suggests: spelling, nycflights13, ggplot2
+
+Package: openssl
+Version: 2.0.6
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-07 06:56:13 UTC; windows
+Archs: x64
+MD5sum: b5c7ac5e3a52a6886699fa4296637af1
+Imports: askpass
+Suggests: curl, testthat (>= 2.1.0), digest, knitr, rmarkdown, jsonlite, jose, sodium
+
+Package: protolite
+Version: 2.2.0
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-02 05:40:22 UTC; windows
+Archs: x64
+MD5sum: 00f55d9b830a46f657e8020f11654822
+LinkingTo: Rcpp
+Imports: Rcpp (>= 0.12.12), jsonlite
+Suggests: spelling, curl, testthat, sf
+
+Package: rjade
+Version: 0.1.1
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.0; ; 2023-05-07 06:25:40 UTC; windows
+MD5sum: 0c5674420b02dd197bc07659925dd38d
+Imports: V8 (>= 0.5)
+Suggests: knitr, rmarkdown
+
+Package: sys
+Version: 3.4.2
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-22 22:07:19 UTC; windows
+Archs: x64
+MD5sum: 58cc957de7f33a1474e81017f23d2251
+Suggests: unix (>= 1.4), spelling, testthat
+
+Package: webp
+Version: 1.1.0
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-03 06:56:39 UTC; windows
+Archs: x64
+MD5sum: 3ac43d008ee81a9bd7594846a9ee0c6e
+Suggests: jpeg, png
+
+Package: webutils
+Version: 1.1
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-29 07:27:58 UTC; windows
+Archs: x64
+MD5sum: 8282dbeb1fb247175f2c9a4f2b1c9391
+Imports: curl (>= 2.5), jsonlite
+Suggests: httpuv, testthat
+

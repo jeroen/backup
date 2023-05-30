@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'bcrypt' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'bcrypt'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Blowfish Key Derivation and Password Hashing</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Bindings to the 'blowfish' password hashing algorithm derived from
+    the OpenBSD implementation.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a>,
+  Damien Miller [cph] (blowfish algorithm),
+  Niels Provos [cph] (py_bcrypt code)</span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">BSD_2_clause + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.2</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-02 05:07:45 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/bcrypt</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#bcrypt">Bcrypt password hashing</a></li>
+<li class="help-index-item"><a href="#pbkdf">Bcrypt PWKDF</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="bcrypt">
+
+<a href="#bcrypt" class="help-page-title"><h2 id="bcrypt">Bcrypt password hashing</h2></a>
+
+<h3>Description</h3>
+
+<p>Bcrypt is used for secure password hashing. The main difference with
+regular digest algorithms such as MD5 or SHA256 is that the bcrypt
+algorithm is specifically designed to be CPU intensive in order to
+protect against brute force attacks. The exact complexity of the
+algorithm is configurable via the <code>log_rounds</code> parameter. The
+interface is fully compatible with the Python one.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">gensalt<span class="token punctuation">(</span>log_rounds <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">,</span> iv <span class="token operator">=</span> openssl<span class="token operator">::</span>rand_bytes<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+hashpw<span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt <span class="token operator">=</span> gensalt<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+checkpw<span class="token punctuation">(</span>password<span class="token punctuation">,</span> hash<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="bcrypt_:_log_rounds">log_rounds</code></td>
+<td>
+<p>integer between 4 and 31 that defines the complexity of
+the hashing, increasing the cost as <code>2^log_rounds</code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="bcrypt_:_iv">iv</code></td>
+<td>
+<p>init vector to randomize the salt</p>
+</td>
+</tr>
+<tr>
+<td><code id="bcrypt_:_password">password</code></td>
+<td>
+<p>the message (password) to encrypt</p>
+</td>
+</tr>
+<tr>
+<td><code id="bcrypt_:_salt">salt</code></td>
+<td>
+<p>a salt generated with <code>gensalt</code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="bcrypt_:_hash">hash</code></td>
+<td>
+<p>the previously generated bcrypt hash to verify</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>The <code>hashpw</code> function calculates a hash from a password using
+a random salt. Validating the hash is done by rehashing the password
+using the hash as a salt. The <code>checkpw</code> function is a simple
+wrapper that does exactly this.
+</p>
+<p><code>gensalt</code> generates a random text salt for use with <code>hashpw</code>.
+The first few characters in the salt string hold the bcrypt version number
+and value for <code>log_rounds</code>. The remainder stores 16 bytes of base64
+encoded randomness for seeding the hashing algorithm.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Secret message as a string</span>
+passwd <span class="token operator">&lt;-</span> <span class="token string">"supersecret"</span>
+
+<span class="token comment"># Create the hash</span>
+hash <span class="token operator">&lt;-</span> hashpw<span class="token punctuation">(</span>passwd<span class="token punctuation">)</span>
+hash
+
+<span class="token comment"># To validate the hash</span>
+identical<span class="token punctuation">(</span>hash<span class="token punctuation">,</span> hashpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> hash<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Or use the wrapper</span>
+checkpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> hash<span class="token punctuation">)</span>
+
+<span class="token comment"># Use varying complexity:</span>
+hash11 <span class="token operator">&lt;-</span> hashpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> gensalt<span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+hash12 <span class="token operator">&lt;-</span> hashpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> gensalt<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+hash13 <span class="token operator">&lt;-</span> hashpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> gensalt<span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Takes longer to verify (or crack)</span>
+system.time<span class="token punctuation">(</span>checkpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> hash11<span class="token punctuation">)</span><span class="token punctuation">)</span>
+system.time<span class="token punctuation">(</span>checkpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> hash12<span class="token punctuation">)</span><span class="token punctuation">)</span>
+system.time<span class="token punctuation">(</span>checkpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> hash13<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="pbkdf">
+
+<a href="#pbkdf" class="help-page-title"><h2 id="pbkdf">Bcrypt PWKDF</h2></a>
+
+<h3>Description</h3>
+
+<p>Password based key derivation function with bcrypt.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">pbkdf<span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">,</span> rounds <span class="token operator">=</span> <span class="token number">16L</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">32L</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="pbkdf_:_password">password</code></td>
+<td>
+<p>string or raw vector with password</p>
+</td>
+</tr>
+<tr>
+<td><code id="pbkdf_:_salt">salt</code></td>
+<td>
+<p>raw vector with (usually 16) bytes</p>
+</td>
+</tr>
+<tr>
+<td><code id="pbkdf_:_rounds">rounds</code></td>
+<td>
+<p>number of hashing rounds</p>
+</td>
+</tr>
+<tr>
+<td><code id="pbkdf_:_size">size</code></td>
+<td>
+<p>desired length of the output key</p>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

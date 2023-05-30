@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'jsonlite' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'jsonlite'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">A Simple and Robust JSON Parser and Generator for R</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">A reasonably fast JSON parser and generator, optimized for statistical 
+    data and the web. Offers simple, flexible tools for working with JSON in R, and
+    is particularly powerful for building pipelines and interacting with a web API. 
+    The implementation is based on the mapping described in the vignette (Ooms, 2014).
+    In addition to converting JSON data from/to R objects, 'jsonlite' contains 
+    functions to stream, validate, and prettify JSON data. The unit tests included 
+    with the package verify that all edge cases are encoded and decoded consistently 
+    for use with dynamic data in systems and applications.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a>,
+  Duncan Temple Lang [ctb],
+  Lloyd Hilaiel [cph] (author of bundled libyajl)</span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.8.5</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-24 12:35:45 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/jsonlite</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#base64">Encode/decode base64</a></li>
+<li class="help-index-item"><a href="#flatten">Flatten nested data frames</a></li>
+<li class="help-index-item"><a href="#gzjson">Gzipped JSON</a></li>
+<li class="help-index-item"><a href="#prettify">Prettify or minify a JSON string</a></li>
+<li class="help-index-item"><a href="#rbind_pages">Combine pages into a single data frame</a></li>
+<li class="help-index-item"><a href="#read_json">Read/write JSON</a></li>
+<li class="help-index-item"><a href="#serializeJSON">serialize R objects to JSON</a></li>
+<li class="help-index-item"><a href="#stream_in">Streaming JSON input/output</a></li>
+<li class="help-index-item"><a href="#fromJSON">Convert R objects to/from JSON</a></li>
+<li class="help-index-item"><a href="#unbox">Unbox a vector or data frame</a></li>
+<li class="help-index-item"><a href="#validate">Validate JSON</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="base64">
+
+<a href="#base64" class="help-page-title"><h2 id="base64">Encode/decode base64</h2></a>
+
+<h3>Description</h3>
+
+<p>Simple in-memory base64 encoder and decoder. Used internally for converting
+raw vectors to text. Interchangeable with encoder from <code>base64enc</code> or
+<code>openssl</code> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">base64_dec<span class="token punctuation">(</span>input<span class="token punctuation">)</span>
+
+base64_enc<span class="token punctuation">(</span>input<span class="token punctuation">)</span>
+
+base64url_enc<span class="token punctuation">(</span>input<span class="token punctuation">)</span>
+
+base64url_dec<span class="token punctuation">(</span>input<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="base64_:_input">input</code></td>
+<td>
+<p>string or raw vector to be encoded/decoded</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>The <a href="#base64">base64url_enc</a> and <a href="#base64">base64url_dec</a> functions use a variation of base64
+that substitute characters <code style="white-space: pre;">⁠+/⁠</code>  for <code style="white-space: pre;">⁠-_⁠</code> respectively, such that the output
+does not require URL-encoding. See also section 5 of rfc4648.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">str <span class="token operator">&lt;-</span> base64_enc<span class="token punctuation">(</span>serialize<span class="token punctuation">(</span>iris<span class="token punctuation">,</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+out <span class="token operator">&lt;-</span> unserialize<span class="token punctuation">(</span>base64_dec<span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>identical<span class="token punctuation">(</span>out<span class="token punctuation">,</span> iris<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="flatten">
+
+<a href="#flatten" class="help-page-title"><h2 id="flatten">Flatten nested data frames</h2></a>
+
+<h3>Description</h3>
+
+<p>In a nested data frame, one or more of the columns consist of another data
+frame. These structures frequently appear when parsing JSON data from the web.
+We can flatten such data frames into a regular 2 dimensional tabular structure.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">flatten<span class="token punctuation">(</span>x<span class="token punctuation">,</span> recursive <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="flatten_:_x">x</code></td>
+<td>
+<p>a data frame</p>
+</td>
+</tr>
+<tr>
+<td><code id="flatten_:_recursive">recursive</code></td>
+<td>
+<p>flatten recursively</p>
+</td>
+</tr>
+</table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">options<span class="token punctuation">(</span>stringsAsFactors<span class="token operator">=</span><span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+x <span class="token operator">&lt;-</span> data.frame<span class="token punctuation">(</span>driver <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"Bowser"</span><span class="token punctuation">,</span> <span class="token string">"Peach"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> occupation <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"Koopa"</span><span class="token punctuation">,</span> <span class="token string">"Princess"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+x<span class="token operator">$</span>vehicle <span class="token operator">&lt;-</span> data.frame<span class="token punctuation">(</span>model <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"Piranha Prowler"</span><span class="token punctuation">,</span> <span class="token string">"Royal Racer"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+x<span class="token operator">$</span>vehicle<span class="token operator">$</span>stats <span class="token operator">&lt;-</span> data.frame<span class="token punctuation">(</span>speed <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token number">55</span><span class="token punctuation">,</span> <span class="token number">34</span><span class="token punctuation">)</span><span class="token punctuation">,</span> weight <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token number">67</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span><span class="token punctuation">,</span> drift <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token number">35</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+str<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+str<span class="token punctuation">(</span>flatten<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+str<span class="token punctuation">(</span>flatten<span class="token punctuation">(</span>x<span class="token punctuation">,</span> recursive <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">## Not run: </span>
+data1 <span class="token operator">&lt;-</span> fromJSON<span class="token punctuation">(</span><span class="token string">"https://api.github.com/users/hadley/repos"</span><span class="token punctuation">)</span>
+colnames<span class="token punctuation">(</span>data1<span class="token punctuation">)</span>
+colnames<span class="token punctuation">(</span>data1<span class="token operator">$</span>owner<span class="token punctuation">)</span>
+colnames<span class="token punctuation">(</span>flatten<span class="token punctuation">(</span>data1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># or for short:</span>
+data2 <span class="token operator">&lt;-</span> fromJSON<span class="token punctuation">(</span><span class="token string">"https://api.github.com/users/hadley/repos"</span><span class="token punctuation">,</span> flatten <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+colnames<span class="token punctuation">(</span>data2<span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="gzjson">
+
+<a href="#gzjson" class="help-page-title"><h2 id="gzjson">Gzipped JSON</h2></a>
+
+<h3>Description</h3>
+
+<p>Wrapper to generate and parse gzipped JSON, in order to save some disk or
+network space. This is mainly effective for larger json objects with many
+repeated keys, as is common in serialized data frames.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">as_gzjson_raw<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+as_gzjson_b64<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+parse_gzjson_raw<span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+parse_gzjson_b64<span class="token punctuation">(</span>b64<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="gzjson_:_x">x</code></td>
+<td>
+<p>R data object to be converted to JSON</p>
+</td>
+</tr>
+<tr>
+<td><code id="gzjson_:_...">...</code></td>
+<td>
+<p>passed down to <a href="#fromJSON">toJSON</a> or <a href="#fromJSON">fromJSON</a></p>
+</td>
+</tr>
+<tr>
+<td><code id="gzjson_:_buf">buf</code></td>
+<td>
+<p>raw vector with gzip compressed data</p>
+</td>
+</tr>
+<tr>
+<td><code id="gzjson_:_b64">b64</code></td>
+<td>
+<p>base64 encoded string containing gzipped json data</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>The <a href="#gzjson">as_gzjson_raw</a> and <a href="#gzjson">parse_gzjson_raw</a> functions work with raw (binary)
+vectors of compressed data. To use this in a place where only text is allowed
+you can wrap the output again in <a href="#base64">base64</a> as done by <a href="#gzjson">as_gzjson_b64</a> and
+<a href="#gzjson">parse_gzjson_b64</a>. This increases the size again with about 33%.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">str <span class="token operator">&lt;-</span> as_gzjson_b64<span class="token punctuation">(</span>iris<span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>str<span class="token punctuation">)</span>
+parse_gzjson_b64<span class="token punctuation">(</span>str<span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="prettify">
+
+<a href="#prettify" class="help-page-title"><h2 id="prettify+2C+20minify">Prettify or minify a JSON string</h2></a>
+
+<h3>Description</h3>
+
+<p>Prettify adds indentation to a JSON string; minify removes all indentation/whitespace.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">prettify<span class="token punctuation">(</span>txt<span class="token punctuation">,</span> indent <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">)</span>
+
+minify<span class="token punctuation">(</span>txt<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="prettify+2C+20minify_:_txt">txt</code></td>
+<td>
+<p>JSON string</p>
+</td>
+</tr>
+<tr>
+<td><code id="prettify+2C+20minify_:_indent">indent</code></td>
+<td>
+<p>number of spaces to indent</p>
+</td>
+</tr>
+</table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">myjson <span class="token operator">&lt;-</span> toJSON<span class="token punctuation">(</span>cars<span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>myjson<span class="token punctuation">)</span>
+prettify<span class="token punctuation">(</span>myjson<span class="token punctuation">)</span>
+minify<span class="token punctuation">(</span>myjson<span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="rbind_pages">
+
+<a href="#rbind_pages" class="help-page-title"><h2 id="rbind_pages">Combine pages into a single data frame</h2></a>
+
+<h3>Description</h3>
+
+<p>The <code>rbind_pages</code> function is used to combine a list of data frames into a single
+data frame. This is often needed when working with a JSON API that limits the amount
+of data per request. If we need more data than what fits in a single request, we need to
+perform multiple requests that each retrieve a fragment of data, not unlike pages in a
+book. In practice this is often implemented using a <code>page</code> parameter in the API. The
+<code>rbind_pages</code> function can be used to combine these pages back into a single dataset.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">rbind_pages<span class="token punctuation">(</span>pages<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="rbind_pages_:_pages">pages</code></td>
+<td>
+<p>a list of data frames, each representing a <em>page</em> of data</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>The <code>rbind_pages</code> function uses <code><a href="https://r-lib.r-universe.dev/vctrs/doc/manual.html#vec_bind">vctrs::vec_rbind()</a></code>
+to bind the pages together. This generalizes <code><a href="https://r-universe.dev/manuals/base.html#cbind">base::rbind()</a></code> in two
+ways:
+</p>
+
+<ul>
+<li>
+<p> Not each column has to be present in each of the individual data frames; missing
+columns will be filled up in <code>NA</code> values.
+</p>
+</li>
+<li>
+<p> Data frames can be nested (can contain other data frames).
+</p>
+</li>
+</ul>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Basic example</span>
+x <span class="token operator">&lt;-</span> data.frame<span class="token punctuation">(</span>foo <span class="token operator">=</span> rnorm<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> bar <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+y <span class="token operator">&lt;-</span> data.frame<span class="token punctuation">(</span>foo <span class="token operator">=</span> rnorm<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> col <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"blue"</span><span class="token punctuation">,</span> <span class="token string">"red"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+rbind_pages<span class="token punctuation">(</span>list<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+baseurl <span class="token operator">&lt;-</span> <span class="token string">"https://projects.propublica.org/nonprofits/api/v2/search.json"</span>
+pages <span class="token operator">&lt;-</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>i <span class="token keyword">in</span> <span class="token number">0</span><span class="token operator">:</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  mydata <span class="token operator">&lt;-</span> fromJSON<span class="token punctuation">(</span>paste0<span class="token punctuation">(</span>baseurl<span class="token punctuation">,</span> <span class="token string">"?order=revenue&amp;sort_order=desc&amp;page="</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  message<span class="token punctuation">(</span><span class="token string">"Retrieving page "</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+  pages<span class="token punctuation">[</span><span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&lt;-</span> mydata<span class="token operator">$</span>organizations
+<span class="token punctuation">}</span>
+organizations <span class="token operator">&lt;-</span> rbind_pages<span class="token punctuation">(</span>pages<span class="token punctuation">)</span>
+nrow<span class="token punctuation">(</span>organizations<span class="token punctuation">)</span>
+colnames<span class="token punctuation">(</span>organizations<span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="read_json">
+
+<a href="#read_json" class="help-page-title"><h2 id="read_json">Read/write JSON</h2></a>
+
+<h3>Description</h3>
+
+<p>These functions are similar to <code><a href="#fromJSON">toJSON()</a></code> and <code><a href="#fromJSON">fromJSON()</a></code> except they
+explicitly distinguish between path and literal input, and do not simplify
+by default.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">read_json<span class="token punctuation">(</span>path<span class="token punctuation">,</span> simplifyVector <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+parse_json<span class="token punctuation">(</span>json<span class="token punctuation">,</span> simplifyVector <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+write_json<span class="token punctuation">(</span>x<span class="token punctuation">,</span> path<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="read_json_:_path">path</code></td>
+<td>
+<p>file on disk</p>
+</td>
+</tr>
+<tr>
+<td><code id="read_json_:_simplifyVector">simplifyVector</code></td>
+<td>
+<p>simplifies nested lists into vectors and data frames. See <code><a href="#fromJSON">fromJSON()</a></code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="read_json_:_...">...</code></td>
+<td>
+<p>additional conversion arguments, see also <code><a href="#fromJSON">toJSON()</a></code> or <code><a href="#fromJSON">fromJSON()</a></code></p>
+</td>
+</tr>
+<tr>
+<td><code id="read_json_:_json">json</code></td>
+<td>
+<p>string with literal json or connection object to read from</p>
+</td>
+</tr>
+<tr>
+<td><code id="read_json_:_x">x</code></td>
+<td>
+<p>an object to be serialized to JSON</p>
+</td>
+</tr>
+</table>
+<h3>See Also</h3>
+
+<p><code><a href="#fromJSON">fromJSON()</a></code>, <code><a href="#stream_in">stream_in()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
+write_json<span class="token punctuation">(</span>iris<span class="token punctuation">,</span> tmp<span class="token punctuation">)</span>
+
+<span class="token comment"># Nested lists</span>
+read_json<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
+
+<span class="token comment"># A data frame</span>
+read_json<span class="token punctuation">(</span>tmp<span class="token punctuation">,</span> simplifyVector <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="serializeJSON">
+
+<a href="#serializeJSON" class="help-page-title"><h2 id="serializeJSON">serialize R objects to JSON</h2></a>
+
+<h3>Description</h3>
+
+<p>The <code><a href="#serializeJSON">serializeJSON()</a></code> and <code><a href="#serializeJSON">unserializeJSON()</a></code> functions convert between
+<span class="rlang"><b>R</b></span> objects to JSON data. Instead of using a class based mapping like
+<code><a href="#fromJSON">toJSON()</a></code> and <code><a href="#fromJSON">fromJSON()</a></code>, the serialize functions base the encoding
+schema on the storage type, and capture all data and attributes from any object.
+Thereby the object can be restored almost perfectly from its JSON representation, but
+the resulting JSON output is very verbose. Apart from environments, all standard storage
+types are supported.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">serializeJSON<span class="token punctuation">(</span>x<span class="token punctuation">,</span> digits <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">,</span> pretty <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+unserializeJSON<span class="token punctuation">(</span>txt<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="serializeJSON_:_x">x</code></td>
+<td>
+<p>an <span class="rlang"><b>R</b></span> object to be serialized</p>
+</td>
+</tr>
+<tr>
+<td><code id="serializeJSON_:_digits">digits</code></td>
+<td>
+<p>max number of digits (after the dot) to print for numeric values</p>
+</td>
+</tr>
+<tr>
+<td><code id="serializeJSON_:_pretty">pretty</code></td>
+<td>
+<p>add indentation/whitespace to JSON output. See <code><a href="#prettify">prettify()</a></code></p>
+</td>
+</tr>
+<tr>
+<td><code id="serializeJSON_:_txt">txt</code></td>
+<td>
+<p>a JSON string which was created using <code>serializeJSON</code></p>
+</td>
+</tr>
+</table>
+<h3>Note</h3>
+
+<p>JSON is a text based format which leads to loss of precision when printing numbers.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">jsoncars <span class="token operator">&lt;-</span> serializeJSON<span class="token punctuation">(</span>mtcars<span class="token punctuation">)</span>
+mtcars2 <span class="token operator">&lt;-</span> unserializeJSON<span class="token punctuation">(</span>jsoncars<span class="token punctuation">)</span>
+identical<span class="token punctuation">(</span>mtcars<span class="token punctuation">,</span> mtcars2<span class="token punctuation">)</span>
+
+set.seed<span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">)</span>
+myobject <span class="token operator">&lt;-</span> list<span class="token punctuation">(</span>
+  mynull <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  mycomplex <span class="token operator">=</span> lapply<span class="token punctuation">(</span>eigen<span class="token punctuation">(</span>matrix<span class="token punctuation">(</span><span class="token operator">-</span>rnorm<span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> round<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mymatrix <span class="token operator">=</span> round<span class="token punctuation">(</span>matrix<span class="token punctuation">(</span>rnorm<span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  myint <span class="token operator">=</span> as.integer<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mydf <span class="token operator">=</span> cars<span class="token punctuation">,</span>
+  mylist <span class="token operator">=</span> list<span class="token punctuation">(</span>foo<span class="token operator">=</span><span class="token string">'bar'</span><span class="token punctuation">,</span> <span class="token number">123</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">,</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> list<span class="token punctuation">(</span><span class="token string">'test'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mylogical <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token boolean">TRUE</span><span class="token punctuation">,</span><span class="token boolean">FALSE</span><span class="token punctuation">,</span><span class="token keyword">NA</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mychar <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">,</span> <span class="token string">'bar'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  somemissings <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token keyword">NA</span><span class="token punctuation">,</span><span class="token number">NaN</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">Inf</span><span class="token punctuation">,</span> <span class="token number">7</span> <span class="token operator">-</span><span class="token number">Inf</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  myrawvec <span class="token operator">=</span> charToRaw<span class="token punctuation">(</span><span class="token string">'This is a test'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+identical<span class="token punctuation">(</span>unserializeJSON<span class="token punctuation">(</span>serializeJSON<span class="token punctuation">(</span>myobject<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> myobject<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="stream_in">
+
+<a href="#stream_in" class="help-page-title"><h2 id="stream_in+2C+20stream_out">Streaming JSON input/output</h2></a>
+
+<h3>Description</h3>
+
+<p>The <code>stream_in</code> and <code>stream_out</code> functions implement line-by-line processing
+of JSON data over a <a href="https://r-universe.dev/manuals/base.html#connections">connection</a>, such as a socket, url, file or pipe. JSON
+streaming requires the <a href="http://ndjson.org" target="_blank">ndjson</a> format, which slightly differs
+from <code><a href="#fromJSON">fromJSON()</a></code> and <code><a href="#fromJSON">toJSON()</a></code>, see details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">stream_in<span class="token punctuation">(</span>con<span class="token punctuation">,</span> handler <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> pagesize <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">,</span> verbose <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+stream_out<span class="token punctuation">(</span>x<span class="token punctuation">,</span> con <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pagesize <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">,</span> verbose <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> prefix <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="stream_in+2C+20stream_out_:_con">con</code></td>
+<td>
+<p>a <a href="https://r-universe.dev/manuals/base.html#connections">connection</a> object. If the connection is not open,
+<code>stream_in</code> and <code>stream_out</code> will automatically open
+and later close (and destroy) the connection. See details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="stream_in+2C+20stream_out_:_handler">handler</code></td>
+<td>
+<p>a custom function that is called on each page of JSON data. If not specified,
+the default handler stores all pages and binds them into a single data frame that will be
+returned by <code>stream_in</code>. See details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="stream_in+2C+20stream_out_:_pagesize">pagesize</code></td>
+<td>
+<p>number of lines to read/write from/to the connection per iteration.</p>
+</td>
+</tr>
+<tr>
+<td><code id="stream_in+2C+20stream_out_:_verbose">verbose</code></td>
+<td>
+<p>print some information on what is going on.</p>
+</td>
+</tr>
+<tr>
+<td><code id="stream_in+2C+20stream_out_:_...">...</code></td>
+<td>
+<p>arguments for <code><a href="#fromJSON">fromJSON()</a></code> and <code><a href="#fromJSON">toJSON()</a></code> that
+control JSON formatting/parsing where applicable. Use with caution.</p>
+</td>
+</tr>
+<tr>
+<td><code id="stream_in+2C+20stream_out_:_x">x</code></td>
+<td>
+<p>object to be streamed out. Currently only data frames are supported.</p>
+</td>
+</tr>
+<tr>
+<td><code id="stream_in+2C+20stream_out_:_prefix">prefix</code></td>
+<td>
+<p>string to write before each line (use <code>"\u001e"</code> to write rfc7464 text sequences)</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Because parsing huge JSON strings is difficult and inefficient, JSON streaming is done
+using <strong>lines of minified JSON records</strong>, a.k.a. <a href="http://ndjson.org" target="_blank">ndjson</a>.
+This is pretty standard: JSON databases such as MongoDB use the same format to
+import/export datasets. Note that this means that the
+total stream combined is not valid JSON itself; only the individual lines are. Also note
+that because line-breaks are used as separators, prettified JSON is not permitted: the
+JSON lines <em>must</em> be minified. In this respect, the format is a bit different from
+<code><a href="#fromJSON">fromJSON()</a></code> and <code><a href="#fromJSON">toJSON()</a></code> where all lines are part of a single JSON
+structure with optional line breaks.
+</p>
+<p>The <code>handler</code> is a callback function which is called for each page (batch) of
+JSON data with exactly one argument (usually a data frame with <code>pagesize</code> rows).
+If <code>handler</code> is missing or <code>NULL</code>, a default handler is used which stores all
+intermediate pages of data, and at the very end binds all pages together into one single
+data frame that is returned by <code>stream_in</code>. When a custom <code>handler</code> function
+is specified, <code>stream_in</code> does not store any intermediate results and always returns
+<code>NULL</code>. It is then up to the <code>handler</code> to process or store data pages.
+A <code>handler</code> function that does not store intermediate results in memory (for
+example by writing output to another connection) results in a pipeline that can process an
+unlimited amount of data. See example.
+</p>
+<p>Note that a vector of JSON strings already in R can parsed with <code>stream_in</code> by
+creating a connection to it with <code><a href="https://r-universe.dev/manuals/base.html#textconnections">textConnection()</a></code>.
+</p>
+<p>If a connection is not opened yet, <code>stream_in</code> and <code>stream_out</code>
+will automatically open and later close the connection. Because R destroys connections
+when they are closed, they cannot be reused. To use a single connection for multiple
+calls to <code>stream_in</code> or <code>stream_out</code>, it needs to be opened
+beforehand. See example.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <code>stream_out</code> function always returns <code>NULL</code>.
+When no custom handler is specified, <code>stream_in</code> returns a data frame of all pages binded together.
+When a custom handler function is specified, <code>stream_in</code> always returns <code>NULL</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p>MongoDB export format: <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/" target="_blank">https://docs.mongodb.com/manual/reference/program/mongoexport/</a>
+</p>
+<p>Documentation for the JSON Lines text file format: <a href="https://jsonlines.org/" target="_blank">https://jsonlines.org/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="#fromJSON">fromJSON()</a></code>, <code><a href="#read_json">read_json()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># compare formats</span>
+x <span class="token operator">&lt;-</span> iris<span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token punctuation">]</span>
+toJSON<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+stream_out<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+
+<span class="token comment"># Trivial example</span>
+mydata <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>url<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/stream/100"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">## Not run: </span>
+<span class="token comment">#stream large dataset to file and back</span>
+library<span class="token punctuation">(</span>nycflights13<span class="token punctuation">)</span>
+stream_out<span class="token punctuation">(</span>flights<span class="token punctuation">,</span> file<span class="token punctuation">(</span>tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+flights2 <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>file<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+unlink<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
+all.equal<span class="token punctuation">(</span>flights2<span class="token punctuation">,</span> as.data.frame<span class="token punctuation">(</span>flights<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># stream over HTTP</span>
+diamonds2 <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>url<span class="token punctuation">(</span><span class="token string">"http://jeroen.github.io/data/diamonds.json"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># stream over HTTP with gzip compression</span>
+flights3 <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>gzcon<span class="token punctuation">(</span>url<span class="token punctuation">(</span><span class="token string">"http://jeroen.github.io/data/nycflights13.json.gz"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+all.equal<span class="token punctuation">(</span>flights3<span class="token punctuation">,</span> as.data.frame<span class="token punctuation">(</span>flights<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># stream over HTTPS (HTTP+SSL) via curl</span>
+library<span class="token punctuation">(</span>curl<span class="token punctuation">)</span>
+flights4 <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>gzcon<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"https://jeroen.github.io/data/nycflights13.json.gz"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+all.equal<span class="token punctuation">(</span>flights4<span class="token punctuation">,</span> as.data.frame<span class="token punctuation">(</span>flights<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># or alternatively:</span>
+flights5 <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>gzcon<span class="token punctuation">(</span>pipe<span class="token punctuation">(</span><span class="token string">"curl https://jeroen.github.io/data/nycflights13.json.gz"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+all.equal<span class="token punctuation">(</span>flights5<span class="token punctuation">,</span> as.data.frame<span class="token punctuation">(</span>flights<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Full JSON IO stream from URL to file connection.</span>
+<span class="token comment"># Calculate delays for flights over 1000 miles in batches of 5k</span>
+library<span class="token punctuation">(</span>dplyr<span class="token punctuation">)</span>
+con_in <span class="token operator">&lt;-</span> gzcon<span class="token punctuation">(</span>url<span class="token punctuation">(</span><span class="token string">"http://jeroen.github.io/data/nycflights13.json.gz"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+con_out <span class="token operator">&lt;-</span> file<span class="token punctuation">(</span>tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> open <span class="token operator">=</span> <span class="token string">"wb"</span><span class="token punctuation">)</span>
+stream_in<span class="token punctuation">(</span>con_in<span class="token punctuation">,</span> handler <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>df<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  df <span class="token operator">&lt;-</span> dplyr<span class="token operator">::</span>filter<span class="token punctuation">(</span>df<span class="token punctuation">,</span> distance <span class="token operator">&gt;</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+  df <span class="token operator">&lt;-</span> dplyr<span class="token operator">::</span>mutate<span class="token punctuation">(</span>df<span class="token punctuation">,</span> delta <span class="token operator">=</span> dep_delay <span class="token operator">-</span> arr_delay<span class="token punctuation">)</span>
+  stream_out<span class="token punctuation">(</span>df<span class="token punctuation">,</span> con_out<span class="token punctuation">,</span> pagesize <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> pagesize <span class="token operator">=</span> <span class="token number">5000</span><span class="token punctuation">)</span>
+close<span class="token punctuation">(</span>con_out<span class="token punctuation">)</span>
+
+<span class="token comment"># stream it back in</span>
+mydata <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>file<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+nrow<span class="token punctuation">(</span>mydata<span class="token punctuation">)</span>
+unlink<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
+
+<span class="token comment"># Data from http://openweathermap.org/current#bulk</span>
+<span class="token comment"># Each row contains a nested data frame.</span>
+daily14 <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>gzcon<span class="token punctuation">(</span>url<span class="token punctuation">(</span><span class="token string">"http://78.46.48.103/sample/daily_14.json.gz"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pagesize<span class="token operator">=</span><span class="token number">50</span><span class="token punctuation">)</span>
+subset<span class="token punctuation">(</span>daily14<span class="token punctuation">,</span> city<span class="token operator">$</span>name <span class="token operator">==</span> <span class="token string">"Berlin"</span><span class="token punctuation">)</span><span class="token operator">$</span>data<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+
+<span class="token comment"># Or with dplyr:</span>
+library<span class="token punctuation">(</span>dplyr<span class="token punctuation">)</span>
+daily14f <span class="token operator">&lt;-</span> flatten<span class="token punctuation">(</span>daily14<span class="token punctuation">)</span>
+filter<span class="token punctuation">(</span>daily14f<span class="token punctuation">,</span> city.name <span class="token operator">==</span> <span class="token string">"Berlin"</span><span class="token punctuation">)</span><span class="token operator">$</span>data<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+
+<span class="token comment"># Stream import large data from zip file</span>
+tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
+download.file<span class="token punctuation">(</span><span class="token string">"http://jsonstudio.com/wp-content/uploads/2014/02/companies.zip"</span><span class="token punctuation">,</span> tmp<span class="token punctuation">)</span>
+companies <span class="token operator">&lt;-</span> stream_in<span class="token punctuation">(</span>unz<span class="token punctuation">(</span>tmp<span class="token punctuation">,</span> <span class="token string">"companies.json"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="fromJSON">
+
+<a href="#fromJSON" class="help-page-title"><h2 id="toJSON+2C+20fromJSON">Convert <span class="rlang"><b>R</b></span> objects to/from JSON</h2></a>
+
+<h3>Description</h3>
+
+<p>These functions are used to convert between JSON data and <span class="rlang"><b>R</b></span> objects. The <code><a href="#fromJSON">toJSON()</a></code> and <code><a href="#fromJSON">fromJSON()</a></code>
+functions use a class based mapping, which follows conventions outlined in this paper:  <a href="https://arxiv.org/abs/1403.2805" target="_blank">https://arxiv.org/abs/1403.2805</a> (also available as vignette).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">fromJSON<span class="token punctuation">(</span>
+  txt<span class="token punctuation">,</span>
+  simplifyVector <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span>
+  simplifyDataFrame <span class="token operator">=</span> simplifyVector<span class="token punctuation">,</span>
+  simplifyMatrix <span class="token operator">=</span> simplifyVector<span class="token punctuation">,</span>
+  flatten <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
+  <span class="token ellipsis">...</span>
+<span class="token punctuation">)</span>
+
+toJSON<span class="token punctuation">(</span>
+  x<span class="token punctuation">,</span>
+  dataframe <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"rows"</span><span class="token punctuation">,</span> <span class="token string">"columns"</span><span class="token punctuation">,</span> <span class="token string">"values"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  matrix <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"rowmajor"</span><span class="token punctuation">,</span> <span class="token string">"columnmajor"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  Date <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"ISO8601"</span><span class="token punctuation">,</span> <span class="token string">"epoch"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  POSIXt <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"string"</span><span class="token punctuation">,</span> <span class="token string">"ISO8601"</span><span class="token punctuation">,</span> <span class="token string">"epoch"</span><span class="token punctuation">,</span> <span class="token string">"mongo"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  factor <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"string"</span><span class="token punctuation">,</span> <span class="token string">"integer"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  complex <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"string"</span><span class="token punctuation">,</span> <span class="token string">"list"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  raw <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"base64"</span><span class="token punctuation">,</span> <span class="token string">"hex"</span><span class="token punctuation">,</span> <span class="token string">"mongo"</span><span class="token punctuation">,</span> <span class="token string">"int"</span><span class="token punctuation">,</span> <span class="token string">"js"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  null <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"list"</span><span class="token punctuation">,</span> <span class="token string">"null"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  na <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"null"</span><span class="token punctuation">,</span> <span class="token string">"string"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  auto_unbox <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
+  digits <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span>
+  pretty <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
+  force <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
+  <span class="token ellipsis">...</span>
+<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_txt">txt</code></td>
+<td>
+<p>a JSON string, URL or file</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_simplifyVector">simplifyVector</code></td>
+<td>
+<p>coerce JSON arrays containing only primitives into an atomic vector</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_simplifyDataFrame">simplifyDataFrame</code></td>
+<td>
+<p>coerce JSON arrays containing only records (JSON objects) into a data frame</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_simplifyMatrix">simplifyMatrix</code></td>
+<td>
+<p>coerce JSON arrays containing vectors of equal mode and dimension into matrix or array</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_flatten">flatten</code></td>
+<td>
+<p>automatically <code><a href="#flatten">flatten()</a></code> nested data frames into a single non-nested data frame</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_...">...</code></td>
+<td>
+<p>arguments passed on to class specific <code>print</code> methods</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_x">x</code></td>
+<td>
+<p>the object to be encoded</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_dataframe">dataframe</code></td>
+<td>
+<p>how to encode data.frame objects: must be one of 'rows', 'columns' or 'values'</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_matrix">matrix</code></td>
+<td>
+<p>how to encode matrices and higher dimensional arrays: must be one of 'rowmajor' or 'columnmajor'.</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_Date">Date</code></td>
+<td>
+<p>how to encode Date objects: must be one of 'ISO8601' or 'epoch'</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_POSIXt">POSIXt</code></td>
+<td>
+<p>how to encode POSIXt (datetime) objects: must be one of 'string', 'ISO8601', 'epoch' or 'mongo'</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_factor">factor</code></td>
+<td>
+<p>how to encode factor objects: must be one of 'string' or 'integer'</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_complex">complex</code></td>
+<td>
+<p>how to encode complex numbers: must be one of 'string' or 'list'</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_raw">raw</code></td>
+<td>
+<p>how to encode raw objects: must be one of 'base64', 'hex' or 'mongo'</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_null">null</code></td>
+<td>
+<p>how to encode NULL values within a list: must be one of 'null' or 'list'</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_na">na</code></td>
+<td>
+<p>how to print NA values: must be one of 'null' or 'string'. Defaults are class specific</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_auto_unbox">auto_unbox</code></td>
+<td>
+<p>automatically <code><a href="#unbox">unbox()</a></code> all atomic vectors of length 1. It is usually safer to avoid this and instead use the <code><a href="#unbox">unbox()</a></code> function to unbox individual elements.
+An exception is that objects of class <code>AsIs</code> (i.e. wrapped in <code><a href="https://r-universe.dev/manuals/base.html#AsIs">I()</a></code>) are not automatically unboxed. This is a way to mark single values as length-1 arrays.</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_digits">digits</code></td>
+<td>
+<p>max number of decimal digits to print for numeric values. Use <code><a href="https://r-universe.dev/manuals/base.html#AsIs">I()</a></code> to specify significant digits. Use <code>NA</code> for max precision.</p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_pretty">pretty</code></td>
+<td>
+<p>adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See <code><a href="#prettify">prettify()</a></code></p>
+</td>
+</tr>
+<tr>
+<td><code id="toJSON+2C+20fromJSON_:_force">force</code></td>
+<td>
+<p>unclass/skip objects of classes with no defined JSON mapping</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>The <code><a href="#fromJSON">toJSON()</a></code> and <code><a href="#fromJSON">fromJSON()</a></code> functions are drop-in replacements for the identically named functions
+in packages <code>rjson</code> and <code>RJSONIO</code>. Our implementation uses an alternative, somewhat more consistent mapping
+between <span class="rlang"><b>R</b></span> objects and JSON strings.
+</p>
+<p>The <code><a href="#serializeJSON">serializeJSON()</a></code> and <code><a href="#serializeJSON">unserializeJSON()</a></code> functions in this package use an
+alternative system to convert between <span class="rlang"><b>R</b></span> objects and JSON, which supports more classes but is much more verbose.
+</p>
+<p>A JSON string is always unicode, using <code>UTF-8</code> by default, hence there is usually no need to escape any characters.
+However, the JSON format does support escaping of unicode characters, which are encoded using a backslash followed by
+a lower case <code>"u"</code> and 4 hex characters, for example: <code>"Z\u00FCrich"</code>. The <code>fromJSON</code> function
+will parse such escape sequences but it is usually preferable to encode unicode characters in JSON using native
+<code>UTF-8</code> rather than escape sequences.
+</p>
+
+
+<h3>References</h3>
+
+<p>Jeroen Ooms (2014). The <code>jsonlite</code> Package: A Practical and Consistent Mapping Between JSON Data and <span class="rlang"><b>R</b></span> Objects. <em>arXiv:1403.2805</em>. <a href="https://arxiv.org/abs/1403.2805" target="_blank">https://arxiv.org/abs/1403.2805</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="#read_json">read_json()</a></code>, <code><a href="#stream_in">stream_in()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Stringify some data</span>
+jsoncars <span class="token operator">&lt;-</span> toJSON<span class="token punctuation">(</span>mtcars<span class="token punctuation">,</span> pretty<span class="token operator">=</span><span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>jsoncars<span class="token punctuation">)</span>
+
+<span class="token comment"># Parse it back</span>
+fromJSON<span class="token punctuation">(</span>jsoncars<span class="token punctuation">)</span>
+
+<span class="token comment"># Parse escaped unicode</span>
+fromJSON<span class="token punctuation">(</span><span class="token string">'{"city" : "Z\\u00FCrich"}'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Decimal vs significant digits</span>
+toJSON<span class="token punctuation">(</span>pi<span class="token punctuation">,</span> digits<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span>
+toJSON<span class="token punctuation">(</span>pi<span class="token punctuation">,</span> digits<span class="token operator">=</span>I<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">## Not run: </span>
+<span class="token comment">#retrieve data frame</span>
+data1 <span class="token operator">&lt;-</span> fromJSON<span class="token punctuation">(</span><span class="token string">"https://api.github.com/users/hadley/orgs"</span><span class="token punctuation">)</span>
+names<span class="token punctuation">(</span>data1<span class="token punctuation">)</span>
+data1<span class="token operator">$</span>login
+
+<span class="token comment"># Nested data frames:</span>
+data2 <span class="token operator">&lt;-</span> fromJSON<span class="token punctuation">(</span><span class="token string">"https://api.github.com/users/hadley/repos"</span><span class="token punctuation">)</span>
+names<span class="token punctuation">(</span>data2<span class="token punctuation">)</span>
+names<span class="token punctuation">(</span>data2<span class="token operator">$</span>owner<span class="token punctuation">)</span>
+data2<span class="token operator">$</span>owner<span class="token operator">$</span>login
+
+<span class="token comment"># Flatten the data into a regular non-nested dataframe</span>
+names<span class="token punctuation">(</span>flatten<span class="token punctuation">(</span>data2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Flatten directly (more efficient):</span>
+data3 <span class="token operator">&lt;-</span> fromJSON<span class="token punctuation">(</span><span class="token string">"https://api.github.com/users/hadley/repos"</span><span class="token punctuation">,</span> flatten <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+identical<span class="token punctuation">(</span>data3<span class="token punctuation">,</span> flatten<span class="token punctuation">(</span>data2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="unbox">
+
+<a href="#unbox" class="help-page-title"><h2 id="unbox">Unbox a vector or data frame</h2></a>
+
+<h3>Description</h3>
+
+<p>This function marks an atomic vector or data frame as a
+<a href="https://en.wikipedia.org/wiki/Singleton_(mathematics)" target="_blank">singleton</a>, i.e.
+a set with exactly 1 element. Thereby, the value will not turn into an
+<code>array</code> when encoded into JSON. This can only be done for
+atomic vectors of length 1, or data frames with exactly 1 row. To automatically
+unbox all vectors of length 1 within an object, use the <code>auto_unbox</code> argument
+in <code><a href="#fromJSON">toJSON()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">unbox<span class="token punctuation">(</span>x<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="unbox_:_x">x</code></td>
+<td>
+<p>atomic vector of length 1, or data frame with 1 row.</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>It is usually recommended to avoid this function and stick with the default
+encoding schema for the various <span class="rlang"><b>R</b></span> classes. The only use case for this function
+is if you are bound to some specific predefined JSON structure (e.g. to
+submit to an API), which has no natural <span class="rlang"><b>R</b></span> representation. Note that the default
+encoding for data frames naturally results in a collection of key-value pairs,
+without using <code>unbox</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a singleton version of <code>x</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://en.wikipedia.org/wiki/Singleton_(mathematics)" target="_blank">https://en.wikipedia.org/wiki/Singleton_(mathematics)</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">toJSON<span class="token punctuation">(</span>list<span class="token punctuation">(</span>foo<span class="token operator">=</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+toJSON<span class="token punctuation">(</span>list<span class="token punctuation">(</span>foo<span class="token operator">=</span>unbox<span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Auto unbox vectors of length one:</span>
+x <span class="token operator">=</span> list<span class="token punctuation">(</span>x<span class="token operator">=</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span> z <span class="token operator">=</span> <span class="token string">"foo"</span><span class="token punctuation">,</span> k <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+toJSON<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+toJSON<span class="token punctuation">(</span>x<span class="token punctuation">,</span> auto_unbox <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+
+x <span class="token operator">&lt;-</span> iris<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">]</span>
+toJSON<span class="token punctuation">(</span>list<span class="token punctuation">(</span>rec<span class="token operator">=</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+toJSON<span class="token punctuation">(</span>list<span class="token punctuation">(</span>rec<span class="token operator">=</span>unbox<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="validate">
+
+<a href="#validate" class="help-page-title"><h2 id="validate">Validate JSON</h2></a>
+
+<h3>Description</h3>
+
+<p>Test if a string contains valid JSON. Characters vectors will be collapsed into a single string.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">validate<span class="token punctuation">(</span>txt<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="validate_:_txt">txt</code></td>
+<td>
+<p>JSON string</p>
+</td>
+</tr></table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment">#Output from toJSON and serializeJSON should pass validation</span>
+myjson <span class="token operator">&lt;-</span> toJSON<span class="token punctuation">(</span>mtcars<span class="token punctuation">)</span>
+validate<span class="token punctuation">(</span>myjson<span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
+
+<span class="token comment">#Something bad happened</span>
+truncated <span class="token operator">&lt;-</span> substring<span class="token punctuation">(</span>myjson<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+validate<span class="token punctuation">(</span>truncated<span class="token punctuation">)</span> <span class="token comment">#FALSE</span></code></pre>
+
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

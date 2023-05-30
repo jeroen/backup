@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'unix' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'unix'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">POSIX System Utilities</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Bindings to system utilities found in most Unix systems such as
+    POSIX functions which are not part of the Standard C Library.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.5.5</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-25 04:53:16 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/unix</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#chroot">Change Root Dir</a></li>
+<li class="help-index-item"><a href="#eval_fork">Safe Evaluation</a></li>
+<li class="help-index-item"><a href="#process">Process Info</a></li>
+<li class="help-index-item"><a href="#rlimit">Resource Limits</a></li>
+<li class="help-index-item"><a href="#config">Package config</a></li>
+<li class="help-index-item"><a href="#userinfo">User / Group Info</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="chroot">
+
+<a href="#chroot" class="help-page-title"><h2 id="chroot">Change Root Dir</h2></a>
+
+<h3>Description</h3>
+
+<p>Changes the root directory of the calling process to that specified in path.
+This directory will be used for pathnames beginning with <code>/</code>.
+<strong>Only a privileged process (i.e. sudo) may call <code>chroot()</code></strong>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">chroot<span class="token punctuation">(</span>path <span class="token operator">=</span> getwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="chroot_:_path">path</code></td>
+<td>
+<p>directory of the new root</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>This call changes an ingredient in the pathname resolution process
+and does nothing else.  In particular, it is not intended to be used
+for any kind of security purpose, neither to fully sandbox a process
+nor to restrict filesystem system calls.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://man7.org/linux/man-pages/man2/chroot.2.html" target="_blank">CHROOT(2)</a>
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="eval_fork">
+
+<a href="#eval_fork" class="help-page-title"><h2 id="eval_safe">Safe Evaluation</h2></a>
+
+<h3>Description</h3>
+
+<p>Evaluates an expression in a temporary fork and returns the value without any
+side effects on the main R session. For <code><a href="#eval_fork">eval_safe()</a></code> the expression is wrapped
+in additional R code to handle errors and graphics.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">eval_safe<span class="token punctuation">(</span>
+  expr<span class="token punctuation">,</span>
+  tmp <span class="token operator">=</span> tempfile<span class="token punctuation">(</span><span class="token string">"fork"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_out <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_err <span class="token operator">=</span> stderr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  timeout <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  priority <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  uid <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  gid <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  rlimits <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  profile <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  device <span class="token operator">=</span> pdf
+<span class="token punctuation">)</span>
+
+eval_fork<span class="token punctuation">(</span>
+  expr<span class="token punctuation">,</span>
+  tmp <span class="token operator">=</span> tempfile<span class="token punctuation">(</span><span class="token string">"fork"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_out <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_err <span class="token operator">=</span> stderr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  timeout <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="eval_safe_:_expr">expr</code></td>
+<td>
+<p>expression to evaluate</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_tmp">tmp</code></td>
+<td>
+<p>the value of <code><a href="https://r-universe.dev/manuals/base.html#tempfile">tempdir()</a></code> inside the forked process</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_std_out">std_out</code></td>
+<td>
+<p>if and where to direct child process <code>STDOUT</code>. Must be one of
+<code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
+on <em>Output Streams</em> below for details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_std_err">std_err</code></td>
+<td>
+<p>if and where to direct child process <code>STDERR</code>. Must be one of
+<code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
+on <em>Output Streams</em> below for details.
+Non root user may only raise this value (decrease priority)</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_timeout">timeout</code></td>
+<td>
+<p>maximum time in seconds to allow for call to return</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_priority">priority</code></td>
+<td>
+<p>(integer) priority of the child process. High value is low priority.</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_uid">uid</code></td>
+<td>
+<p>evaluate as given user (uid or name). See <code><a href="#process">setuid()</a></code>, only for root.</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_gid">gid</code></td>
+<td>
+<p>evaluate as given group (gid or name). See <code><a href="#process">setgid()</a></code> only for root.</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_rlimits">rlimits</code></td>
+<td>
+<p>named vector/list with rlimit values, for example: <code>c(cpu = 60, fsize = 1e6)</code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_profile">profile</code></td>
+<td>
+<p>AppArmor profile, see <code>RAppArmor::aa_change_profile()</code>.
+Requires the <code>RAppArmor</code> package (Debian/Ubuntu only)</p>
+</td>
+</tr>
+<tr>
+<td><code id="eval_safe_:_device">device</code></td>
+<td>
+<p>graphics device to use in the fork, see <code><a href="https://r-universe.dev/manuals/grDevices.html#dev">dev.new()</a></code></p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Some programs such as <code>Java</code> are not fork-safe and cannot be called from within a
+forked process if they have already been loaded in the main process. On MacOS any
+software calling <code>CoreFoundation</code> functionality might crash within the fork. This
+includes <code>libcurl</code> which has been built on OSX against native SecureTransport rather
+than OpenSSL for https connections. The same limitations hold for e.g. <code>parallel::mcparallel()</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># works like regular eval:</span>
+eval_safe<span class="token punctuation">(</span>rnorm<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Exceptions get propagated</span>
+test <span class="token operator">&lt;-</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> doesnotexit<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+tryCatch<span class="token punctuation">(</span>eval_safe<span class="token punctuation">(</span>test<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  cat<span class="token punctuation">(</span><span class="token string">"oh no!"</span><span class="token punctuation">,</span> e<span class="token operator">$</span>message<span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Honor interrupt and timeout, even inside C evaluations</span>
+try<span class="token punctuation">(</span>eval_safe<span class="token punctuation">(</span>svd<span class="token punctuation">(</span>matrix<span class="token punctuation">(</span>rnorm<span class="token punctuation">(</span><span class="token number">1e8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1e4</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timeout <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Capture output</span>
+outcon <span class="token operator">&lt;-</span> rawConnection<span class="token punctuation">(</span>raw<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"r+"</span><span class="token punctuation">)</span>
+eval_safe<span class="token punctuation">(</span>print<span class="token punctuation">(</span>sessionInfo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> std_out <span class="token operator">=</span> outcon<span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>rawToChar<span class="token punctuation">(</span>rawConnectionValue<span class="token punctuation">(</span>outcon<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+close<span class="token punctuation">(</span>outcon<span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="process">
+
+<a href="#process" class="help-page-title"><h2 id="getuid">Process Info</h2></a>
+
+<h3>Description</h3>
+
+<p>Get or set attributes of the current process.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">getuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+getgid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+geteuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+getegid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+getpid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+getppid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+getpgid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+getpriority<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+setuid<span class="token punctuation">(</span>uid<span class="token punctuation">)</span>
+
+seteuid<span class="token punctuation">(</span>uid<span class="token punctuation">)</span>
+
+setgid<span class="token punctuation">(</span>gid<span class="token punctuation">)</span>
+
+setegid<span class="token punctuation">(</span>gid<span class="token punctuation">)</span>
+
+setpgid<span class="token punctuation">(</span>pgid <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+setpriority<span class="token punctuation">(</span>prio<span class="token punctuation">)</span>
+
+kill<span class="token punctuation">(</span>pid<span class="token punctuation">,</span> signal <span class="token operator">=</span> SIGTERM<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="getuid_:_uid">uid</code></td>
+<td>
+<p>User ID from <code style="white-space: pre;">⁠/etc/passwd⁠</code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="getuid_:_gid">gid</code></td>
+<td>
+<p>Group ID from <code style="white-space: pre;">⁠/etc/group⁠</code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="getuid_:_pgid">pgid</code></td>
+<td>
+<p>Process Group ID. Default <code>0</code> sets pgid to the current pid.</p>
+</td>
+</tr>
+<tr>
+<td><code id="getuid_:_prio">prio</code></td>
+<td>
+<p>Priority level</p>
+</td>
+</tr>
+<tr>
+<td><code id="getuid_:_pid">pid</code></td>
+<td>
+<p>process ID (integer)</p>
+</td>
+</tr>
+<tr>
+<td><code id="getuid_:_signal">signal</code></td>
+<td>
+<p>a signal number (integer), defaults to <a href="https://r-universe.dev/manuals/tools.html#pskill">tools::SIGTERM</a>.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Acronyms stand for:
+</p>
+
+<ul>
+<li> <p><code>pid</code> Process ID
+</p>
+</li>
+<li> <p><code>ppid</code> Parent-Process ID
+</p>
+</li>
+<li> <p><code>pgid</code> Process-Group ID
+</p>
+</li>
+<li> <p><code>uid</code> User ID
+</p>
+</li>
+<li> <p><code>euid</code> Effective User ID
+</p>
+</li>
+<li> <p><code>gid</code> Group ID
+</p>
+</li>
+<li> <p><code>egid</code> Effective Group ID
+</p>
+</li>
+<li> <p><code>prio</code> Priority level
+</p>
+</li>
+</ul>
+<p>An unprivileged (non-root) process cannot change it's <code>uid</code> and only lower
+process priority (higher value).
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://man7.org/linux/man-pages/man2/getuid.2.html" target="_blank">GETUID(2)</a>
+<a href="https://man7.org/linux/man-pages/man2/getpid.2.html" target="_blank">GETPID(2)</a>
+<a href="https://man7.org/linux/man-pages/man2/getpgid.2.html" target="_blank">GETPGID(2)</a>
+<a href="https://man7.org/linux/man-pages/man2/getpriority.2.html" target="_blank">GETPRIORITY(2)</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Current User:</span>
+getuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Current UserGroup:</span>
+getgid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Current UserGroup:</span>
+geteuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Current UserGroup:</span>
+getegid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Process ID</span>
+getpid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># parent PID:</span>
+getppid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Process group id:</span>
+getpgid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Detach process group</span>
+setpgid<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+getpgid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Process priority:</span>
+getpriority<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Decrease priority</span>
+setpriority<span class="token punctuation">(</span>getpriority<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="rlimit">
+
+<a href="#rlimit" class="help-page-title"><h2 id="rlimit">Resource Limits</h2></a>
+
+<h3>Description</h3>
+
+<p>Get and set process resource limits. Each function returns the current limits, and
+can optionally update the limit by passing argument values. The <code>rlimit_all()</code>
+function is a convenience wrapper which prints all current hard and soft limits.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">rlimit_all<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+rlimit_as<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_core<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_cpu<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_data<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_fsize<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_memlock<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_nofile<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_nproc<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+rlimit_stack<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="rlimit_:_cur">cur</code></td>
+<td>
+<p>set the current (soft) limit for this resource. See details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="rlimit_:_max">max</code></td>
+<td>
+<p>set the max (hard) limit for this resource. See details.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Each resource has an associated soft and  hard limit. The soft limit is the value
+that the kernel enforces for the corresponding resource.  The hard limit acts as a
+ceiling for the soft limit: an unprivileged process may set only its soft limit to
+a value in the range from 0 up to the hard limit, and (irreversibly) lower its hard
+limit.
+</p>
+<p>Definitons from the <a href="https://man7.org/linux/man-pages/man2/setrlimit.2.html" target="_blank">Linux manual page</a>
+are as follows:
+</p>
+
+<ul>
+<li> <p><code>RLIMIT_AS</code> : the maximum size of the process's virtual memory (address space) in bytes.
+</p>
+</li>
+<li> <p><code>RLIMIT_CORE</code> : the maximum size of a core file that the process may dump.
+</p>
+</li>
+<li> <p><code>RLIMIT_CPU</code> : a limit in seconds on the amount of CPU time (<strong>not</strong> elapsed time) that
+the process may consume. When the process reaches the soft limit, it is sent a <code>SIGXCPU</code> signal.
+</p>
+</li>
+<li> <p><code>RLIMIT_DATA</code> : the maximum size of the process's data segment (initialized data, uninitialized
+data, and heap).
+</p>
+</li>
+<li> <p><code>RLIMIT_FSIZE</code> : the maximum size of files that the process may create. Attempts to extend a
+file beyond this limit result in delivery of a SIGXFSZ signal.
+</p>
+</li>
+<li> <p><code>RLIMIT_MEMLOCK</code> : the maximum number of bytes of memory that may be locked into RAM.
+</p>
+</li>
+<li> <p><code>RLIMIT_NOFILE</code> : a value one greater than the maximum file descriptor number that can be opened
+by this process.
+</p>
+</li>
+<li> <p><code>RLIMIT_NPROC</code> : the maximum number of processes that can be created for the real user ID of the
+calling process.  Upon encountering this limit, fork fails with the error EAGAIN. Not enforced for
+root user.
+</p>
+</li>
+<li> <p><code>RLIMIT_STACK</code> : the maximum size of the process stack, in bytes.
+</p>
+</li>
+</ul>
+<p>Note that the support for enforcing limits very widely by system. In particular
+<code>RLIMIT_AS</code> has a different meaning depending on how memory allocation is managed
+by the operating system (and doesn't work at all on MacOS).
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://man7.org/linux/man-pages/man2/setrlimit.2.html" target="_blank">GETRLIMIT(2)</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Print all limits</span>
+rlimit_all<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Get one limit</span>
+rlimit_as<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">## Not run: </span>
+<span class="token comment"># Set a soft limit</span>
+lim <span class="token operator">&lt;-</span> rlimit_as<span class="token punctuation">(</span><span class="token number">1e9</span><span class="token punctuation">)</span>
+print<span class="token punctuation">(</span>lim<span class="token punctuation">)</span>
+
+<span class="token comment"># Reset the limit to max</span>
+rlimit_as<span class="token punctuation">(</span>cur <span class="token operator">=</span> lim<span class="token operator">$</span>max<span class="token punctuation">)</span>
+
+<span class="token comment"># Set a hard limit (irreversible)</span>
+rlimit_as<span class="token punctuation">(</span>max <span class="token operator">=</span> <span class="token number">1e10</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="config">
+
+<a href="#config" class="help-page-title"><h2 id="sys_config">Package config</h2></a>
+
+<h3>Description</h3>
+
+<p>Shows which features are enabled in the package configuration.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">sys_config<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+aa_config<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">sys_config<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="userinfo">
+
+<a href="#userinfo" class="help-page-title"><h2 id="userinfo">User / Group Info</h2></a>
+
+<h3>Description</h3>
+
+<p>Lookup a user or group info via user uid/name or group gid/name.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">user_info<span class="token punctuation">(</span>uid <span class="token operator">=</span> getuid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+group_info<span class="token punctuation">(</span>gid <span class="token operator">=</span> getgid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="userinfo_:_uid">uid</code></td>
+<td>
+<p>user ID (integer) or name (string)</p>
+</td>
+</tr>
+<tr>
+<td><code id="userinfo_:_gid">gid</code></td>
+<td>
+<p>group ID (integer) or name (string)</p>
+</td>
+</tr>
+</table>
+<h3>References</h3>
+
+<p><a href="https://man7.org/linux/man-pages/man3/getpwnam.3.html" target="_blank">GETPWNAM(3)</a>
+<a href="https://man7.org/linux/man-pages/man3/getgrnam.3.html" target="_blank">GETGRNAM(3)</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Get info current user</span>
+user_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+group_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

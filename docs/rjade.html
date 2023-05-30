@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'rjade' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'rjade'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">A Clean, Whitespace-Sensitive Template Language for Writing HTML</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Jade is a high performance template engine heavily influenced by
+    Haml and implemented with JavaScript for node and browsers.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms, Forbes Lindesay</span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">0.1.1</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-07 06:23:56 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/cran/rjade</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list"><li class="help-index-item"><a href="#jade">Render Jade Template</a></li></ul>
+
+    <hr>
+    <div class="manual-pages-content"><div class="container manual-page" id="jade">
+
+<a href="#jade" class="help-page-title"><h2 id="jade_compile">Render Jade Template</h2></a>
+
+<h3>Description</h3>
+
+<p>Jade is a high performance template engine heavily influenced by Haml.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">jade_compile<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+jade_render<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">,</span> locals <span class="token operator">=</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="jade_compile_:_text">text</code></td>
+<td>
+<p>string with jade template.</p>
+</td>
+</tr>
+<tr>
+<td><code id="jade_compile_:_...">...</code></td>
+<td>
+<p>options passed to the compiler, see <a href="https://jade-lang.com/api" target="_blank">https://jade-lang.com/api</a>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="jade_compile_:_locals">locals</code></td>
+<td>
+<p>local variables used in the template.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Converting a template to HTML text involves two steps. The first step compiles
+the template with some formatting options into a closure. The binding for this
+is implemented in <code>jade_compile</code>. The second step calls the closure with
+optionally some local variables to render the output to HTML.
+</p>
+<p>The <code>jade_render</code> function is a convenience wrapper that does both steps at
+once. This is slightly faster if you only need to render your template once.
+</p>
+
+
+<h3>References</h3>
+
+<p>Jade documentation: <a href="https://jade-lang.com" target="_blank">https://jade-lang.com</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Example from https://jade-lang.com</span>
+text <span class="token operator">&lt;-</span> readLines<span class="token punctuation">(</span>system.file<span class="token punctuation">(</span><span class="token string">"examples/test.jade"</span><span class="token punctuation">,</span> package <span class="token operator">=</span> <span class="token string">"rjade"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Compile and render seperately</span>
+tpl <span class="token operator">&lt;-</span> jade_compile<span class="token punctuation">(</span>text<span class="token punctuation">,</span> pretty <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+tpl<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tpl<span class="token punctuation">(</span>youAreUsingJade <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Slightly faster for one-time rendering</span>
+jade_render<span class="token punctuation">(</span>text<span class="token punctuation">,</span> pretty <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+jade_render<span class="token punctuation">(</span>text<span class="token punctuation">,</span> pretty <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> locals <span class="token operator">=</span> list<span class="token punctuation">(</span>youAreUsingJade <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div></div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

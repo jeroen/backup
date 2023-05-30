@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'RAppArmor' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'RAppArmor'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Bindings to AppArmor and Security Related Linux Tools</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Bindings to kernel methods for enforcing security restrictions. 
+    AppArmor can apply mandatory access control (MAC) policies on a given task 
+    (process) via security profiles with detailed ACL definitions. In addition
+    this package implements bindings for setting process resource limits (rlimit),
+    uid, gid, affinity and priority. The high level R function 'eval.secure' 
+    builds on these methods to perform dynamic sandboxing: it evaluates a single
+    R expression within a temporary fork which acts as a sandbox by enforcing 
+    fine grained restrictions without affecting the main R process. A portable 
+    version of this function is now available in the 'unix' package.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">Apache License 2.0</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">3.2.3</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-16 04:37:43 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/rapparmor</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#affinity">Process Affinity</a></li>
+<li class="help-index-item"><a href="#apparmor">Change hats</a></li>
+<li class="help-index-item"><a href="#eval.secure">eval.secure</a></li>
+<li class="help-index-item"><a href="#unittests">RAppArmor unit tests</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="affinity">
+
+<a href="#affinity" class="help-page-title"><h2 id="affinity">Process Affinity</h2></a>
+
+<h3>Description</h3>
+
+<p>Get/set the process's CPU affinity mask. The affinity mask binds the process to
+specific core(s) within the machine. Not supported on all systems, <code><a href="#affinity">has_affinity()</a></code>
+shows if this is available.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">setaffinity<span class="token punctuation">(</span>cpus <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">:</span>ncores<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+getaffinity_count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+getaffinity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+has_affinity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+ncores<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="affinity_:_cpus">cpus</code></td>
+<td>
+<p>Which cpu cores to bind to: vector of integers between 1 and <code><a href="#affinity">ncores()</a></code></p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>Setting a process affinity allows for restricting the process to only use certain
+cores in the machine. The cores are indexed by the operating system as 1 to <code><a href="#affinity">ncores()</a></code>.
+Calling <code><a href="#affinity">setaffinity()</a></code> with no arguments resets the process to use any of the
+available cores.
+</p>
+<p>Note that setaffinity is different from setting r_limit values in the sense that
+it is not a one-way process. An unprivileged user can change the process affinity
+to any value. In order to 'lock' an affinity value, one would have to manipulate
+Linux capability value for CAP_SYS_NICE.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://man7.org/linux/man-pages/man2/sched_setaffinity.2.html" target="_blank">SCHED_SETAFFINITY(2)</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<span class="token comment"># Current affinity</span>
+ncores<span class="token punctuation">(</span><span class="token punctuation">)</span>
+getaffinity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+getaffinity_count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Restrict process to core number 1.</span>
+setaffinity<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+getaffinity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Reset</span>
+setaffinity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+getaffinity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="apparmor">
+
+<a href="#apparmor" class="help-page-title"><h2 id="apparmor">Change hats</h2></a>
+
+<h3>Description</h3>
+
+<p>A hat is a subprofile which name starts with a '^'.
+The difference between hats and profiles is that one can escape (revert) from the hat using the token.
+Hence this provides more limited security than a profile.
+</p>
+<p>Note that in order for this function to do its work, it needs
+read access to the attributes of the current process. If aa_getcon
+fails with a permission denied error, it might actually mean
+that the current process is being confined with a very restrictive
+profile.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">aa_change_hat<span class="token punctuation">(</span>subprofile<span class="token punctuation">,</span> magic_token<span class="token punctuation">)</span>
+
+aa_revert_hat<span class="token punctuation">(</span>magic_token<span class="token punctuation">)</span>
+
+aa_change_profile<span class="token punctuation">(</span>profile<span class="token punctuation">)</span>
+
+aa_find_mountpoint<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+aa_getcon<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+aa_is_enabled<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+aa_is_compiled<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="apparmor_:_subprofile">subprofile</code></td>
+<td>
+<p>character string identifying the subprofile (hat) name (without the "^")</p>
+</td>
+</tr>
+<tr>
+<td><code id="apparmor_:_magic_token">magic_token</code></td>
+<td>
+<p>a number that will be the key to revert out of the hat.</p>
+</td>
+</tr>
+<tr>
+<td><code id="apparmor_:_profile">profile</code></td>
+<td>
+<p>character string with the name of the profile.</p>
+</td>
+</tr>
+</table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+aa_change_profile<span class="token punctuation">(</span><span class="token string">"testprofile"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+aa_getcon<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+test <span class="token operator">&lt;-</span> read.table<span class="token punctuation">(</span><span class="token string">"/etc/group"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+aa_change_hat<span class="token punctuation">(</span><span class="token string">"testhat"</span><span class="token punctuation">,</span> <span class="token number">13337</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+aa_getcon<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+test <span class="token operator">&lt;-</span> read.table<span class="token punctuation">(</span><span class="token string">"/etc/group"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+aa_revert_hat<span class="token punctuation">(</span><span class="token number">13337</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+test <span class="token operator">&lt;-</span> read.table<span class="token punctuation">(</span><span class="token string">"/etc/group"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">## End(Not run)</span>
+ <span class="token comment">## Not run: </span>
+test <span class="token operator">&lt;-</span> read.table<span class="token punctuation">(</span><span class="token string">"/etc/passwd"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+aa_change_profile<span class="token punctuation">(</span><span class="token string">"testprofile"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+aa_getcon<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+test <span class="token operator">&lt;-</span> read.table<span class="token punctuation">(</span><span class="token string">"/etc/passwd"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="eval.secure">
+
+<a href="#eval.secure" class="help-page-title"><h2 id="eval.secure">eval.secure</h2></a>
+
+<h3>Description</h3>
+
+<p>The <code>eval.secure</code> function has moved into the unix package and is now
+an alias for <a href="https://jeroen.r-universe.dev/unix/doc/manual.html#eval_fork">unix::eval_safe</a>. Please switch over
+to this new function.
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="unittests">
+
+<a href="#unittests" class="help-page-title"><h2 id="unittests">RAppArmor unit tests</h2></a>
+
+<h3>Description</h3>
+
+<p>This function loads the 'testthat' package and runs a number of
+unit tests for RAppArmor. Note that the tests assume that the main
+process is unconfined. Try running it both as root and as a regular
+user to cover both cases.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">unittests<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Details</h3>
+
+<p>Occasionally, one or two tests might fail due to random
+fluctuations in available memory, cpu, etc. If this happens, try
+running the tests again, possibly with less other programs running
+in the background.
+</p>
+
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

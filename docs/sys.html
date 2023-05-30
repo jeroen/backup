@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'sys' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'sys'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Powerful and Reliable Tools for Running System Commands in R</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Drop-in replacements for the base system2() function with fine control
+    and consistent behavior across platforms. Supports clean interruption, timeout, 
+    background tasks, and streaming STDIN / STDOUT / STDERR over binary or text 
+    connections. Arguments on Windows automatically get encoded and quoted to work 
+    on different locales.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a>,
+  Gábor Csárdi [ctb]</span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">3.4.2</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-22 22:05:04 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/sys</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#as_text">Convert Raw to Text</a></li>
+<li class="help-index-item"><a href="#exec">Running System Commands</a></li>
+<li class="help-index-item"><a href="#exec_r">Execute R from R</a></li>
+<li class="help-index-item"><a href="#quote">Quote arguments on Windows</a></li>
+<li class="help-index-item"><a href="#deprecated">Deprecated functions</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="as_text">
+
+<a href="#as_text" class="help-page-title"><h2 id="as_text">Convert Raw to Text</h2></a>
+
+<h3>Description</h3>
+
+<p>Parses a raw vector as lines of text. This is similar to <a href="https://r-universe.dev/manuals/base.html#rawConversion">charToRaw</a> but
+splits output by (platform specific) linebreaks and allows for marking
+output with a given encoding.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">as_text<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="as_text_:_x">x</code></td>
+<td>
+<p>vector to be converted to text</p>
+</td>
+</tr>
+<tr>
+<td><code id="as_text_:_...">...</code></td>
+<td>
+<p>parameters passed to <a href="https://r-universe.dev/manuals/base.html#readLines">readLines</a> such as <code>encoding</code> or <code>n</code></p>
+</td>
+</tr>
+</table>
+<h3>See Also</h3>
+
+<p><a href="https://r-universe.dev/manuals/base.html#rawConversion">base::charToRaw</a>
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="exec">
+
+<a href="#exec" class="help-page-title"><h2 id="exec">Running System Commands</h2></a>
+
+<h3>Description</h3>
+
+<p>Powerful replacements for <a href="https://r-universe.dev/manuals/base.html#system2">system2</a> with support for interruptions, background
+tasks and fine grained control over <code>STDOUT</code> / <code>STDERR</code> binary or text streams.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">exec_wait<span class="token punctuation">(</span>
+  cmd<span class="token punctuation">,</span>
+  args <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  std_out <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_err <span class="token operator">=</span> stderr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_in <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  timeout <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">)</span>
+
+exec_background<span class="token punctuation">(</span>
+  cmd<span class="token punctuation">,</span>
+  args <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  std_out <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span>
+  std_err <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span>
+  std_in <span class="token operator">=</span> <span class="token keyword">NULL</span>
+<span class="token punctuation">)</span>
+
+exec_internal<span class="token punctuation">(</span>cmd<span class="token punctuation">,</span> args <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> std_in <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> timeout <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+exec_status<span class="token punctuation">(</span>pid<span class="token punctuation">,</span> wait <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="exec_:_cmd">cmd</code></td>
+<td>
+<p>the command to run. Either a full path or the name of a program on
+the <code>PATH</code>. On Windows this is automatically converted to a short path using
+<a href="https://r-universe.dev/manuals/base.html#Sys.which">Sys.which</a>, unless wrapped in <code><a href="https://r-universe.dev/manuals/base.html#AsIs">I()</a></code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_args">args</code></td>
+<td>
+<p>character vector of arguments to pass. On Windows these automatically
+get quoted using <a href="#quote">windows_quote</a>, unless the value is wrapped in <code><a href="https://r-universe.dev/manuals/base.html#AsIs">I()</a></code>.</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_std_out">std_out</code></td>
+<td>
+<p>if and where to direct child process <code>STDOUT</code>. Must be one of
+<code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
+on <em>Output Streams</em> below for details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_std_err">std_err</code></td>
+<td>
+<p>if and where to direct child process <code>STDERR</code>. Must be one of
+<code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
+on <em>Output Streams</em> below for details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_std_in">std_in</code></td>
+<td>
+<p>file path to map std_in</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_timeout">timeout</code></td>
+<td>
+<p>maximum time in seconds</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_error">error</code></td>
+<td>
+<p>automatically raise an error if the exit status is non-zero.</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_pid">pid</code></td>
+<td>
+<p>integer with a process ID</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_:_wait">wait</code></td>
+<td>
+<p>block until the process completes</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Each value within the <code>args</code> vector will automatically be quoted when needed;
+you should not quote arguments yourself. Doing so anyway could lead to the value
+being quoted twice on some platforms.
+</p>
+<p>The <code>exec_wait</code> function runs a system command and waits for the child process
+to exit. When the child process completes normally (either success or error) it
+returns with the program exit code. Otherwise (if the child process gets aborted)
+R raises an error. The R user can interrupt the program by sending SIGINT (press
+ESC or CTRL+C) in which case the child process tree is properly terminated.
+Output streams <code>STDOUT</code> and <code>STDERR</code> are piped back to the parent process and can
+be sent to a connection or callback function. See the section on <em>Output Streams</em>
+below for details.
+</p>
+<p>The <code>exec_background</code> function starts the program and immediately returns the
+PID of the child process. This is useful for running a server daemon or background
+process.
+Because this is non-blocking, <code>std_out</code> and <code>std_out</code> can only be <code>TRUE</code>/<code>FALSE</code> or
+a file path. The state of the process can be checked with <code>exec_status</code> which
+returns the exit status, or <code>NA</code> if the process is still running. If <code>wait = TRUE</code>
+then <code>exec_status</code> blocks until the process completes (but can be interrupted).
+The child can be killed with <a href="https://r-universe.dev/manuals/tools.html#pskill">tools::pskill</a>.
+</p>
+<p>The <code>exec_internal</code> function is a convenience wrapper around <code>exec_wait</code> which
+automatically captures output streams and raises an error if execution fails.
+Upon success it returns a list with status code, and raw vectors containing
+stdout and stderr data (use <a href="#as_text">as_text</a> for converting to text).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>exec_background</code> returns a pid. <code>exec_wait</code> returns an exit code.
+<code>exec_internal</code> returns a list with exit code, stdout and stderr strings.
+</p>
+
+
+<h3>Output Streams</h3>
+
+<p>The <code>std_out</code> and <code>std_err</code> parameters are used to control how output streams
+of the child are processed. Possible values for both foreground and background
+processes are:
+</p>
+
+<ul>
+<li> <p><code>TRUE</code>: print child output in R console
+</p>
+</li>
+<li> <p><code>FALSE</code>: suppress output stream
+</p>
+</li>
+<li> <p><em>string</em>: name or path of file to redirect output
+</p>
+</li>
+</ul>
+<p>In addition the <code>exec_wait</code> function also supports the following <code>std_out</code> and <code>std_err</code>
+types:
+</p>
+
+<ul>
+<li> <p><em>connection</em> a writable R <a href="https://r-universe.dev/manuals/base.html#connections">connection</a> object such as <a href="https://r-universe.dev/manuals/base.html#showConnections">stdout</a> or <a href="https://r-universe.dev/manuals/base.html#showConnections">stderr</a>
+</p>
+</li>
+<li> <p><em>function</em>: callback function with one argument accepting a raw vector (use
+<a href="#as_text">as_text</a> to convert to text).
+</p>
+</li>
+</ul>
+<p>When using <code>exec_background</code> with <code>std_out = TRUE</code> or <code>std_err = TRUE</code> on Windows,
+separate threads are used to print output. This works in RStudio and RTerm but
+not in RGui because the latter has a custom I/O mechanism. Directing output to a
+file is usually the safest option.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Base <a href="https://r-universe.dev/manuals/base.html#system2">system2</a> and <a href="https://r-universe.dev/manuals/base.html#connections">pipe</a> provide other methods for running a system
+command with output.
+</p>
+<p>Other sys: 
+<code><a href="#exec_r">exec_r</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Run a command (interrupt with CTRL+C)</span>
+status <span class="token operator">&lt;-</span> exec_wait<span class="token punctuation">(</span><span class="token string">"date"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Capture std/out</span>
+out <span class="token operator">&lt;-</span> exec_internal<span class="token punctuation">(</span><span class="token string">"date"</span><span class="token punctuation">)</span>
+print<span class="token punctuation">(</span>out<span class="token operator">$</span>status<span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>as_text<span class="token punctuation">(</span>out<span class="token operator">$</span>stdout<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span>nchar<span class="token punctuation">(</span>Sys.which<span class="token punctuation">(</span><span class="token string">"ping"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+
+<span class="token comment"># Run a background process (daemon)</span>
+pid <span class="token operator">&lt;-</span> exec_background<span class="token punctuation">(</span><span class="token string">"ping"</span><span class="token punctuation">,</span> <span class="token string">"localhost"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Kill it after a while</span>
+Sys.sleep<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+tools<span class="token operator">::</span>pskill<span class="token punctuation">(</span>pid<span class="token punctuation">)</span>
+
+<span class="token comment"># Cleans up the zombie proc</span>
+exec_status<span class="token punctuation">(</span>pid<span class="token punctuation">)</span>
+rm<span class="token punctuation">(</span>pid<span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="exec_r">
+
+<a href="#exec_r" class="help-page-title"><h2 id="exec_r">Execute R from R</h2></a>
+
+<h3>Description</h3>
+
+<p>Convenience wrappers for <a href="#exec">exec_wait</a> and <a href="#exec">exec_internal</a> that shell out to
+R itself: <code>R.home("bin/R")</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">r_wait<span class="token punctuation">(</span>
+  args <span class="token operator">=</span> <span class="token string">"--vanilla"</span><span class="token punctuation">,</span>
+  std_out <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_err <span class="token operator">=</span> stderr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  std_in <span class="token operator">=</span> <span class="token keyword">NULL</span>
+<span class="token punctuation">)</span>
+
+r_internal<span class="token punctuation">(</span>args <span class="token operator">=</span> <span class="token string">"--vanilla"</span><span class="token punctuation">,</span> std_in <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+
+r_background<span class="token punctuation">(</span>args <span class="token operator">=</span> <span class="token string">"--vanilla"</span><span class="token punctuation">,</span> std_out <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> std_err <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> std_in <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="exec_r_:_args">args</code></td>
+<td>
+<p>command line arguments for R</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_r_:_std_out">std_out</code></td>
+<td>
+<p>if and where to direct child process <code>STDOUT</code>. Must be one of
+<code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
+on <em>Output Streams</em> below for details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_r_:_std_err">std_err</code></td>
+<td>
+<p>if and where to direct child process <code>STDERR</code>. Must be one of
+<code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
+on <em>Output Streams</em> below for details.</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_r_:_std_in">std_in</code></td>
+<td>
+<p>a file to send to stdin, usually an R script (see examples).</p>
+</td>
+</tr>
+<tr>
+<td><code id="exec_r_:_error">error</code></td>
+<td>
+<p>automatically raise an error if the exit status is non-zero.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>This is a simple but robust way to invoke R commands in a separate process.
+Use the <a href="https://cran.r-project.org/package=callr" target="_blank">callr</a> package if you
+need more sophisticated control over (multiple) R process jobs.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other sys: 
+<code><a href="#exec">exec</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Hello world</span>
+r_wait<span class="token punctuation">(</span><span class="token string">"--version"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Run some code</span>
+r_wait<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token string">'--vanilla'</span><span class="token punctuation">,</span> <span class="token string">'-q'</span><span class="token punctuation">,</span> <span class="token string">'-e'</span><span class="token punctuation">,</span> <span class="token string">'sessionInfo()'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Run a script via stdin</span>
+tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
+writeLines<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token string">"x &lt;- rnorm(100)"</span><span class="token punctuation">,</span> <span class="token string">"mean(x)"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> con <span class="token operator">=</span> tmp<span class="token punctuation">)</span>
+r_wait<span class="token punctuation">(</span>std_in <span class="token operator">=</span> tmp<span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="quote">
+
+<a href="#quote" class="help-page-title"><h2 id="quote">Quote arguments on Windows</h2></a>
+
+<h3>Description</h3>
+
+<p>Quotes and escapes shell arguments when needed so that they get properly parsed
+by most Windows programs. This function is used internally to automatically quote
+system commands, the user should normally not quote arguments manually.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">windows_quote<span class="token punctuation">(</span>args<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="quote_:_args">args</code></td>
+<td>
+<p>character vector with arguments</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>Algorithm is ported to R from
+<a href="https://github.com/libuv/libuv/blob/v1.23.0/src/win/process.c#L454-L524" target="_blank">libuv</a>.
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="deprecated">
+
+<a href="#deprecated" class="help-page-title"><h2 id="sys-deprecated">Deprecated functions</h2></a>
+
+<h3>Description</h3>
+
+<p>These functions have moved into the <code>unix</code> package. Please update
+your references.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">eval_safe<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+eval_fork<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="sys-deprecated_:_...">...</code></td>
+<td>
+<p>see respective functions in the unix package</p>
+</td>
+</tr></table>
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

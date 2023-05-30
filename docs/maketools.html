@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'maketools' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'maketools'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Exploring and Testing the Toolchain and System Libraries</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">A collection of helper functions that interface with the appropriate
+    system utilities to learn about the build environment. Lets you explore 'make' 
+    rules to test the local configuration, or query 'pkg-config' to find compiler
+    flags and libs needed for building packages with external dependencies. Also
+    contains tools to analyze which libraries that a installed R package linked to
+    by inspecting output from 'ldd' in combination with information from your
+    distribution package manager, e.g. 'rpm' or 'dpkg'. Finally the package provides
+    Windows-specific utilities to automatically find or install the suitable version
+    of the 'Rtools' build environment, and diagnose some common problems.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre, cph] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.2.4</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-27 06:24:30 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/maketools</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#diagnostics">Diagnostics Report</a></li>
+<li class="help-index-item"><a href="#extra">Package tools</a></li>
+<li class="help-index-item"><a href="#make">Make</a></li>
+<li class="help-index-item"><a href="#pkgconfig">Query pkg-config</a></li>
+<li class="help-index-item"><a href="#r_config">R CMD Config</a></li>
+<li class="help-index-item"><a href="#rtools">Find or Install Rtools</a></li>
+<li class="help-index-item"><a href="#sysdeps">Package System Dependencies</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="diagnostics">
+
+<a href="#diagnostics" class="help-page-title"><h2 id="diagnostics">Diagnostics Report</h2></a>
+
+<h3>Description</h3>
+
+<p>Print some diagnostics about your compiler environment. These are also
+shown when the <code>maketools</code> package is attached.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">maketools_diagnostics<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>See Also</h3>
+
+<p>Other maketools: 
+<code><a href="#make">make</a>()</code>,
+<code><a href="#pkgconfig">pkgconfig</a></code>,
+<code><a href="#r_config">r_config</a></code>,
+<code><a href="#rtools">rtools</a></code>,
+<code><a href="#sysdeps">sysdeps</a></code>
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="extra">
+
+<a href="#extra" class="help-page-title"><h2 id="find_logo">Package tools</h2></a>
+
+<h3>Description</h3>
+
+<p>Get some extra info about packages.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">find_logo<span class="token punctuation">(</span>path <span class="token operator">=</span> <span class="token string">"."</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="find_logo_:_path">path</code></td>
+<td>
+<p>root directory of package</p>
+</td>
+</tr></table>
+<hr>
+</div>
+<div class="container manual-page" id="make">
+
+<a href="#make" class="help-page-title"><h2 id="make">Make</h2></a>
+
+<h3>Description</h3>
+
+<p>Compile C / C++ / Fortran source files using the compiler configured
+by your R <code>Makeconf</code> file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">make<span class="token punctuation">(</span>target <span class="token operator">=</span> <span class="token string">"all"</span><span class="token punctuation">,</span> makefile <span class="token operator">=</span> r_makeconf_path<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+make_call<span class="token punctuation">(</span>cmd <span class="token operator">=</span> <span class="token string">"$(CC)"</span><span class="token punctuation">,</span> args <span class="token operator">=</span> <span class="token string">"--version"</span><span class="token punctuation">)</span>
+
+make_echo<span class="token punctuation">(</span>cmd <span class="token operator">=</span> <span class="token string">"$(CC)"</span><span class="token punctuation">)</span>
+
+make_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="make_:_target">target</code></td>
+<td>
+<p>name of output file that you want to make</p>
+</td>
+</tr>
+<tr>
+<td><code id="make_:_makefile">makefile</code></td>
+<td>
+<p>path to the <code>Makefile</code>. Defaults to the <code>Makeconf</code> which
+R uses when building R packages.</p>
+</td>
+</tr>
+<tr>
+<td><code id="make_:_cmd">cmd</code></td>
+<td>
+<p>command to invoke (may be a variable)</p>
+</td>
+</tr>
+<tr>
+<td><code id="make_:_args">args</code></td>
+<td>
+<p>additional arguments for <code>cmd</code></p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>The <code>make</code> function literally calls <code style="white-space: pre;">⁠make yourfile.o -f /path/to/R/Makeconf⁠</code>.
+This is exactly what R does when building packages and hence the best
+way to test if the compiler is working.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other maketools: 
+<code><a href="#diagnostics">diagnostics</a></code>,
+<code><a href="#pkgconfig">pkgconfig</a></code>,
+<code><a href="#r_config">r_config</a></code>,
+<code><a href="#rtools">rtools</a></code>,
+<code><a href="#sysdeps">sysdeps</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Test the CXX compiler</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>cxx_info<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">$</span>available<span class="token punctuation">)</span><span class="token punctuation">{</span>
+testprog <span class="token operator">&lt;-</span> <span class="token string">'#include &lt;iostream&gt;\nint main() {std::cout &lt;&lt; "Hello World!";}'</span>
+writeLines<span class="token punctuation">(</span>testprog<span class="token punctuation">,</span> con <span class="token operator">=</span> <span class="token string">'testprog.cc'</span><span class="token punctuation">)</span>
+make<span class="token punctuation">(</span><span class="token string">'testprog'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Test and cleanup</span>
+system<span class="token punctuation">(</span><span class="token string">'./testprog'</span><span class="token punctuation">)</span>
+unlink<span class="token punctuation">(</span><span class="token string">'testprog*'</span><span class="token punctuation">,</span> recursive <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># Run a program from a make variable</span>
+make_call<span class="token punctuation">(</span><span class="token string">'$(CXX)'</span><span class="token punctuation">,</span> <span class="token string">'--version'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Where your makeconf is stored:</span>
+make_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="pkgconfig">
+
+<a href="#pkgconfig" class="help-page-title"><h2 id="pkgconfig">Query pkg-config</h2></a>
+
+<h3>Description</h3>
+
+<p>Wrappers for the pkg-config utility to query information on C/C++ libraries
+that are available on your system.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">pc_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+pc_pkg_list<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+pc_pkg_exists<span class="token punctuation">(</span>pkg <span class="token operator">=</span> <span class="token string">"libcurl"</span><span class="token punctuation">)</span>
+
+pc_pkg_version<span class="token punctuation">(</span>pkg <span class="token operator">=</span> <span class="token string">"libcurl"</span><span class="token punctuation">)</span>
+
+pc_pkg_cflags<span class="token punctuation">(</span>pkg <span class="token operator">=</span> <span class="token string">"libcurl"</span><span class="token punctuation">)</span>
+
+pc_pkg_libs<span class="token punctuation">(</span>pkg <span class="token operator">=</span> <span class="token string">"libcurl"</span><span class="token punctuation">,</span> static <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+pc_pkg_info<span class="token punctuation">(</span>pkg <span class="token operator">=</span> <span class="token string">"libcurl"</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="pkgconfig_:_pkg">pkg</code></td>
+<td>
+<p>names of the pkg-config libraries to query</p>
+</td>
+</tr>
+<tr>
+<td><code id="pkgconfig_:_static">static</code></td>
+<td>
+<p>get libs for static linking, i.e. include dependencies</p>
+</td>
+</tr>
+</table>
+<h3>See Also</h3>
+
+<p>Other maketools: 
+<code><a href="#diagnostics">diagnostics</a></code>,
+<code><a href="#make">make</a>()</code>,
+<code><a href="#r_config">r_config</a></code>,
+<code><a href="#rtools">rtools</a></code>,
+<code><a href="#sysdeps">sysdeps</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Check if pkg-config is available</span>
+<span class="token punctuation">(</span>info <span class="token operator">&lt;-</span> pc_info<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>info<span class="token operator">$</span>available<span class="token punctuation">)</span>
+  pc_pkg_list<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="r_config">
+
+<a href="#r_config" class="help-page-title"><h2 id="r_config">R CMD Config</h2></a>
+
+<h3>Description</h3>
+
+<p>Cross-platform wrappers for <code style="white-space: pre;">⁠R CMD config⁠</code> to lookup the availability
+of the compiler.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">cc_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+cxx_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+cxx11_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+cxx14_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+cxx17_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+fc_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+r_cmd_config<span class="token punctuation">(</span>VAR <span class="token operator">=</span> <span class="token string">"--all"</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="r_config_:_VAR">VAR</code></td>
+<td>
+<p>value passed to <code style="white-space: pre;">⁠R CMD config⁠</code> such as <code>CXX</code> or <code>FC</code></p>
+</td>
+</tr></table>
+<h3>See Also</h3>
+
+<p>Other maketools: 
+<code><a href="#diagnostics">diagnostics</a></code>,
+<code><a href="#make">make</a>()</code>,
+<code><a href="#pkgconfig">pkgconfig</a></code>,
+<code><a href="#rtools">rtools</a></code>,
+<code><a href="#sysdeps">sysdeps</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># This runs 'R CMD CONFIG CXX'</span>
+r_cmd_config<span class="token punctuation">(</span><span class="token string">"CXX"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Show C++ config:</span>
+cxx_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="rtools">
+
+<a href="#rtools" class="help-page-title"><h2 id="rtools">Find or Install Rtools</h2></a>
+
+<h3>Description</h3>
+
+<p>Tools to test if a suitable version of Rtools is available, or help
+the user to set this up.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">rtools_find<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+rtools_registry_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+rtools_install<span class="token punctuation">(</span>silent <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="rtools_:_silent">silent</code></td>
+<td>
+<p>performs automatic unattended installation with all
+the default options. If set to <code>FALSE</code> the user has to click through
+the usual installation wizard.</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>Unlike most operating systems, Windows does not include a native compiler.
+Hence in order to build R packages with compiled C/C++/Fortran code on
+Windows, you need to install our custom toolchain bundle called Rtools.
+</p>
+<p>There are currently 2 versions of Rtools available:
+</p>
+
+<ul>
+<li> <p><a href="https://cran.r-project.org/bin/windows/Rtools/" target="_blank">rtools40</a>: required
+for compiling packages on R-4.0 and newer
+</p>
+</li>
+<li> <p><a href="https://cran.r-project.org/bin/windows/Rtools/history.html" target="_blank">rtools35</a>:
+required for compiling packages on R-3.6 and older
+</p>
+</li>
+</ul>
+<p>The function <a href="#rtools">rtools_find</a> shows information about a suitable version of
+Rtools installed on your system. If needed, it automatically adds <code>make</code>
+to the PATH of the current session. If <code>rtools_find()</code> returns a list
+(containing toolchain information), this means everything is ready to
+install packages from source using <a href="https://r-universe.dev/manuals/utils.html#install.packages">install.packages</a> and others. It
+returns <code>NULL</code> if no suitable version is found on the system.
+</p>
+<p>The <a href="#rtools">rtools_install</a> function automatically downloads and installs the
+appropriate version of Rtools for your current version of R.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other maketools: 
+<code><a href="#diagnostics">diagnostics</a></code>,
+<code><a href="#make">make</a>()</code>,
+<code><a href="#pkgconfig">pkgconfig</a></code>,
+<code><a href="#r_config">r_config</a></code>,
+<code><a href="#sysdeps">sysdeps</a></code>
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="sysdeps">
+
+<a href="#sysdeps" class="help-page-title"><h2 id="sysdeps">Package System Dependencies</h2></a>
+
+<h3>Description</h3>
+
+<p>Shows the external shared libraries that an installed R package is linked to
+by running <code>ldd</code> on the package <code>so</code> file. Then uses system package manager
+(e.g. <code>dpkg</code> or <code>rpm</code> or <code>brew</code>) to locate which system package that contains
+the binaries, headers, and (if available) sources for this library.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">package_sysdeps<span class="token punctuation">(</span>pkg<span class="token punctuation">,</span> lib.loc <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+package_sysdeps_string<span class="token punctuation">(</span>pkg<span class="token punctuation">,</span> lib.loc <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+package_links_to<span class="token punctuation">(</span>pkg<span class="token punctuation">,</span> lib.loc <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="sysdeps_:_pkg">pkg</code></td>
+<td>
+<p>name of an installed R package</p>
+</td>
+</tr>
+<tr>
+<td><code id="sysdeps_:_lib.loc">lib.loc</code></td>
+<td>
+<p>path to the R package directory for this package</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>For common distributions, the output also includes a URL to the distro-homepage
+of the system package. Here we can typically find more information about the
+package, such as configuration options, dependencies, and custom patches applied
+by your distribution.
+</p>
+<p>Because we use <code>ldd</code>, this only shows run-time dependencies of an installed R
+package. This is especially relevant if you distribute the compiled R package
+in binary form, because the same external libraries need to be available on
+the user/deployment machine. This tool does not show dependencies that are
+only needed at build-time, such as static or header-only libraries, and other
+utilities required to build the package.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other maketools: 
+<code><a href="#diagnostics">diagnostics</a></code>,
+<code><a href="#make">make</a>()</code>,
+<code><a href="#pkgconfig">pkgconfig</a></code>,
+<code><a href="#r_config">r_config</a></code>,
+<code><a href="#rtools">rtools</a></code>
+</p>
+
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

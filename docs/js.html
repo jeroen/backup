@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'js' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'js'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Tools for Working with JavaScript in R</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">A set of utilities for working with JavaScript syntax in R.
+    Includes tools to parse, tokenize, compile, validate, reformat, optimize 
+    and analyze JavaScript code.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.2</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-22 04:37:40 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/js</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#coffee_compile">Coffee Script</a></li>
+<li class="help-index-item"><a href="#esprima">JavaScrip Syntax Tree</a></li>
+<li class="help-index-item"><a href="#js_eval">Evaluate JavaScript</a></li>
+<li class="help-index-item"><a href="#js_typeof">Get the type of a JavaScript object</a></li>
+<li class="help-index-item"><a href="#js_validate_script">Validate JavaScript</a></li>
+<li class="help-index-item"><a href="#jshint">Static analysis tool for JavaScript</a></li>
+<li class="help-index-item"><a href="#uglify">Compress and Reformat JavaScript Code</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="coffee_compile">
+
+<a href="#coffee_compile" class="help-page-title"><h2 id="coffee_compile">Coffee Script</h2></a>
+
+<h3>Description</h3>
+
+<p>Compiles coffee script into JavaScript.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">coffee_compile<span class="token punctuation">(</span>code<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="coffee_compile_:_code">code</code></td>
+<td>
+<p>a string with JavaScript code</p>
+</td>
+</tr>
+<tr>
+<td><code id="coffee_compile_:_...">...</code></td>
+<td>
+<p>additional options passed to the compiler</p>
+</td>
+</tr>
+</table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Hello world</span>
+coffee_compile<span class="token punctuation">(</span><span class="token string">"square = (x) -&gt; x * x"</span><span class="token punctuation">)</span>
+coffee_compile<span class="token punctuation">(</span><span class="token string">"square = (x) -&gt; x * x"</span><span class="token punctuation">,</span> bare <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Simple script</span>
+demo <span class="token operator">&lt;-</span> readLines<span class="token punctuation">(</span>system.file<span class="token punctuation">(</span><span class="token string">"example/demo.coffee"</span><span class="token punctuation">,</span> package <span class="token operator">=</span> <span class="token string">"js"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+js <span class="token operator">&lt;-</span> coffee_compile<span class="token punctuation">(</span>demo<span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>js<span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>uglify_optimize<span class="token punctuation">(</span>js<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="esprima">
+
+<a href="#esprima" class="help-page-title"><h2 id="esprima">JavaScrip Syntax Tree</h2></a>
+
+<h3>Description</h3>
+
+<p><a href="https://www.npmjs.com/package/esprima" target="_blank">Esprima</a> is a high performance, standard-compliant
+ECMAScript parser. It has full support for ECMAScript 2017 and returns a sensible syntax tree
+format as standardized by ESTree project.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">esprima_tokenize<span class="token punctuation">(</span>text<span class="token punctuation">,</span> range <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> loc <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+esprima_parse<span class="token punctuation">(</span>text<span class="token punctuation">,</span> jsx <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> range <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> loc <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
+  tolerant <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> tokens <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="esprima_:_text">text</code></td>
+<td>
+<p>a character vector with JavaScript code</p>
+</td>
+</tr>
+<tr>
+<td><code id="esprima_:_range">range</code></td>
+<td>
+<p>Annotate each token with its zero-based start and end location</p>
+</td>
+</tr>
+<tr>
+<td><code id="esprima_:_loc">loc</code></td>
+<td>
+<p>Annotate each token with its column and row-based location</p>
+</td>
+</tr>
+<tr>
+<td><code id="esprima_:_comment">comment</code></td>
+<td>
+<p>Include every line and block comment in the output</p>
+</td>
+</tr>
+<tr>
+<td><code id="esprima_:_jsx">jsx</code></td>
+<td>
+<p>Support JSX syntax</p>
+</td>
+</tr>
+<tr>
+<td><code id="esprima_:_tolerant">tolerant</code></td>
+<td>
+<p>Tolerate a few cases of syntax errors</p>
+</td>
+</tr>
+<tr>
+<td><code id="esprima_:_tokens">tokens</code></td>
+<td>
+<p>Collect every token</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>The <code>esprima_tokenize</code> function returns a data frame with JavaScript tokens. The
+<code>esprima_parse</code> function returns the Syntax Tree in JSON format. This can be parsed to R
+using e.g. <code>jsonlite::fromJSON</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p>Esprima documentation: <a href="http://esprima.readthedocs.io/en/4.0/" target="_blank">http://esprima.readthedocs.io/en/4.0/</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">code <span class="token operator">&lt;-</span> <span class="token string">"function test(x, y){ x = x || 1; y = y || 1; return x*y;}"</span>
+esprima_tokenize<span class="token punctuation">(</span>code<span class="token punctuation">)</span>
+esprima_parse<span class="token punctuation">(</span>code<span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="js_eval">
+
+<a href="#js_eval" class="help-page-title"><h2 id="js_eval">Evaluate JavaScript</h2></a>
+
+<h3>Description</h3>
+
+<p>Evaluate a piece of JavaScript code in a disposable context.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">js_eval<span class="token punctuation">(</span>text<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="js_eval_:_text">text</code></td>
+<td>
+<p>JavaScript code</p>
+</td>
+</tr></table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Stateless evaluation</span>
+js_eval<span class="token punctuation">(</span><span class="token string">"(function() {return 'foo'})()"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Use V8 for stateful evaluation</span>
+ct <span class="token operator">&lt;-</span> V8<span class="token operator">::</span>new_context<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ct<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"var foo = 123"</span><span class="token punctuation">)</span>
+ct<span class="token operator">$</span>get<span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="js_typeof">
+
+<a href="#js_typeof" class="help-page-title"><h2 id="js_typeof">Get the type of a JavaScript object</h2></a>
+
+<h3>Description</h3>
+
+<p>JavaScript wrapper to <code>typeof</code> to test if a piece of JavaScript code is
+syntactically valid, and the type of object it evaluates to. Useful to
+verify that a piece of JavaScript code contains a proper function/object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">js_typeof<span class="token punctuation">(</span>text<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="js_typeof_:_text">text</code></td>
+<td>
+<p>JavaScript code</p>
+</td>
+</tr></table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">js_typeof<span class="token punctuation">(</span><span class="token string">"function(x){return x+1}"</span><span class="token punctuation">)</span>
+js_typeof<span class="token punctuation">(</span><span class="token string">"(function() {return 'foo'})()"</span><span class="token punctuation">)</span>
+js_typeof<span class="token punctuation">(</span><span class="token string">"{foo : 123, bar : true}"</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="js_validate_script">
+
+<a href="#js_validate_script" class="help-page-title"><h2 id="js_validate_script">Validate JavaScript</h2></a>
+
+<h3>Description</h3>
+
+<p>Simple wrapper for <code>ct$validate</code> in <code><a href="https://jeroen.r-universe.dev/V8/doc/manual.html#V8">V8</a></code>.
+Tests if code constitutes a syntactically valid JS script.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">js_validate_script<span class="token punctuation">(</span>text<span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="js_validate_script_:_text">text</code></td>
+<td>
+<p>character vector with JavaScript code</p>
+</td>
+</tr>
+<tr>
+<td><code id="js_validate_script_:_error">error</code></td>
+<td>
+<p>raise error on invalid code</p>
+</td>
+</tr>
+</table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">js_validate_script<span class="token punctuation">(</span><span class="token string">"function foo(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
+js_validate_script<span class="token punctuation">(</span><span class="token string">"foo = function(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
+
+<span class="token comment"># Anonymous functions in global scope are invalid</span>
+js_validate_script<span class="token punctuation">(</span><span class="token string">"function(x){2*x}"</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span> <span class="token comment">#FALSE</span>
+
+<span class="token comment"># Use ! or () to check anonymous function syntax</span>
+js_validate_script<span class="token punctuation">(</span><span class="token string">"!function(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
+js_validate_script<span class="token punctuation">(</span><span class="token string">"(function(x){2*x})"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="jshint">
+
+<a href="#jshint" class="help-page-title"><h2 id="jshint">Static analysis tool for JavaScript</h2></a>
+
+<h3>Description</h3>
+
+<p>JSHint is a community-driven tool to detect errors and potential problems in JavaScript code.
+It is very flexible so you can easily adjust it to your particular coding guidelines and
+the environment you expect your code to execute in.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">jshint<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">,</span> globals <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="jshint_:_text">text</code></td>
+<td>
+<p>a string of JavaScript code</p>
+</td>
+</tr>
+<tr>
+<td><code id="jshint_:_...">...</code></td>
+<td>
+<p>additional jshint <a href="http://jshint.com/docs/options/" target="_blank">configuration options</a></p>
+</td>
+</tr>
+<tr>
+<td><code id="jshint_:_globals">globals</code></td>
+<td>
+<p>a white list of global variables that are not formally defined in the source code</p>
+</td>
+</tr>
+</table>
+<h3>Value</h3>
+
+<p>a data frame where each row represents a jshint error or <code>NULL</code> if there were no errors
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">code <span class="token operator">=</span> <span class="token string">"var foo = 123"</span>
+jshint<span class="token punctuation">(</span>code<span class="token punctuation">)</span>
+jshint<span class="token punctuation">(</span>code<span class="token punctuation">,</span> asi <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="uglify">
+
+<a href="#uglify" class="help-page-title"><h2 id="uglify">Compress and Reformat JavaScript Code</h2></a>
+
+<h3>Description</h3>
+
+<p><a href="https://www.npmjs.com/package/uglify-js" target="_blank">UglifyJS</a> is a JavaScript
+compressor/minifier written in JavaScript. It also contains tools that allow one
+to automate working with JavaScript code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">uglify_reformat<span class="token punctuation">(</span>text<span class="token punctuation">,</span> beautify <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+uglify_optimize<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+
+uglify_files<span class="token punctuation">(</span>files<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="uglify_:_text">text</code></td>
+<td>
+<p>a character vector with JavaScript code</p>
+</td>
+</tr>
+<tr>
+<td><code id="uglify_:_beautify">beautify</code></td>
+<td>
+<p>prettify (instead of minify) code</p>
+</td>
+</tr>
+<tr>
+<td><code id="uglify_:_files">files</code></td>
+<td>
+<p>a character vector of filenames</p>
+</td>
+</tr>
+<tr>
+<td><code id="uglify_:_...">...</code></td>
+<td>
+<p>additional arguments for the <a href="http://lisperator.net/uglifyjs/compress" target="_blank">optimizer</a>
+or <a href="http://lisperator.net/uglifyjs/codegen" target="_blank">generator</a>.</p>
+</td>
+</tr>
+</table>
+<h3>References</h3>
+
+<p>UglifyJS2 Documentation: <a href="http://lisperator.net/uglifyjs/" target="_blank">http://lisperator.net/uglifyjs/</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">code <span class="token operator">&lt;-</span> <span class="token string">"function test(x, y){ x = x || 1; y = y || 1; return x*y;}"</span>
+cat<span class="token punctuation">(</span>uglify_optimize<span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">)</span>
+cat<span class="token punctuation">(</span>uglify_reformat<span class="token punctuation">(</span>code<span class="token punctuation">,</span> beautify <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> indent_level <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'gpg' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'gpg'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">GNU Privacy Guard for R</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Bindings to GnuPG for working with OpenGPG (RFC4880) cryptographic 
+    methods. Includes utilities for public key encryption, creating and verifying
+    digital signatures, and managing your local keyring. Some functionality 
+    depends on the version of GnuPG that is installed on the system. On Windows
+    this package can be used together with 'GPG4Win' which provides a GUI for 
+    managing keys and entering passphrases.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.2.9</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-16 10:21:18 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/gpg</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#gpg_encrypt">Encryption</a></li>
+<li class="help-index-item"><a href="#gpg_keygen">GPG key generation</a></li>
+<li class="help-index-item"><a href="#gpg_keys">GPG keyring management</a></li>
+<li class="help-index-item"><a href="#gpg_info">Manage the GPG engine</a></li>
+<li class="help-index-item"><a href="#gpg_sign">PGP Signatures</a></li>
+<li class="help-index-item"><a href="#pinentry">Password Entry</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="gpg_encrypt">
+
+<a href="#gpg_encrypt" class="help-page-title"><h2 id="gpg_encrypt">Encryption</h2></a>
+
+<h3>Description</h3>
+
+<p>Encrypt or decrypt a message using the public key from the <code>receiver</code>.
+Optionally the message can be signed using the private key of the sender.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">gpg_encrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> receiver<span class="token punctuation">,</span> signer <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+gpg_decrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> verify <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> as_text <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="gpg_encrypt_:_data">data</code></td>
+<td>
+<p>path or raw vector with data to encrypt / decrypt</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_encrypt_:_receiver">receiver</code></td>
+<td>
+<p>key id(s) or fingerprint(s) for recepient(s)</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_encrypt_:_signer">signer</code></td>
+<td>
+<p>(optional) key id(s) or fingerprint(s) for the sender(s) to sign
+the message</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_encrypt_:_verify">verify</code></td>
+<td>
+<p>automatically checks that all signatures (if any) can be verified and
+raises an error otherwise</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_encrypt_:_as_text">as_text</code></td>
+<td>
+<p>convert output to text. Set to FALSE if you expect binary data.</p>
+</td>
+</tr>
+</table>
+<h3>See Also</h3>
+
+<p>Other gpg: 
+<code><a href="#gpg_keygen">gpg_keygen</a>()</code>,
+<code><a href="#gpg_keys">gpg_keys</a></code>,
+<code><a href="#gpg_sign">gpg_sign</a>()</code>
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="gpg_keygen">
+
+<a href="#gpg_keygen" class="help-page-title"><h2 id="gpg_keygen">GPG key generation</h2></a>
+
+<h3>Description</h3>
+
+<p>Generates a new standard private-public keypair. This function is mostly
+for testing purposes. Use the <code>gpg --gen-key</code> command line utility to generate an
+official GPG key with custom fields and options.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">gpg_keygen<span class="token punctuation">(</span>name<span class="token punctuation">,</span> email<span class="token punctuation">,</span> passphrase <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="gpg_keygen_:_name">name</code></td>
+<td>
+<p>value for the <code>Name-Real</code> field</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_keygen_:_email">email</code></td>
+<td>
+<p>value for the <code>Name-Email</code> field</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_keygen_:_passphrase">passphrase</code></td>
+<td>
+<p>(optional) protect with a passphrase</p>
+</td>
+</tr>
+</table>
+<h3>References</h3>
+
+<p>GPG manual section on
+<a href="https://www.gnupg.org/documentation/manuals/gnupg/Unattended-GPG-key-generation.html" target="_blank">Unattended key generation</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other gpg: 
+<code><a href="#gpg_encrypt">gpg_encrypt</a>()</code>,
+<code><a href="#gpg_keys">gpg_keys</a></code>,
+<code><a href="#gpg_sign">gpg_sign</a>()</code>
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="gpg_keys">
+
+<a href="#gpg_keys" class="help-page-title"><h2 id="gpg_keys">GPG keyring management</h2></a>
+
+<h3>Description</h3>
+
+<p>Signing or encrypting with GPG require that the keys are stored in your
+personal keyring. Use <a href="#gpg_info">gpg_version</a> to see which keyring (home dir)
+you are using. Also see <a href="#gpg_keygen">gpg_keygen</a> for generating a new key.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">gpg_import<span class="token punctuation">(</span>file<span class="token punctuation">)</span>
+
+gpg_recv<span class="token punctuation">(</span>id<span class="token punctuation">,</span> search <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> keyserver <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+gpg_send<span class="token punctuation">(</span>id<span class="token punctuation">,</span> keyserver <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+gpg_delete<span class="token punctuation">(</span>id<span class="token punctuation">,</span> secret <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+gpg_export<span class="token punctuation">(</span>id<span class="token punctuation">,</span> secret <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+gpg_list_keys<span class="token punctuation">(</span>search <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">,</span> secret <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+gpg_list_signatures<span class="token punctuation">(</span>id<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="gpg_keys_:_file">file</code></td>
+<td>
+<p>path to the key file or raw vector with key data</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_keys_:_id">id</code></td>
+<td>
+<p>unique ID of the pubkey to import (starts with <code style="white-space: pre;">⁠0x⁠</code>). Alternatively you
+can specify a <code>search</code> string.</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_keys_:_search">search</code></td>
+<td>
+<p>string with name or email address to match the key info.</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_keys_:_keyserver">keyserver</code></td>
+<td>
+<p>address of http keyserver. Default behavior is to try several
+commonly used servers (MIT, Ubuntu, GnuPG, Surfnet)</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_keys_:_secret">secret</code></td>
+<td>
+<p>set to <code>TRUE</code> to list/export/delete private (secret) keys</p>
+</td>
+</tr>
+</table>
+<h3>See Also</h3>
+
+<p>Other gpg: 
+<code><a href="#gpg_encrypt">gpg_encrypt</a>()</code>,
+<code><a href="#gpg_keygen">gpg_keygen</a>()</code>,
+<code><a href="#gpg_sign">gpg_sign</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<span class="token comment"># Submit key to a specific key server.</span>
+gpg_send<span class="token punctuation">(</span><span class="token string">"87CC261267801A17"</span><span class="token punctuation">,</span> <span class="token string">"https://keys.openpgp.org"</span><span class="token punctuation">)</span>
+<span class="token comment"># Submit key to many key servers.</span>
+gpg_send<span class="token punctuation">(</span><span class="token string">"87CC261267801A17"</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="gpg_info">
+
+<a href="#gpg_info" class="help-page-title"><h2 id="gpg_restart">Manage the GPG engine</h2></a>
+
+<h3>Description</h3>
+
+<p>Use <code>gpg_restart()</code> to find the <code>gpg</code> program and home directory (which contains
+configuration and keychains). Usually the default should be fine and you
+do not need to run this function manually.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">gpg_restart<span class="token punctuation">(</span>home <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> debug <span class="token operator">=</span> <span class="token string">"none"</span><span class="token punctuation">,</span> silent <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+gpg_version<span class="token punctuation">(</span>silent <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+gpg_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+gpg_options<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="gpg_restart_:_home">home</code></td>
+<td>
+<p>path to your GPG configuration directory (including keyrings)</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_restart_:_path">path</code></td>
+<td>
+<p>location of <code>gpg</code> or <code>gpg2</code> or <code>gpgconf</code> or (on windows) <code>gpgme-w32spawn.exe</code></p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_restart_:_debug">debug</code></td>
+<td>
+<p>debugging level, integer between 1 and 9</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_restart_:_silent">silent</code></td>
+<td>
+<p>suppress output of <code>gpg --version</code></p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Use <code>gpg_info()</code> to get your current engine settings. The <code>gpg_version()</code> function
+simply calls <code>gpg --version</code> to see some verbose output about the <code>gpg</code> executable.
+</p>
+<p><code>gpg_options</code> reads options in the GnuPG configuration file, which is stored by
+default in <code>~/.gnupg/gpg.conf</code>. Note that changing options might affect
+other software using GnuPG.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">gpg_version<span class="token punctuation">(</span><span class="token punctuation">)</span>
+gpg_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="gpg_sign">
+
+<a href="#gpg_sign" class="help-page-title"><h2 id="gpg_sign">PGP Signatures</h2></a>
+
+<h3>Description</h3>
+
+<p>Utilities to create and verify PGP signatures.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">gpg_verify<span class="token punctuation">(</span>signature<span class="token punctuation">,</span> data <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+
+gpg_sign<span class="token punctuation">(</span>data<span class="token punctuation">,</span> signer <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> mode <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"detach"</span><span class="token punctuation">,</span> <span class="token string">"normal"</span><span class="token punctuation">,</span> <span class="token string">"clear"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="gpg_sign_:_signature">signature</code></td>
+<td>
+<p>path or raw vector for the gpg signature (contains the <code>PGP SIGNATURE</code> block)</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_sign_:_data">data</code></td>
+<td>
+<p>path or raw vector with data to sign or verify. In <code>gpg_verify</code> this
+should be <code>NULL</code> if <code>signature</code> is not detached (i.e. <code>clear</code> or <code>normal</code> signature)</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_sign_:_error">error</code></td>
+<td>
+<p>raise an error if verification fails because you do not have the
+signer public key in your keyring.</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_sign_:_signer">signer</code></td>
+<td>
+<p>(optional) vector with key ID's to use for signing. If <code>NULL</code>, GPG tries
+the user default private key.</p>
+</td>
+</tr>
+<tr>
+<td><code id="gpg_sign_:_mode">mode</code></td>
+<td>
+<p>use <code>normal</code> to create a full OpenPGP message containing both data and
+signature or <code>clear</code> append the signature to the clear-text data (for email messages).
+Default <code>detach</code> only returns the signature itself.</p>
+</td>
+</tr>
+</table>
+<h3>See Also</h3>
+
+<p>Other gpg: 
+<code><a href="#gpg_encrypt">gpg_encrypt</a>()</code>,
+<code><a href="#gpg_keygen">gpg_keygen</a>()</code>,
+<code><a href="#gpg_keys">gpg_keys</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<span class="token comment"># This requires you have the Debian master key in your keyring</span>
+msg <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
+sig <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
+download.file<span class="token punctuation">(</span><span class="token string">"http://http.us.debian.org/debian/dists/stable/Release"</span><span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+download.file<span class="token punctuation">(</span><span class="token string">"http://http.us.debian.org/debian/dists/stable/Release.gpg"</span><span class="token punctuation">,</span> sig<span class="token punctuation">)</span>
+gpg_verify<span class="token punctuation">(</span>sig<span class="token punctuation">,</span> msg<span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="pinentry">
+
+<a href="#pinentry" class="help-page-title"><h2 id="pinentry">Password Entry</h2></a>
+
+<h3>Description</h3>
+
+<p>Function to prompt the user for a password to read a protected private key.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">pinentry<span class="token punctuation">(</span>prompt <span class="token operator">=</span> <span class="token string">"Enter your GPG passphrase:"</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="pinentry_:_prompt">prompt</code></td>
+<td>
+<p>the string printed when prompting the user for input.</p>
+</td>
+</tr></table>
+<h3>Details</h3>
+
+<p>If available, this function calls the GnuPG <code>pinentry</code> program. However this
+only works in a terminal. Therefore the IDE can provide a custom password entry
+widget by setting the <code>askpass</code> option. If no such option is specified
+we default to <code><a href="https://r-universe.dev/manuals/base.html#readline">readline</a></code>.
+</p>
+
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>

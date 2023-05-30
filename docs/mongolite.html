@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'mongolite' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math and syntax -->
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+
+  </head>
+
+  <body class="macintosh">
+    <h1 class="manual-title">Package 'mongolite'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Fast and Simple 'MongoDB' Client for R</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">High-performance MongoDB client based on 'mongo-c-driver' and 'jsonlite'.
+    Includes support for aggregation, indexing, map-reduce, streaming, encryption,
+    enterprise authentication, and GridFS. The online user manual provides an overview 
+    of the available methods in the package: &lt;https://jeroen.github.io/mongolite/&gt;.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a>,
+  MongoDB, Inc [cph] (Bundled mongo-c-driver, see AUTHORS file)</span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">Apache License 2.0</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">2.7.2</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2023-05-29 06:55:15 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/mongolite</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list">
+<li class="help-index-item"><a href="#gridfs">GridFS API</a></li>
+<li class="help-index-item"><a href="#mongo">MongoDB client</a></li>
+<li class="help-index-item"><a href="#mongo_options">Mongo Options</a></li>
+<li class="help-index-item"><a href="#oid_to_timestamp">Get OID date</a></li>
+<li class="help-index-item"><a href="#ssl_options">Connection SSL options</a></li>
+</ul>
+
+    <hr>
+    <div class="manual-pages-content">
+<div class="container manual-page" id="gridfs">
+
+<a href="#gridfs" class="help-page-title"><h2 id="gridfs">GridFS API</h2></a>
+
+<h3>Description</h3>
+
+<p>Connect to a GridFS database to search, read, write and delete files.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">gridfs<span class="token punctuation">(</span>
+  db <span class="token operator">=</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
+  url <span class="token operator">=</span> <span class="token string">"mongodb://localhost"</span><span class="token punctuation">,</span>
+  prefix <span class="token operator">=</span> <span class="token string">"fs"</span><span class="token punctuation">,</span>
+  options <span class="token operator">=</span> ssl_options<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="gridfs_:_db">db</code></td>
+<td>
+<p>name of database</p>
+</td>
+</tr>
+<tr>
+<td><code id="gridfs_:_url">url</code></td>
+<td>
+<p>address of the mongodb server in mongo connection string
+<a href="https://docs.mongodb.com/manual/reference/connection-string" target="_blank">URI format</a></p>
+</td>
+</tr>
+<tr>
+<td><code id="gridfs_:_prefix">prefix</code></td>
+<td>
+<p>string to prefix the collection name</p>
+</td>
+</tr>
+<tr>
+<td><code id="gridfs_:_options">options</code></td>
+<td>
+<p>additional connection options such as SSL keys/certs.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>We support two interfaces for sending/receiving data from/to GridFS. The
+<code>fs$read()</code> and <code>fs$write()</code> methods are the most flexible and can send data
+from/to an R connection, such as a <a href="https://r-universe.dev/manuals/base.html#connections">file</a>, <a href="https://r-universe.dev/manuals/base.html#connections">socket</a>
+or <a href="https://r-universe.dev/manuals/base.html#connections">url</a>. These methods support a progress counter and can be interrupted
+if needed. These methods are recommended for reading or writing single files.
+</p>
+<p>The <code>fs$upload()</code> and <code>fs$download()</code> methods on the other hand copy directly
+between GridFS and your local disk. This API is vectorized so it can transfer
+many files at once. However individual transfers cannot be interrupted and will
+block R until completed. This API is only recommended to upload/download a large
+number of small files.
+</p>
+<p>Modifying files in GridFS is currently unsupported: uploading a file with the
+same name will generate a new file.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt><code>find(filter = "{}", options = "{}")</code></dt>
+<dd>
+<p>Search and list files in the GridFS</p>
+</dd>
+<dt><code>download(name, path = '.')</code></dt>
+<dd>
+<p>Download one or more files from GridFS to disk. Path may be an existing directory or vector of filenames equal to 'name'.</p>
+</dd>
+<dt><code>upload(path, name = basename(path), content_type = NULL, metadata = NULL)</code></dt>
+<dd>
+<p>Upload one or more files from disk to GridFS. Metadata is an optional JSON string.</p>
+</dd>
+<dt><code>read(name, con = NULL, progress = TRUE)</code></dt>
+<dd>
+<p>Reads a single file from GridFS into a writable R <a href="https://r-universe.dev/manuals/base.html#connections">connection</a>.
+If <code>con</code> is a string it is treated as a filepath; if it is <code>NULL</code> then the output is buffered in memory and returned as a <a href="https://r-universe.dev/manuals/base.html#raw">raw</a> vector.</p>
+</dd>
+<dt><code>write(con, name, content_type = NULL, metadata = NULL, progress = TRUE)</code></dt>
+<dd>
+<p>Stream write a single file into GridFS from a readable R <a href="https://r-universe.dev/manuals/base.html#connections">connection</a>.
+If <code>con</code> is a string it is treated as a filepath; it may also be a <a href="https://r-universe.dev/manuals/base.html#raw">raw</a> vector containing the data to upload. Metadata is an optional JSON string.</p>
+</dd>
+<dt><code>remove(name)</code></dt>
+<dd>
+<p>Remove a single file from the GridFS</p>
+</dd>
+<dt><code>drop()</code></dt>
+<dd>
+<p>Removes the entire GridFS collection, including all files</p>
+</dd>
+</dl>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Upload a file to GridFS</span>
+fs <span class="token operator">&lt;-</span> gridfs<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"mongodb+srv://readwrite:test@cluster0-84vdt.mongodb.net/test"</span><span class="token punctuation">)</span>
+input <span class="token operator">&lt;-</span> file.path<span class="token punctuation">(</span>R.home<span class="token punctuation">(</span><span class="token string">'doc'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"html/logo.jpg"</span><span class="token punctuation">)</span>
+fs<span class="token operator">$</span>upload<span class="token punctuation">(</span>input<span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token string">'logo.jpg'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Download the file back to disk</span>
+output <span class="token operator">&lt;-</span> file.path<span class="token punctuation">(</span>tempdir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'logo1.jpg'</span><span class="token punctuation">)</span>
+fs<span class="token operator">$</span>download<span class="token punctuation">(</span><span class="token string">'logo.jpg'</span><span class="token punctuation">,</span> output<span class="token punctuation">)</span>
+
+<span class="token comment"># Or you can also stream it</span>
+con <span class="token operator">&lt;-</span> file<span class="token punctuation">(</span>file.path<span class="token punctuation">(</span>tempdir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'logo2.jpg'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+fs<span class="token operator">$</span>read<span class="token punctuation">(</span><span class="token string">'logo.jpg'</span><span class="token punctuation">,</span> con<span class="token punctuation">)</span>
+
+<span class="token comment"># Delete the file on the server</span>
+fs<span class="token operator">$</span>remove<span class="token punctuation">(</span><span class="token string">'logo.jpg'</span><span class="token punctuation">)</span>
+
+files <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span>input<span class="token punctuation">,</span> file.path<span class="token punctuation">(</span>tempdir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> c<span class="token punctuation">(</span><span class="token string">'logo1.jpg'</span><span class="token punctuation">,</span> <span class="token string">'logo2.jpg'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+hashes <span class="token operator">&lt;-</span> tools<span class="token operator">::</span>md5sum<span class="token punctuation">(</span>files<span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>length<span class="token punctuation">(</span>unique<span class="token punctuation">(</span>hashes<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment">## Not run: </span>
+<span class="token comment"># Insert Binary Data</span>
+fs <span class="token operator">&lt;-</span> gridfs<span class="token punctuation">(</span><span class="token punctuation">)</span>
+buf <span class="token operator">&lt;-</span> serialize<span class="token punctuation">(</span>nycflights13<span class="token operator">::</span>flights<span class="token punctuation">,</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+fs<span class="token operator">$</span>write<span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token string">'flights'</span><span class="token punctuation">)</span>
+out <span class="token operator">&lt;-</span> fs<span class="token operator">$</span>read<span class="token punctuation">(</span><span class="token string">'flights'</span><span class="token punctuation">)</span>
+flights <span class="token operator">&lt;-</span> unserialize<span class="token punctuation">(</span>out<span class="token operator">$</span>data<span class="token punctuation">)</span>
+
+tmp <span class="token operator">&lt;-</span> file.path<span class="token punctuation">(</span>tempdir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'flights.rds'</span><span class="token punctuation">)</span>
+fs<span class="token operator">$</span>download<span class="token punctuation">(</span><span class="token string">'flights'</span><span class="token punctuation">,</span> tmp<span class="token punctuation">)</span>
+flights2 <span class="token operator">&lt;-</span> readRDS<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>all.equal<span class="token punctuation">(</span>flights<span class="token punctuation">,</span> nycflights13<span class="token operator">::</span>flights<span class="token punctuation">)</span><span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>all.equal<span class="token punctuation">(</span>flights2<span class="token punctuation">,</span> nycflights13<span class="token operator">::</span>flights<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Show what we have</span>
+fs<span class="token operator">$</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span>
+fs<span class="token operator">$</span>drop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="mongo">
+
+<a href="#mongo" class="help-page-title"><h2 id="mongo">MongoDB client</h2></a>
+
+<h3>Description</h3>
+
+<p>Connect to a MongoDB collection. Returns a <a href="#mongo">mongo</a> connection object with
+methods listed below. Connections automatically get pooled between collection
+and gridfs objects to the same database.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">mongo<span class="token punctuation">(</span>
+  collection <span class="token operator">=</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
+  db <span class="token operator">=</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
+  url <span class="token operator">=</span> <span class="token string">"mongodb://localhost"</span><span class="token punctuation">,</span>
+  verbose <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
+  options <span class="token operator">=</span> ssl_options<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="mongo_:_collection">collection</code></td>
+<td>
+<p>name of collection</p>
+</td>
+</tr>
+<tr>
+<td><code id="mongo_:_db">db</code></td>
+<td>
+<p>name of database</p>
+</td>
+</tr>
+<tr>
+<td><code id="mongo_:_url">url</code></td>
+<td>
+<p>address of the mongodb server in mongo connection string
+<a href="https://docs.mongodb.com/manual/reference/connection-string" target="_blank">URI format</a></p>
+</td>
+</tr>
+<tr>
+<td><code id="mongo_:_verbose">verbose</code></td>
+<td>
+<p>emit some more output</p>
+</td>
+</tr>
+<tr>
+<td><code id="mongo_:_options">options</code></td>
+<td>
+<p>additional connection options such as SSL keys/certs.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>This manual page is deliberately minimal, see the
+<a href="https://jeroen.github.io/mongolite/" target="_blank">mongolite user manual</a> for more details
+and worked examples.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Upon success returns a pointer to a collection on the server.
+The collection can be interfaced using the methods described below.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt><code>aggregate(pipeline = '{}', handler = NULL, pagesize = 1000, iterate = FALSE)</code></dt>
+<dd>
+<p>Execute a pipeline using the Mongo aggregation framework. Set <code>iterate = TRUE</code> to return an iterator instead of data frame.</p>
+</dd>
+<dt><code>count(query = '{}')</code></dt>
+<dd>
+<p>Count the number of records matching a given <code>query</code>. Default counts all records in collection.</p>
+</dd>
+<dt><code>disconnect(gc = TRUE)</code></dt>
+<dd>
+<p>Disconnect collection. The <em>connection</em> gets disconnected once the client is not used by collections in the pool.</p>
+</dd>
+<dt><code>distinct(key, query = '{}')</code></dt>
+<dd>
+<p>List unique values of a field given a particular query.</p>
+</dd>
+<dt><code>drop()</code></dt>
+<dd>
+<p>Delete entire collection with all data and metadata.</p>
+</dd>
+<dt><code>export(con = stdout(), bson = FALSE, query = '{}', fields = '{}', sort = '{"_id":1}')</code></dt>
+<dd>
+<p>Streams all data from collection to a <code><a href="https://r-universe.dev/manuals/base.html#connections">connection</a></code> in <a href="http://ndjson.org" target="_blank">jsonlines</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongoexport/" target="_blank">mongoexport</a>). Alternatively when <code>bson = TRUE</code> it outputs the binary <a href="https://bsonspec.org/faq.html" target="_blank">bson</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongodump/" target="_blank">mongodump</a>).</p>
+</dd>
+<dt><code>find(query = '{}', fields = '{"_id" : 0}', sort = '{}', skip = 0, limit = 0, handler = NULL, pagesize = 1000)</code></dt>
+<dd>
+<p>Retrieve <code>fields</code> from records matching <code>query</code>. Default <code>handler</code> will return all data as a single dataframe.</p>
+</dd>
+<dt><code>import(con, bson = FALSE)</code></dt>
+<dd>
+<p>Stream import data in <a href="http://ndjson.org" target="_blank">jsonlines</a> format from a <code><a href="https://r-universe.dev/manuals/base.html#connections">connection</a></code>, similar to the <a href="https://docs.mongodb.com/database-tools/mongoimport/" target="_blank">mongoimport</a> utility. Alternatively when <code>bson = TRUE</code> it assumes the binary <a href="https://bsonspec.org/faq.html" target="_blank">bson</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongorestore/" target="_blank">mongorestore</a>).</p>
+</dd>
+<dt><code>index(add = NULL, remove = NULL)</code></dt>
+<dd>
+<p>List, add, or remove indexes from the collection. The <code>add</code> and <code>remove</code> arguments can either be a field name or json object. Returns a dataframe with current indexes.</p>
+</dd>
+<dt><code>info()</code></dt>
+<dd>
+<p>Returns collection statistics and server info (if available).</p>
+</dd>
+<dt><code>insert(data, pagesize = 1000, stop_on_error = TRUE, ...)</code></dt>
+<dd>
+<p>Insert rows into the collection. Argument 'data' must be a data-frame, named list (for single record) or character vector with json strings (one string for each row). For lists and data frames, arguments in <code>...</code> get passed to <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#toJSON">jsonlite::toJSON</a></code></p>
+</dd>
+<dt><code>iterate(query = '{}', fields = '{"_id":0}', sort = '{}', skip = 0, limit = 0)</code></dt>
+<dd>
+<p>Runs query and returns iterator to read single records one-by-one.</p>
+</dd>
+<dt><code>mapreduce(map, reduce, query = '{}', sort = '{}', limit = 0, out = NULL, scope = NULL)</code></dt>
+<dd>
+<p>Performs a map reduce query. The <code>map</code> and <code>reduce</code> arguments are strings containing a JavaScript function. Set <code>out</code> to a string to store results in a collection instead of returning.</p>
+</dd>
+<dt><code>remove(query = "{}", just_one = FALSE)</code></dt>
+<dd>
+<p>Remove record(s) matching <code>query</code> from the collection.</p>
+</dd>
+<dt><code>rename(name, db = NULL)</code></dt>
+<dd>
+<p>Change the name or database of a collection. Changing name is cheap, changing database is expensive.</p>
+</dd>
+<dt><code>replace(query, update = '{}', upsert = FALSE)</code></dt>
+<dd>
+<p>Replace matching record(s) with value of the <code>update</code> argument.</p>
+</dd>
+<dt><code>run(command = '{"ping": 1}', simplify = TRUE)</code></dt>
+<dd>
+<p>Run a raw mongodb command on the database. If the command returns data, output is simplified by default, but this can be disabled.</p>
+</dd>
+<dt><code>update(query, update = '{"$set":{}}', upsert = FALSE, multiple = FALSE)</code></dt>
+<dd>
+<p>Modify fields of matching record(s) with value of the <code>update</code> argument.</p>
+</dd>
+</dl>
+<h3>References</h3>
+
+<p><a href="https://jeroen.github.io/mongolite/" target="_blank">Mongolite User Manual</a>
+</p>
+<p>Jeroen Ooms (2014). The <code>jsonlite</code> Package: A Practical and Consistent Mapping Between JSON Data and <span class="rlang"><b>R</b></span> Objects. <em>arXiv:1403.2805</em>. <a href="https://arxiv.org/abs/1403.2805" target="_blank">https://arxiv.org/abs/1403.2805</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r"><span class="token comment"># Connect to demo server</span>
+con <span class="token operator">&lt;-</span> mongo<span class="token punctuation">(</span><span class="token string">"mtcars"</span><span class="token punctuation">,</span> url <span class="token operator">=</span>
+  <span class="token string">"mongodb+srv://readwrite:test@cluster0-84vdt.mongodb.net/test"</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>con<span class="token operator">$</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> con<span class="token operator">$</span>drop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+con<span class="token operator">$</span>insert<span class="token punctuation">(</span>mtcars<span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>con<span class="token operator">$</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> nrow<span class="token punctuation">(</span>mtcars<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Query data</span>
+mydata <span class="token operator">&lt;-</span> con<span class="token operator">$</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>all.equal<span class="token punctuation">(</span>mydata<span class="token punctuation">,</span> mtcars<span class="token punctuation">)</span><span class="token punctuation">)</span>
+con<span class="token operator">$</span>drop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Automatically disconnect when connection is removed</span>
+rm<span class="token punctuation">(</span>con<span class="token punctuation">)</span>
+gc<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">## Not run: </span>
+<span class="token comment"># dplyr example</span>
+library<span class="token punctuation">(</span>nycflights13<span class="token punctuation">)</span>
+
+<span class="token comment"># Insert some data</span>
+m <span class="token operator">&lt;-</span> mongo<span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">"nycflights"</span><span class="token punctuation">)</span>
+m<span class="token operator">$</span>drop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+m<span class="token operator">$</span>insert<span class="token punctuation">(</span>flights<span class="token punctuation">)</span>
+
+<span class="token comment"># Basic queries</span>
+m<span class="token operator">$</span>count<span class="token punctuation">(</span><span class="token string">'{"month":1, "day":1}'</span><span class="token punctuation">)</span>
+jan1 <span class="token operator">&lt;-</span> m<span class="token operator">$</span>find<span class="token punctuation">(</span><span class="token string">'{"month":1, "day":1}'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Sorting</span>
+jan1 <span class="token operator">&lt;-</span> m<span class="token operator">$</span>find<span class="token punctuation">(</span><span class="token string">'{"month":1,"day":1}'</span><span class="token punctuation">,</span> sort<span class="token operator">=</span><span class="token string">'{"distance":-1}'</span><span class="token punctuation">)</span>
+head<span class="token punctuation">(</span>jan1<span class="token punctuation">)</span>
+
+<span class="token comment"># Sorting on large data requires index</span>
+m<span class="token operator">$</span>index<span class="token punctuation">(</span>add <span class="token operator">=</span> <span class="token string">"distance"</span><span class="token punctuation">)</span>
+allflights <span class="token operator">&lt;-</span> m<span class="token operator">$</span>find<span class="token punctuation">(</span>sort<span class="token operator">=</span><span class="token string">'{"distance":-1}'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Select columns</span>
+jan1 <span class="token operator">&lt;-</span> m<span class="token operator">$</span>find<span class="token punctuation">(</span><span class="token string">'{"month":1,"day":1}'</span><span class="token punctuation">,</span> fields <span class="token operator">=</span> <span class="token string">'{"_id":0, "distance":1, "carrier":1}'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># List unique values</span>
+m<span class="token operator">$</span>distinct<span class="token punctuation">(</span><span class="token string">"carrier"</span><span class="token punctuation">)</span>
+m<span class="token operator">$</span>distinct<span class="token punctuation">(</span><span class="token string">"carrier"</span><span class="token punctuation">,</span> <span class="token string">'{"distance":{"$gt":3000}}'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Tabulate</span>
+m<span class="token operator">$</span>aggregate<span class="token punctuation">(</span><span class="token string">'[{"$group":{"_id":"$carrier", "count": {"$sum":1}, "average":{"$avg":"$distance"}}}]'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Map-reduce (binning)</span>
+hist <span class="token operator">&lt;-</span> m<span class="token operator">$</span>mapreduce<span class="token punctuation">(</span>
+  map <span class="token operator">=</span> <span class="token string">"function(){emit(Math.floor(this.distance/100)*100, 1)}"</span><span class="token punctuation">,</span>
+  reduce <span class="token operator">=</span> <span class="token string">"function(id, counts){return Array.sum(counts)}"</span>
+<span class="token punctuation">)</span>
+
+<span class="token comment"># Stream jsonlines into a connection</span>
+tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
+m<span class="token operator">$</span>export<span class="token punctuation">(</span>file<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Remove the collection</span>
+m<span class="token operator">$</span>drop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Import from jsonlines stream from connection</span>
+dmd <span class="token operator">&lt;-</span> mongo<span class="token punctuation">(</span><span class="token string">"diamonds"</span><span class="token punctuation">)</span>
+dmd<span class="token operator">$</span>import<span class="token punctuation">(</span>url<span class="token punctuation">(</span><span class="token string">"http://jeroen.github.io/data/diamonds.json"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+dmd<span class="token operator">$</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Export</span>
+dmd<span class="token operator">$</span>drop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">## End(Not run)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="mongo_options">
+
+<a href="#mongo_options" class="help-page-title"><h2 id="mongo_options">Mongo Options</h2></a>
+
+<h3>Description</h3>
+
+<p>Get and set global client options. Calling with <code>NULL</code> parameters returns current
+values without modifying.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">mongo_options<span class="token punctuation">(</span>log_level <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> bigint_as_char <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> date_as_char <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="mongo_options_:_log_level">log_level</code></td>
+<td>
+<p>integer between 0 and 6 or <code>NULL</code> to leave unchanged.</p>
+</td>
+</tr>
+<tr>
+<td><code id="mongo_options_:_bigint_as_char">bigint_as_char</code></td>
+<td>
+<p>logical: parse int64 as strings instead of double.</p>
+</td>
+</tr>
+<tr>
+<td><code id="mongo_options_:_date_as_char">date_as_char</code></td>
+<td>
+<p>logical: parse UTC datetime as strings instead of POSIXct.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>Setting <a href="http://mongoc.org/libmongoc/current/logging.html" target="_blank">log_level</a> to 0 suppresses
+critical warnings and messages, while 6 is  most verbose and displays all debugging
+information. Possible values for level are:
+</p>
+
+<ul>
+<li> <p><code>0</code>: <em>error</em>
+</p>
+</li>
+<li> <p><code>1</code>: <em>critical</em>
+</p>
+</li>
+<li> <p><code>2</code>: <em>warning</em>
+</p>
+</li>
+<li> <p><code>3</code>: <em>message</em>
+</p>
+</li>
+<li> <p><code>4</code>: <em>info</em> (<strong>default</strong>)
+</p>
+</li>
+<li> <p><code>5</code>: <em>debug</em>
+</p>
+</li>
+<li> <p><code>6</code>: <em>trace</em>
+</p>
+</li>
+</ul>
+<p>Note that setting it below 2 will suppress important warnings and setting
+below 1 will suppress critical errors (not recommended). The default is 4.
+</p>
+
+<hr>
+</div>
+<div class="container manual-page" id="oid_to_timestamp">
+
+<a href="#oid_to_timestamp" class="help-page-title"><h2 id="oid_to_timestamp">Get OID date</h2></a>
+
+<h3>Description</h3>
+
+<p>The initial 4 bytes of a MongoDB OID contain a timestamp value, representing
+the ObjectId creation, measured in seconds since the Unix epoch.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">oid_to_timestamp<span class="token punctuation">(</span>oid<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table><tr>
+<td><code id="oid_to_timestamp_:_oid">oid</code></td>
+<td>
+<p>string or raw value with document oid</p>
+</td>
+</tr></table>
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r">oid_to_timestamp<span class="token punctuation">(</span><span class="token string">'5349b4ddd2781d08c09890f3'</span><span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div>
+<div class="container manual-page" id="ssl_options">
+
+<a href="#ssl_options" class="help-page-title"><h2 id="ssl_options">Connection SSL options</h2></a>
+
+<h3>Description</h3>
+
+<p>Set SSL options to connect to the MongoDB server.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r">ssl_options<span class="token punctuation">(</span>
+  cert <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  key <span class="token operator">=</span> cert<span class="token punctuation">,</span>
+  ca <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  ca_dir <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  crl_file <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  allow_invalid_hostname <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
+  weak_cert_validation <span class="token operator">=</span> <span class="token keyword">NULL</span>
+<span class="token punctuation">)</span></code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr>
+<td><code id="ssl_options_:_cert">cert</code></td>
+<td>
+<p>path to PEM file with client certificate, or a certificate as
+returned by <code><a href="https://jeroen.r-universe.dev/openssl/doc/manual.html#read_key">openssl::read_cert()</a></code></p>
+</td>
+</tr>
+<tr>
+<td><code id="ssl_options_:_key">key</code></td>
+<td>
+<p>path to PEM file with private key from the above certificate, or
+a key as returned by <code><a href="https://jeroen.r-universe.dev/openssl/doc/manual.html#read_key">openssl::read_key()</a></code>. This can
+be the same PEM file as cert.</p>
+</td>
+</tr>
+<tr>
+<td><code id="ssl_options_:_ca">ca</code></td>
+<td>
+<p>a certificate authority PEM file</p>
+</td>
+</tr>
+<tr>
+<td><code id="ssl_options_:_ca_dir">ca_dir</code></td>
+<td>
+<p>directory with CA files</p>
+</td>
+</tr>
+<tr>
+<td><code id="ssl_options_:_crl_file">crl_file</code></td>
+<td>
+<p>file with revocations</p>
+</td>
+</tr>
+<tr>
+<td><code id="ssl_options_:_allow_invalid_hostname">allow_invalid_hostname</code></td>
+<td>
+<p>do not verify hostname on server certificate</p>
+</td>
+</tr>
+<tr>
+<td><code id="ssl_options_:_weak_cert_validation">weak_cert_validation</code></td>
+<td>
+<p>disable certificate verification</p>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+</div>
+    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+  </body>
+</html>
