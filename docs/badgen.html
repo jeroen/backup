@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package 'badgen' reference manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
+
+    <!-- for (future) customizations -->
+    <script src="https://r-universe.dev/static/manual.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
+
+  </head>
+
+  <body class="postdoc macintosh">
+    <h1 class="manual-title">Package 'badgen'</h1>
+    <table class="description-table">
+      <tr>
+<th>Title:</th>
+<td class="description-title">Fast and Simple Badge Generator</td>
+</tr>
+      <tr>
+<th>Description:</th>
+<td class="description-description">Bindings to 'badgen'
+        &lt;https://www.npmjs.com/package/badgen&gt; to generate beautiful
+        'svg' badges in R without internet access. Images can be
+        converted to 'png' using the 'rsvg' package as shown in
+        examples.</td>
+</tr>
+      <tr>
+<th>Authors:</th>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
+</tr>
+      <tr>
+<th>Maintainer:</th>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
+</tr>
+      <tr>
+<th>License:</th>
+<td class="description-license">MIT + file LICENSE</td>
+</tr>
+      <tr>
+<th>Version:</th>
+<td class="description-version">1.0.1</td>
+</tr>
+      <tr>
+<th>Built:</th>
+<td class="description-date">2024-11-02 05:42:50 UTC</td>
+</tr>
+      <tr>
+<th>Source:</th>
+<td class="description-source">https://github.com/jeroen/badgen</td>
+</tr>
+    </table>
+
+    <a href="#help-index" style="color:black;"><h2 id="help-index">Help Index</h2></a>
+    <ul id="help-index-list"><li class="help-index-item"><a href="#badgen">Generate badges</a></li></ul>
+
+    <hr>
+    <div class="manual-pages-content"><div class="container manual-page" id="badgen"><div class="page-main">
+<a href="#badgen" class="help-page-title"><h2>Generate badges</h2></a>
+
+<h3>Description</h3>
+
+<p>Generate a badge in the form of an svg string. Svg files can embedded directly
+in websites or converted to png as shown in examples.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r-input" hidden="hidden">badgen(
+  label,
+  status = "v1.2.3",
+  color = "green",
+  labelColor = "555",
+  style = "classic",
+  scale = 1,
+  svg_icon = NULL
+)
+</code><code class="language-r">badgen<span class="token punctuation">(</span>
+  label<span class="token punctuation">,</span>
+  status <span class="token operator">=</span> <span class="token string">"v1.2.3"</span><span class="token punctuation">,</span>
+  color <span class="token operator">=</span> <span class="token string">"green"</span><span class="token punctuation">,</span>
+  labelColor <span class="token operator">=</span> <span class="token string">"555"</span><span class="token punctuation">,</span>
+  style <span class="token operator">=</span> <span class="token string">"classic"</span><span class="token punctuation">,</span>
+  scale <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  svg_icon <span class="token operator">=</span> <span class="token keyword">NULL</span>
+<span class="token punctuation">)</span></code></pre>
+
+
+<h3 class="r-arguments-title">Arguments</h3>
+
+<table>
+<tr>
+<td><code id="label">label</code></td>
+<td>
+<p>text for left part of the badge</p>
+</td>
+</tr>
+<tr>
+<td><code id="status">status</code></td>
+<td>
+<p>text for right part of the badge</p>
+</td>
+</tr>
+<tr>
+<td><code id="color">color</code></td>
+<td>
+<p>background for status part</p>
+</td>
+</tr>
+<tr>
+<td><code id="labelColor">labelColor</code></td>
+<td>
+<p>background for label part</p>
+</td>
+</tr>
+<tr>
+<td><code id="style">style</code></td>
+<td>
+<p>one of 'classic' or 'flat'</p>
+</td>
+</tr>
+<tr>
+<td><code id="scale">scale</code></td>
+<td>
+<p>resize badge, default size is 1</p>
+</td>
+</tr>
+<tr>
+<td><code id="svg_icon">svg_icon</code></td>
+<td>
+<p>iteral svg string with icon, see examples</p>
+</td>
+</tr>
+</table>
+<h3>Value</h3>
+
+<p>svg string with the badge
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r-input" hidden="hidden">home &lt;- setwd(tempdir())
+svg &lt;- badgen("yolo", "success!", style = 'flat')
+writeLines(svg, 'test.svg')
+browseURL('test.svg')
+
+# Convert svg to bitmap
+rsvg::rsvg_png('test.svg', 'test.png')
+
+# Add an svg icon to the badge
+rlogo &lt;- readLines('https://www.r-project.org/logo/Rlogo.svg')
+svg2 &lt;- badgen('mypkg', 'awesome', scale = 4, svg_icon = rlogo)
+writeLines(svg2, 'test2.svg')
+browseURL('test2.svg')
+
+# Cleanup
+Sys.sleep(1)
+unlink(c('test.svg', 'test.png', 'test2.svg'))
+setwd(home)
+</code><code class="language-r">home <span class="token operator">&lt;-</span> setwd<span class="token punctuation">(</span>tempdir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+svg <span class="token operator">&lt;-</span> badgen<span class="token punctuation">(</span><span class="token string">"yolo"</span><span class="token punctuation">,</span> <span class="token string">"success!"</span><span class="token punctuation">,</span> style <span class="token operator">=</span> <span class="token string">'flat'</span><span class="token punctuation">)</span>
+writeLines<span class="token punctuation">(</span>svg<span class="token punctuation">,</span> <span class="token string">'test.svg'</span><span class="token punctuation">)</span>
+browseURL<span class="token punctuation">(</span><span class="token string">'test.svg'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Convert svg to bitmap</span>
+rsvg<span class="token operator">::</span>rsvg_png<span class="token punctuation">(</span><span class="token string">'test.svg'</span><span class="token punctuation">,</span> <span class="token string">'test.png'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Add an svg icon to the badge</span>
+rlogo <span class="token operator">&lt;-</span> readLines<span class="token punctuation">(</span><span class="token string">'https://www.r-project.org/logo/Rlogo.svg'</span><span class="token punctuation">)</span>
+svg2 <span class="token operator">&lt;-</span> badgen<span class="token punctuation">(</span><span class="token string">'mypkg'</span><span class="token punctuation">,</span> <span class="token string">'awesome'</span><span class="token punctuation">,</span> scale <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span> svg_icon <span class="token operator">=</span> rlogo<span class="token punctuation">)</span>
+writeLines<span class="token punctuation">(</span>svg2<span class="token punctuation">,</span> <span class="token string">'test2.svg'</span><span class="token punctuation">)</span>
+browseURL<span class="token punctuation">(</span><span class="token string">'test2.svg'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Cleanup</span>
+Sys.sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+unlink<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token string">'test.svg'</span><span class="token punctuation">,</span> <span class="token string">'test.png'</span><span class="token punctuation">,</span> <span class="token string">'test2.svg'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+setwd<span class="token punctuation">(</span>home<span class="token punctuation">)</span></code></pre>
+
+<hr>
+</div></div></div>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
+  </body>
+</html>

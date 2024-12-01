@@ -1,117 +1,154 @@
 Package: RAppArmor
-Version: 3.2.3
+Version: 3.2.5
 License: Apache License 2.0
 OS_type: unix
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-16 04:40:47 UTC; unix
-MD5sum: 042dfd2654a606206d360defe609b5a0
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 06:00:37 UTC; unix
+MD5sum: 77c2c9c22e5c15aaf30ee657f6d5529d
+Filesize: 399744
+SHA256: 0f68c41d207b08309b4ccb8d4f91c5ed489b0d6887f2b5fe27afef1ff8146f6b
 Depends: unix (>= 1.4)
 Suggests: testthat, R.rsp
 
 Package: V8
-Version: 4.3.0
+Version: 6.0.0
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-08 06:57:36 UTC; unix
-MD5sum: 67a2dada6a442cad9a4675aaa898b91f
-Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-11 06:48:51 UTC; unix
+MD5sum: 7479321cb10b1febbe47467e50008098
+Filesize: 8403642
+SHA256: 81094d279d3abae138d4735b6fa90057bf7a3e5f4e764885b2879883d8374f49
 LinkingTo: Rcpp
+Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
 Suggests: testthat, knitr, rmarkdown
 
-Package: base64
-Version: 2.0.1
+Package: badgen
+Version: 1.0.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-05-06 05:56:21 UTC; unix
-MD5sum: 41522eec25bb3d04668c4a4b90f3fd70
+Built: R 4.3.3; ; 2024-11-02 05:44:07 UTC; unix
+MD5sum: 00694f176614c6e2e92056a96d2736fc
+Filesize: 18362
+SHA256: 72e9cb3feda95af55238e243fdb39b6f770a9d7ac5dd1232857c15cc37f344a7
+Imports: jsonlite, V8
+Suggests: rsvg
+
+Package: base64
+Version: 2.0.2
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.3; ; 2024-11-02 05:44:08 UTC; unix
+MD5sum: 23c7fa7bfb537b1d6b9ec7fd21740c24
+Filesize: 44159
+SHA256: 2bf247f247b521074837370f08ffd5ae5ae3d0bf3eab30da01b2b42fc096dcfd
 Imports: openssl
 
 Package: bcrypt
-Version: 1.2
+Version: 1.2.0
 License: BSD_2_clause + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-02 05:10:43 UTC; unix
-MD5sum: 244c551acaef0d0690499b012eeb6a44
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-03 06:09:07 UTC; unix
+MD5sum: 244b25e8a1374e17821770cbce46155f
+Filesize: 26430
+SHA256: edb95d7b67e06bee72fdd0d07d68c79e4469586470ae8d40d7c3202be7d74607
 Imports: openssl
 Suggests: spelling
 
 Package: brotli
-Version: 1.3.0
+Version: 1.3.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-11 06:16:59 UTC; unix
-MD5sum: 657f607b7ad7ea03f302af6a84e1eb66
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 06:06:01 UTC; unix
+MD5sum: 980e7f6c8517ddee831226897a1bc64e
+Filesize: 1101984
+SHA256: 3e256f364ecf9ed2a71aa02243bd85fef72f52871f505764ec2de753ab72da55
 Suggests: spelling, knitr, R.rsp, microbenchmark, rmarkdown, ggplot2
 
 Package: curl
-Version: 5.0.9000
+Version: 6.0.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-24 16:49:00 UTC; unix
-MD5sum: 1867f25074da375bbea3a9f60412ffec
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-29 15:51:38 UTC; unix
+MD5sum: 63e81c302695b050be7a7d92a0149aa1
+Filesize: 203187
+SHA256: 9016bb8e9467f5a0c2cd28aa6b6d5baa28bbd0613be0980aac2487cdcbf3af6e
 Depends: R (>= 3.0.0)
-Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, rmarkdown, magrittr, httpuv (>= 1.4.4), webutils
+Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, later, rmarkdown, httpuv (>= 1.4.4), webutils
 
 Package: gpg
-Version: 1.2.9
+Version: 1.3.0
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-16 10:24:40 UTC; unix
-MD5sum: ed559790773e2455c76dea9d0823ebcc
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-30 07:39:37 UTC; unix
+MD5sum: 736af078766c12fcaf02b894c3fb44c4
+Filesize: 1943604
+SHA256: e39562e5c749e53ab09aa1c2c454d931582ce94f83c4e683a8b603d2f9822cc5
 Imports: curl, askpass
 Suggests: knitr, rmarkdown
 
 Package: js
-Version: 1.2
+Version: 1.2.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-05-22 04:41:09 UTC; unix
-MD5sum: c86056a0e2dbb073592912ba8abf8fd1
+Built: R 4.3.3; ; 2024-11-02 05:45:21 UTC; unix
+MD5sum: 7dc083ae4a9f7d809babd8eb29411673
+Filesize: 332475
+SHA256: ddba0741599a456b0a37560837e6d2ec88daae6de512a37527238f102bbfab19
 Imports: V8 (>= 0.5)
 Suggests: knitr, rmarkdown
 
 Package: jsonlite
-Version: 1.8.5
+Version: 1.8.9
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-24 12:39:13 UTC; unix
-MD5sum: 95443c713027b183e8a9bb6a18359c18
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-22 15:51:59 UTC; unix
+MD5sum: 45d291a85e5b289462039b701f4423d4
+Filesize: 441348
+SHA256: c91cb7c20ae18b69a18369f4fe656a20457d5a01f4200a4e2cb1940b9d6ac0df
 Depends: methods
 Suggests: httr, vctrs, testthat, knitr, rmarkdown, R.rsp, sf
 
 Package: maketools
-Version: 1.2.4
+Version: 1.3.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-05-27 06:27:33 UTC; unix
-MD5sum: a9f34e91d7e58b268058a548d890f73d
+Built: R 4.3.3; ; 2024-11-04 05:51:34 UTC; unix
+MD5sum: 1b84f320a6b50eb7b43ec8d9fb369eff
+Filesize: 66345
+SHA256: a9634af3a2f6760f0f0a0d02c1e58c0873e4bd702b2beda10d717559b6e85615
 Imports: sys (>= 3.1)
 Suggests: curl, knitr, rmarkdown, testthat
 
 Package: mongolite
-Version: 2.7.2
+Version: 2.8.1
 License: Apache License 2.0
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-29 06:58:59 UTC; unix
-MD5sum: 7b7a895c49a8ddc2fc5527b26e1c5c71
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 06:06:00 UTC; unix
+MD5sum: 210dc1d8936d63d7577e9e14aca12cd6
+Filesize: 573727
+SHA256: f637e3dc0b86117d553daed7fdc45b4bd34a58b56f90b8b96865f9f5df288782
 Imports: jsonlite (>= 1.4), openssl (>= 1.0), mime
 Suggests: spelling, nycflights13, ggplot2
 
 Package: openssl
-Version: 2.0.6
+Version: 2.2.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-07 06:57:22 UTC; unix
-MD5sum: 40b9d86fa021a249642367986d4b809a
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-24 18:20:06 UTC; unix
+MD5sum: ef8c3c3cb3b7f8baa060837aeee3b406
+Filesize: 2349868
+SHA256: 423c672bfea06b48982a20c91a9becac67cd4dfd7b6f5450e43b27ff4b61148c
 Imports: askpass
 Suggests: curl, testthat (>= 2.1.0), digest, knitr, rmarkdown, jsonlite, jose, sodium
 
 Package: protolite
-Version: 2.2.0
+Version: 2.3.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-02 05:42:05 UTC; unix
-MD5sum: 58eaa01d6c0b7d236903b33a4e583f09
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 06:04:48 UTC; unix
+MD5sum: ed9c11374a4c007270c9ca61db392263
+Filesize: 699108
+SHA256: f2bf560d6522b31cae08013c0b0ed675b645d111c3e37926748a0842fd9a6c24
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.12.12), jsonlite
 Suggests: spelling, curl, testthat, sf
@@ -120,42 +157,52 @@ Package: rjade
 Version: 0.1.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-05-07 06:29:44 UTC; unix
-MD5sum: 98bb7561b61d789d36841fea8bef9706
+Built: R 4.3.3; ; 2024-11-02 05:29:52 UTC; unix
+MD5sum: 64a484263fe45bc17032ebfb5f88113b
+Filesize: 52154
+SHA256: 2449bb84b798300bcd09ade5e54c55ebd52c7b0872189b16718571bc9cff4995
 Imports: V8 (>= 0.5)
 Suggests: knitr, rmarkdown
 
 Package: sys
-Version: 3.4.2
+Version: 3.4.3
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-22 22:08:18 UTC; unix
-MD5sum: c7934adf988cc73942b601450e115416
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 06:00:31 UTC; unix
+MD5sum: 40f23bb089a921da8d23746412f9b701
+Filesize: 39946
+SHA256: 05aab8397a45b6dbd2f799daf61f22544f3711acd74b5807aa89d7558688265e
 Suggests: unix (>= 1.4), spelling, testthat
 
 Package: unix
-Version: 1.5.5
+Version: 1.5.9
 License: MIT + file LICENSE
 OS_type: unix
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-25 04:56:22 UTC; unix
-MD5sum: a95eb19694bfcf46e249aadd3fe035f3
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 06:00:55 UTC; unix
+MD5sum: e011f6d9ea001d1d601d52da38ca776b
+Filesize: 56338
+SHA256: 7db53d32d527aafe5478974157c40a99767cd374edd5a7e6583e1f6aa92f770b
 Suggests: testthat
 
 Package: webp
-Version: 1.1.0
+Version: 1.2.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-03 06:56:27 UTC; unix
-MD5sum: ddc10d2dfc41974060257b34e45cedc2
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 05:44:49 UTC; unix
+MD5sum: e5a92f21d2e79dded59ee5bc33e436f1
+Filesize: 285949
+SHA256: 69885f94479d2a74d685451d362be38372fa078932797b6f982230aea0aa7859
 Suggests: jpeg, png
 
 Package: webutils
-Version: 1.1
+Version: 1.2.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-apple-darwin20; 2023-05-29 07:28:34 UTC; unix
-MD5sum: db85e2bd53f353668c40b13fe874b1d0
+Built: R 4.3.3; x86_64-apple-darwin20; 2024-11-02 05:46:41 UTC; unix
+MD5sum: 701c3c0d032afc4081fa20972f4d3dd1
+Filesize: 34675
+SHA256: 18b95d90bd324bd3dc3a65e6bdcbd35037d9bd4ece106d768d28b0cb86317f21
 Imports: curl (>= 2.5), jsonlite
 Suggests: httpuv, testthat
 

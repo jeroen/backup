@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'unix'</h1>
     <table class="description-table">
       <tr>
@@ -25,8 +25,9 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Bindings to system utilities found in most Unix systems such as
-    POSIX functions which are not part of the Standard C Library.</td>
+<td class="description-description">Bindings to system utilities found in most Unix systems
+        such as POSIX functions which are not part of the Standard C
+        Library.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -34,7 +35,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -42,11 +43,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">1.5.5</td>
+<td class="description-version">1.5.9</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-25 04:53:16 UTC</td>
+<td class="description-date">2024-11-02 05:58:34 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -66,9 +67,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="chroot">
-
-<a href="#chroot" class="help-page-title"><h2 id="chroot">Change Root Dir</h2></a>
+<div class="container manual-page" id="chroot"><div class="page-main">
+<a href="#chroot" class="help-page-title"><h2>Change Root Dir</h2></a>
 
 <h3>Description</h3>
 
@@ -80,13 +80,14 @@ This directory will be used for pathnames beginning with <code>/</code>.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">chroot<span class="token punctuation">(</span>path <span class="token operator">=</span> getwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">chroot(path = getwd())
+</code><code class="language-r">chroot<span class="token punctuation">(</span>path <span class="token operator">=</span> getwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="chroot_:_path">path</code></td>
+<td><code id="path">path</code></td>
 <td>
 <p>directory of the new root</p>
 </td>
@@ -106,10 +107,9 @@ nor to restrict filesystem system calls.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="eval_fork">
-
-<a href="#eval_fork" class="help-page-title"><h2 id="eval_safe">Safe Evaluation</h2></a>
+</div></div>
+<div class="container manual-page" id="eval_fork"><div class="page-main">
+<a href="#eval_fork" class="help-page-title"><h2>Safe Evaluation</h2></a>
 
 <h3>Description</h3>
 
@@ -121,7 +121,28 @@ in additional R code to handle errors and graphics.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">eval_safe<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">eval_safe(
+  expr,
+  tmp = tempfile("fork"),
+  std_out = stdout(),
+  std_err = stderr(),
+  timeout = 0,
+  priority = NULL,
+  uid = NULL,
+  gid = NULL,
+  rlimits = NULL,
+  profile = NULL,
+  device = pdf
+)
+
+eval_fork(
+  expr,
+  tmp = tempfile("fork"),
+  std_out = stdout(),
+  std_err = stderr(),
+  timeout = 0
+)
+</code><code class="language-r">eval_safe<span class="token punctuation">(</span>
   expr<span class="token punctuation">,</span>
   tmp <span class="token operator">=</span> tempfile<span class="token punctuation">(</span><span class="token string">"fork"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   std_out <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -144,23 +165,23 @@ eval_fork<span class="token punctuation">(</span>
 <span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="eval_safe_:_expr">expr</code></td>
+<td><code id="expr">expr</code></td>
 <td>
 <p>expression to evaluate</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_tmp">tmp</code></td>
+<td><code id="tmp">tmp</code></td>
 <td>
 <p>the value of <code><a href="https://r-universe.dev/manuals/base.html#tempfile">tempdir()</a></code> inside the forked process</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_std_out">std_out</code></td>
+<td><code id="std_out">std_out</code></td>
 <td>
 <p>if and where to direct child process <code>STDOUT</code>. Must be one of
 <code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
@@ -168,7 +189,7 @@ on <em>Output Streams</em> below for details.</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_std_err">std_err</code></td>
+<td><code id="std_err">std_err</code></td>
 <td>
 <p>if and where to direct child process <code>STDERR</code>. Must be one of
 <code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
@@ -177,44 +198,44 @@ Non root user may only raise this value (decrease priority)</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_timeout">timeout</code></td>
+<td><code id="timeout">timeout</code></td>
 <td>
 <p>maximum time in seconds to allow for call to return</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_priority">priority</code></td>
+<td><code id="priority">priority</code></td>
 <td>
 <p>(integer) priority of the child process. High value is low priority.</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_uid">uid</code></td>
+<td><code id="uid">uid</code></td>
 <td>
 <p>evaluate as given user (uid or name). See <code><a href="#process">setuid()</a></code>, only for root.</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_gid">gid</code></td>
+<td><code id="gid">gid</code></td>
 <td>
 <p>evaluate as given group (gid or name). See <code><a href="#process">setgid()</a></code> only for root.</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_rlimits">rlimits</code></td>
+<td><code id="rlimits">rlimits</code></td>
 <td>
 <p>named vector/list with rlimit values, for example: <code>c(cpu = 60, fsize = 1e6)</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_profile">profile</code></td>
+<td><code id="profile">profile</code></td>
 <td>
 <p>AppArmor profile, see <code>RAppArmor::aa_change_profile()</code>.
 Requires the <code>RAppArmor</code> package (Debian/Ubuntu only)</p>
 </td>
 </tr>
 <tr>
-<td><code id="eval_safe_:_device">device</code></td>
+<td><code id="device">device</code></td>
 <td>
 <p>graphics device to use in the fork, see <code><a href="https://r-universe.dev/manuals/grDevices.html#dev">dev.new()</a></code></p>
 </td>
@@ -232,7 +253,24 @@ than OpenSSL for https connections. The same limitations hold for e.g. <code>par
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># works like regular eval:</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># works like regular eval:
+eval_safe(rnorm(5))
+
+# Exceptions get propagated
+test &lt;- function() { doesnotexit() }
+tryCatch(eval_safe(test()), error = function(e){
+  cat("oh no!", e$message, "\n")
+})
+
+# Honor interrupt and timeout, even inside C evaluations
+try(eval_safe(svd(matrix(rnorm(1e8), 1e4)), timeout = 2))
+
+# Capture output
+outcon &lt;- rawConnection(raw(0), "r+")
+eval_safe(print(sessionInfo()), std_out = outcon)
+cat(rawToChar(rawConnectionValue(outcon)))
+close(outcon)
+</code><code class="language-r"><span class="token comment"># works like regular eval:</span>
 eval_safe<span class="token punctuation">(</span>rnorm<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Exceptions get propagated</span>
@@ -251,10 +289,9 @@ cat<span class="token punctuation">(</span>rawToChar<span class="token punctuati
 close<span class="token punctuation">(</span>outcon<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="process">
-
-<a href="#process" class="help-page-title"><h2 id="getuid">Process Info</h2></a>
+</div></div>
+<div class="container manual-page" id="process"><div class="page-main">
+<a href="#process" class="help-page-title"><h2>Process Info</h2></a>
 
 <h3>Description</h3>
 
@@ -264,7 +301,36 @@ close<span class="token punctuation">(</span>outcon<span class="token punctuatio
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">getuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">getuid()
+
+getgid()
+
+geteuid()
+
+getegid()
+
+getpid()
+
+getppid()
+
+getpgid()
+
+getpriority()
+
+setuid(uid)
+
+seteuid(uid)
+
+setgid(gid)
+
+setegid(gid)
+
+setpgid(pgid = 0)
+
+setpriority(prio)
+
+kill(pid, signal = SIGTERM)
+</code><code class="language-r">getuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 getgid<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
@@ -295,41 +361,41 @@ setpriority<span class="token punctuation">(</span>prio<span class="token punctu
 kill<span class="token punctuation">(</span>pid<span class="token punctuation">,</span> signal <span class="token operator">=</span> SIGTERM<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="getuid_:_uid">uid</code></td>
+<td><code id="uid">uid</code></td>
 <td>
 <p>User ID from <code style="white-space: pre;">⁠/etc/passwd⁠</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="getuid_:_gid">gid</code></td>
+<td><code id="gid">gid</code></td>
 <td>
 <p>Group ID from <code style="white-space: pre;">⁠/etc/group⁠</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="getuid_:_pgid">pgid</code></td>
+<td><code id="pgid">pgid</code></td>
 <td>
 <p>Process Group ID. Default <code>0</code> sets pgid to the current pid.</p>
 </td>
 </tr>
 <tr>
-<td><code id="getuid_:_prio">prio</code></td>
+<td><code id="prio">prio</code></td>
 <td>
 <p>Priority level</p>
 </td>
 </tr>
 <tr>
-<td><code id="getuid_:_pid">pid</code></td>
+<td><code id="pid">pid</code></td>
 <td>
 <p>process ID (integer)</p>
 </td>
 </tr>
 <tr>
-<td><code id="getuid_:_signal">signal</code></td>
+<td><code id="signal">signal</code></td>
 <td>
 <p>a signal number (integer), defaults to <a href="https://r-universe.dev/manuals/tools.html#pskill">tools::SIGTERM</a>.</p>
 </td>
@@ -382,7 +448,29 @@ process priority (higher value).
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Current User:</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Current User:
+getuid()
+# Current UserGroup:
+getgid()
+# Current UserGroup:
+geteuid()
+# Current UserGroup:
+getegid()
+# Process ID
+getpid()
+# parent PID:
+getppid()
+# Process group id:
+getpgid()
+
+# Detach process group
+setpgid(0)
+getpgid()
+# Process priority:
+getpriority()
+# Decrease priority
+setpriority(getpriority() + 1)
+</code><code class="language-r"><span class="token comment"># Current User:</span>
 getuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token comment"># Current UserGroup:</span>
 getgid<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -406,10 +494,9 @@ getpriority<span class="token punctuation">(</span><span class="token punctuatio
 setpriority<span class="token punctuation">(</span>getpriority<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="rlimit">
-
-<a href="#rlimit" class="help-page-title"><h2 id="rlimit">Resource Limits</h2></a>
+</div></div>
+<div class="container manual-page" id="rlimit"><div class="page-main">
+<a href="#rlimit" class="help-page-title"><h2>Resource Limits</h2></a>
 
 <h3>Description</h3>
 
@@ -421,7 +508,26 @@ function is a convenience wrapper which prints all current hard and soft limits.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">rlimit_all<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">rlimit_all()
+
+rlimit_as(cur = NULL, max = NULL)
+
+rlimit_core(cur = NULL, max = NULL)
+
+rlimit_cpu(cur = NULL, max = NULL)
+
+rlimit_data(cur = NULL, max = NULL)
+
+rlimit_fsize(cur = NULL, max = NULL)
+
+rlimit_memlock(cur = NULL, max = NULL)
+
+rlimit_nofile(cur = NULL, max = NULL)
+
+rlimit_nproc(cur = NULL, max = NULL)
+
+rlimit_stack(cur = NULL, max = NULL)
+</code><code class="language-r">rlimit_all<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 rlimit_as<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
@@ -442,17 +548,17 @@ rlimit_nproc<span class="token punctuation">(</span>cur <span class="token opera
 rlimit_stack<span class="token punctuation">(</span>cur <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> max <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="rlimit_:_cur">cur</code></td>
+<td><code id="cur">cur</code></td>
 <td>
 <p>set the current (soft) limit for this resource. See details.</p>
 </td>
 </tr>
 <tr>
-<td><code id="rlimit_:_max">max</code></td>
+<td><code id="max">max</code></td>
 <td>
 <p>set the max (hard) limit for this resource. See details.</p>
 </td>
@@ -519,7 +625,25 @@ by the operating system (and doesn't work at all on MacOS).
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Print all limits</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Print all limits
+rlimit_all()
+
+# Get one limit
+rlimit_as()
+
+## Not run: 
+# Set a soft limit
+lim &lt;- rlimit_as(1e9)
+print(lim)
+
+# Reset the limit to max
+rlimit_as(cur = lim$max)
+
+# Set a hard limit (irreversible)
+rlimit_as(max = 1e10)
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment"># Print all limits</span>
 rlimit_all<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Get one limit</span>
@@ -539,10 +663,9 @@ rlimit_as<span class="token punctuation">(</span>max <span class="token operator
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="config">
-
-<a href="#config" class="help-page-title"><h2 id="sys_config">Package config</h2></a>
+</div></div>
+<div class="container manual-page" id="config"><div class="page-main">
+<a href="#config" class="help-page-title"><h2>Package config</h2></a>
 
 <h3>Description</h3>
 
@@ -552,20 +675,23 @@ rlimit_as<span class="token punctuation">(</span>max <span class="token operator
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">sys_config<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">sys_config()
+
+aa_config()
+</code><code class="language-r">sys_config<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 aa_config<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">sys_config<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">sys_config()
+</code><code class="language-r">sys_config<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="userinfo">
-
-<a href="#userinfo" class="help-page-title"><h2 id="userinfo">User / Group Info</h2></a>
+</div></div>
+<div class="container manual-page" id="userinfo"><div class="page-main">
+<a href="#userinfo" class="help-page-title"><h2>User / Group Info</h2></a>
 
 <h3>Description</h3>
 
@@ -575,22 +701,25 @@ aa_config<span class="token punctuation">(</span><span class="token punctuation"
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">user_info<span class="token punctuation">(</span>uid <span class="token operator">=</span> getuid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">user_info(uid = getuid())
+
+group_info(gid = getgid())
+</code><code class="language-r">user_info<span class="token punctuation">(</span>uid <span class="token operator">=</span> getuid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 group_info<span class="token punctuation">(</span>gid <span class="token operator">=</span> getgid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="userinfo_:_uid">uid</code></td>
+<td><code id="uid">uid</code></td>
 <td>
 <p>user ID (integer) or name (string)</p>
 </td>
 </tr>
 <tr>
-<td><code id="userinfo_:_gid">gid</code></td>
+<td><code id="gid">gid</code></td>
 <td>
 <p>group ID (integer) or name (string)</p>
 </td>
@@ -605,13 +734,16 @@ group_info<span class="token punctuation">(</span>gid <span class="token operato
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Get info current user</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Get info current user
+user_info()
+group_info()
+</code><code class="language-r"><span class="token comment"># Get info current user</span>
 user_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
 group_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

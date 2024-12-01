@@ -1,104 +1,140 @@
 Package: RAppArmor
-Version: 3.2.3
+Version: 3.2.5
 License: Apache License 2.0
 OS_type: unix
 NeedsCompilation: yes
-MD5sum: 44206c95c31a091194e9eca163835ec6
+MD5sum: ba8b36bf98785bad9350d25841df1b62
+Filesize: 473042
+SHA256: 47cba92a13db56363529054a3ed372c6c8cfb6f6e49dd30da97f15162ea4919f
 Depends: unix (>= 1.4)
 Suggests: testthat, R.rsp
 
 Package: V8
-Version: 4.3.0
+Version: 6.0.0
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: 13d73cd6cdf06a4e298fa8af2c9785be
-Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
+MD5sum: c80930141c290abd2760a7abdc44af5b
+Filesize: 196448
+SHA256: 54f6ae89785b061ef501b6b27c0364e1227570b0e211ca5763a07f73e216458e
 LinkingTo: Rcpp
+Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
 Suggests: testthat, knitr, rmarkdown
 
-Package: base64
-Version: 2.0.1
+Package: badgen
+Version: 1.0.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-MD5sum: f0b57fc4875b8594c23f4331b963ef2d
+MD5sum: fb6e32ff5b0209eb74ad1b42bf52bf42
+Filesize: 81145
+SHA256: 43d1edc1ddba98904e528c629e40c93f9c908dc9b6d67e27cba170ef6f8a8c63
+Imports: jsonlite, V8
+Suggests: rsvg
+
+Package: base64
+Version: 2.0.2
+License: MIT + file LICENSE
+NeedsCompilation: no
+MD5sum: de15016ed2fddcd9eb9063b2a171f17b
+Filesize: 145803
+SHA256: d5d91110e59a2df60c05f690615939264cfb068af85af46747011f5ef27597c1
 Imports: openssl
 
 Package: bcrypt
-Version: 1.2
+Version: 1.2.0
 License: BSD_2_clause + file LICENSE
 NeedsCompilation: yes
-MD5sum: a5901c50b628a696b008e413c9c797db
+MD5sum: eedf4d7d5ac039b24bb77ee5ec7226cb
+Filesize: 99399
+SHA256: b295cc288f1a8ac25f2ea865c93424867bb7fe30633eaf6b388ec486bd000bf1
 Imports: openssl
 Suggests: spelling
 
 Package: brotli
-Version: 1.3.0
+Version: 1.3.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: b9b3dad857d2ddc926023de3ca8e1ad4
+MD5sum: e2244d64d92f40abd75859e806535df6
+Filesize: 889177
+SHA256: 64c3451006a7fda07dcaeed6f386d8c2d7c112c25a51d59496af0deb13e08748
 Suggests: spelling, knitr, R.rsp, microbenchmark, rmarkdown, ggplot2
 
 Package: curl
-Version: 5.0.9000
+Version: 6.0.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: 1d29efe789ee95ccaaaa3c93b06f16cc
+MD5sum: 101005195c3192e4369970725ecff9d0
+Filesize: 533748
+SHA256: 1a850964beba0a72b0df7c963b85b8525beee7c06ffc526c2eb3b9bdd705f167
 Depends: R (>= 3.0.0)
-Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, rmarkdown, magrittr, httpuv (>= 1.4.4), webutils
+Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, later, rmarkdown, httpuv (>= 1.4.4), webutils
 
 Package: gpg
-Version: 1.2.9
+Version: 1.3.0
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: c62cc2183aa5af414376cfb8aa17b7ae
+MD5sum: 523255978b8e00aa47814c0121725202
+Filesize: 887471
+SHA256: 2e403f45a0f09beda1c503e1af7c61c3904cd37ff8b164ca677764ce80681353
 Imports: curl, askpass
 Suggests: knitr, rmarkdown
 
 Package: js
-Version: 1.2
+Version: 1.2.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-MD5sum: cdf17a939cec7fcc6ff86e9bc21aaca1
+MD5sum: e263a5ff6ec9fd0806e93d8821f97029
+Filesize: 408156
+SHA256: 1d202bee7f05247dd6b8d76bb4ee678829e59483c6e9107f8be1858e5f30aa7b
 Imports: V8 (>= 0.5)
 Suggests: knitr, rmarkdown
 
 Package: jsonlite
-Version: 1.8.5
+Version: 1.8.9
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: a4c8e2ed7f3f6cab85b3e73e5e409a37
+MD5sum: e59d807842edce02ecd12278ae86487b
+Filesize: 554794
+SHA256: 31bb32822c563a0b80be565268532704fedc18914f3faebf1dc5b43f58224a08
 Depends: methods
 Suggests: httr, vctrs, testthat, knitr, rmarkdown, R.rsp, sf
 
 Package: maketools
-Version: 1.2.4
+Version: 1.3.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-MD5sum: e41fb101b546bf754e0cec8893b27696
+MD5sum: cf73fc920ee267526cc849198c2167ce
+Filesize: 116218
+SHA256: 0e9a4371fcab05b742f2ee7d06bde681ca62a8f32c684d324bfae502b2c8a332
 Imports: sys (>= 3.1)
 Suggests: curl, knitr, rmarkdown, testthat
 
 Package: mongolite
-Version: 2.7.2
+Version: 2.8.1
 License: Apache License 2.0
 NeedsCompilation: yes
-MD5sum: 5ad6665f0cae6d43e8458aa6c5f6d1ba
+MD5sum: dc63b376589fa186682aefc6ccddea56
+Filesize: 1056238
+SHA256: 36b8fde64e57a605335201f6c2eadd9641b7fb956470276cea463e49c8f69f8c
 Imports: jsonlite (>= 1.4), openssl (>= 1.0), mime
 Suggests: spelling, nycflights13, ggplot2
 
 Package: openssl
-Version: 2.0.6
+Version: 2.2.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: d98bbf8d0b85a10446a6cf618b442d67
+MD5sum: 28660e21d9dacab3acab69349dc6b004
+Filesize: 501359
+SHA256: 9dcd7ef0e57d52cb86624908b2235bcc65ab35d887b0e63fbb8856ab13706256
 Imports: askpass
 Suggests: curl, testthat (>= 2.1.0), digest, knitr, rmarkdown, jsonlite, jose, sodium
 
 Package: protolite
-Version: 2.2.0
+Version: 2.3.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: cb045bd6119c11131d35cb7e1bf18aa2
+MD5sum: 2fe7f539f4146078fcb39985a042375f
+Filesize: 108649
+SHA256: 42333a896cd480ddf46344a676a2f0ef085b2a9f2089d4a0a7f8548661c0cacf
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.12.12), jsonlite
 Suggests: spelling, curl, testthat, sf
@@ -107,37 +143,47 @@ Package: rjade
 Version: 0.1.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-MD5sum: bad5086c572d67d8acc95dfd41714da3
+MD5sum: 98636610ea39499d92e864e671df180f
+Filesize: 115793
+SHA256: e37a522f21b0008a065c9c3ee9563ce42db0e916ca382732fe406cf604d185df
 Imports: V8 (>= 0.5)
 Suggests: knitr, rmarkdown
 
 Package: sys
-Version: 3.4.2
+Version: 3.4.3
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: 4eca650903aa65057721fb3baa578f68
+MD5sum: 97de29ab129fac1e7edc38ad3ab236c5
+Filesize: 125598
+SHA256: 24842b7786f11bea22967cc3c8f01b8db02ed36ec5448ef604c6fae7e0e0b1aa
 Suggests: unix (>= 1.4), spelling, testthat
 
 Package: unix
-Version: 1.5.5
+Version: 1.5.9
 License: MIT + file LICENSE
 OS_type: unix
 NeedsCompilation: yes
-MD5sum: 3461f0df9a97b3b81cd20ce927e76e74
+MD5sum: 2665ef5bf5f605cdaad007db2ae5dfca
+Filesize: 118557
+SHA256: 9e44a1ebcbf5bd8e5e8cfa040b614eb6d60fce79dda02244eb86de38ecf1659e
 Suggests: testthat
 
 Package: webp
-Version: 1.1.0
+Version: 1.2.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: 6488be9bdedf7c896c793f84092c5b9e
+MD5sum: 6ae1362d0cf5dabaa5ba1e77bf264751
+Filesize: 92405
+SHA256: 299e98028fc4ca8c2ce307f46eb9aad3b5ced88b24450bd2ceac306543224fb7
 Suggests: jpeg, png
 
 Package: webutils
-Version: 1.1
+Version: 1.2.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-MD5sum: 9492b03815f8a92260fdef49bb8afe4c
+MD5sum: b0ffd6bf64c22599f527978d19b8ff16
+Filesize: 116347
+SHA256: 2d5b8825a8c88db7dccf0eb9b10836b373f51e1b774dc3fe21e49bc6c11e027f
 Imports: curl (>= 2.5), jsonlite
 Suggests: httpuv, testthat
 

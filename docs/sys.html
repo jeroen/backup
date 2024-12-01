@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'sys'</h1>
     <table class="description-table">
       <tr>
@@ -25,11 +25,12 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Drop-in replacements for the base system2() function with fine control
-    and consistent behavior across platforms. Supports clean interruption, timeout, 
-    background tasks, and streaming STDIN / STDOUT / STDERR over binary or text 
-    connections. Arguments on Windows automatically get encoded and quoted to work 
-    on different locales.</td>
+<td class="description-description">Drop-in replacements for the base system2() function with
+        fine control and consistent behavior across platforms. Supports
+        clean interruption, timeout, background tasks, and streaming
+        STDIN / STDOUT / STDERR over binary or text connections.
+        Arguments on Windows automatically get encoded and quoted to
+        work on different locales.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -38,7 +39,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -46,11 +47,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">3.4.2</td>
+<td class="description-version">3.4.3</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-22 22:05:04 UTC</td>
+<td class="description-date">2024-11-02 05:58:20 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -69,9 +70,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="as_text">
-
-<a href="#as_text" class="help-page-title"><h2 id="as_text">Convert Raw to Text</h2></a>
+<div class="container manual-page" id="as_text"><div class="page-main">
+<a href="#as_text" class="help-page-title"><h2>Convert Raw to Text</h2></a>
 
 <h3>Description</h3>
 
@@ -83,20 +83,21 @@ output with a given encoding.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">as_text<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">as_text(x, ...)
+</code><code class="language-r">as_text<span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="as_text_:_x">x</code></td>
+<td><code id="x">x</code></td>
 <td>
 <p>vector to be converted to text</p>
 </td>
 </tr>
 <tr>
-<td><code id="as_text_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
 <p>parameters passed to <a href="https://r-universe.dev/manuals/base.html#readLines">readLines</a> such as <code>encoding</code> or <code>n</code></p>
 </td>
@@ -108,10 +109,9 @@ output with a given encoding.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="exec">
-
-<a href="#exec" class="help-page-title"><h2 id="exec">Running System Commands</h2></a>
+</div></div>
+<div class="container manual-page" id="exec"><div class="page-main">
+<a href="#exec" class="help-page-title"><h2>Running System Commands</h2></a>
 
 <h3>Description</h3>
 
@@ -122,7 +122,27 @@ tasks and fine grained control over <code>STDOUT</code> / <code>STDERR</code> bi
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">exec_wait<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">exec_wait(
+  cmd,
+  args = NULL,
+  std_out = stdout(),
+  std_err = stderr(),
+  std_in = NULL,
+  timeout = 0
+)
+
+exec_background(
+  cmd,
+  args = NULL,
+  std_out = TRUE,
+  std_err = TRUE,
+  std_in = NULL
+)
+
+exec_internal(cmd, args = NULL, std_in = NULL, error = TRUE, timeout = 0)
+
+exec_status(pid, wait = TRUE)
+</code><code class="language-r">exec_wait<span class="token punctuation">(</span>
   cmd<span class="token punctuation">,</span>
   args <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
   std_out <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -144,11 +164,11 @@ exec_internal<span class="token punctuation">(</span>cmd<span class="token punct
 exec_status<span class="token punctuation">(</span>pid<span class="token punctuation">,</span> wait <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="exec_:_cmd">cmd</code></td>
+<td><code id="cmd">cmd</code></td>
 <td>
 <p>the command to run. Either a full path or the name of a program on
 the <code>PATH</code>. On Windows this is automatically converted to a short path using
@@ -156,14 +176,14 @@ the <code>PATH</code>. On Windows this is automatically converted to a short pat
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_args">args</code></td>
+<td><code id="args">args</code></td>
 <td>
 <p>character vector of arguments to pass. On Windows these automatically
 get quoted using <a href="#quote">windows_quote</a>, unless the value is wrapped in <code><a href="https://r-universe.dev/manuals/base.html#AsIs">I()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_std_out">std_out</code></td>
+<td><code id="std_out">std_out</code></td>
 <td>
 <p>if and where to direct child process <code>STDOUT</code>. Must be one of
 <code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
@@ -171,7 +191,7 @@ on <em>Output Streams</em> below for details.</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_std_err">std_err</code></td>
+<td><code id="std_err">std_err</code></td>
 <td>
 <p>if and where to direct child process <code>STDERR</code>. Must be one of
 <code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
@@ -179,31 +199,31 @@ on <em>Output Streams</em> below for details.</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_std_in">std_in</code></td>
+<td><code id="std_in">std_in</code></td>
 <td>
 <p>file path to map std_in</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_timeout">timeout</code></td>
+<td><code id="timeout">timeout</code></td>
 <td>
 <p>maximum time in seconds</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_error">error</code></td>
+<td><code id="error">error</code></td>
 <td>
 <p>automatically raise an error if the exit status is non-zero.</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_pid">pid</code></td>
+<td><code id="pid">pid</code></td>
 <td>
 <p>integer with a process ID</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_:_wait">wait</code></td>
+<td><code id="wait">wait</code></td>
 <td>
 <p>block until the process completes</p>
 </td>
@@ -297,7 +317,28 @@ command with output.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Run a command (interrupt with CTRL+C)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Run a command (interrupt with CTRL+C)
+status &lt;- exec_wait("date")
+
+# Capture std/out
+out &lt;- exec_internal("date")
+print(out$status)
+cat(as_text(out$stdout))
+
+if(nchar(Sys.which("ping"))){
+
+# Run a background process (daemon)
+pid &lt;- exec_background("ping", "localhost")
+
+# Kill it after a while
+Sys.sleep(2)
+tools::pskill(pid)
+
+# Cleans up the zombie proc
+exec_status(pid)
+rm(pid)
+}
+</code><code class="language-r"><span class="token comment"># Run a command (interrupt with CTRL+C)</span>
 status <span class="token operator">&lt;-</span> exec_wait<span class="token punctuation">(</span><span class="token string">"date"</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Capture std/out</span>
@@ -320,10 +361,9 @@ rm<span class="token punctuation">(</span>pid<span class="token punctuation">)</
 <span class="token punctuation">}</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="exec_r">
-
-<a href="#exec_r" class="help-page-title"><h2 id="exec_r">Execute R from R</h2></a>
+</div></div>
+<div class="container manual-page" id="exec_r"><div class="page-main">
+<a href="#exec_r" class="help-page-title"><h2>Execute R from R</h2></a>
 
 <h3>Description</h3>
 
@@ -334,7 +374,17 @@ R itself: <code>R.home("bin/R")</code>.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">r_wait<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">r_wait(
+  args = "--vanilla",
+  std_out = stdout(),
+  std_err = stderr(),
+  std_in = NULL
+)
+
+r_internal(args = "--vanilla", std_in = NULL, error = TRUE)
+
+r_background(args = "--vanilla", std_out = TRUE, std_err = TRUE, std_in = NULL)
+</code><code class="language-r">r_wait<span class="token punctuation">(</span>
   args <span class="token operator">=</span> <span class="token string">"--vanilla"</span><span class="token punctuation">,</span>
   std_out <span class="token operator">=</span> stdout<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   std_err <span class="token operator">=</span> stderr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -346,17 +396,17 @@ r_internal<span class="token punctuation">(</span>args <span class="token operat
 r_background<span class="token punctuation">(</span>args <span class="token operator">=</span> <span class="token string">"--vanilla"</span><span class="token punctuation">,</span> std_out <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> std_err <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> std_in <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="exec_r_:_args">args</code></td>
+<td><code id="args">args</code></td>
 <td>
 <p>command line arguments for R</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_r_:_std_out">std_out</code></td>
+<td><code id="std_out">std_out</code></td>
 <td>
 <p>if and where to direct child process <code>STDOUT</code>. Must be one of
 <code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
@@ -364,7 +414,7 @@ on <em>Output Streams</em> below for details.</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_r_:_std_err">std_err</code></td>
+<td><code id="std_err">std_err</code></td>
 <td>
 <p>if and where to direct child process <code>STDERR</code>. Must be one of
 <code>TRUE</code>, <code>FALSE</code>, filename, connection object or callback function. See section
@@ -372,13 +422,13 @@ on <em>Output Streams</em> below for details.</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_r_:_std_in">std_in</code></td>
+<td><code id="std_in">std_in</code></td>
 <td>
 <p>a file to send to stdin, usually an R script (see examples).</p>
 </td>
 </tr>
 <tr>
-<td><code id="exec_r_:_error">error</code></td>
+<td><code id="error">error</code></td>
 <td>
 <p>automatically raise an error if the exit status is non-zero.</p>
 </td>
@@ -401,7 +451,17 @@ need more sophisticated control over (multiple) R process jobs.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Hello world</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Hello world
+r_wait("--version")
+
+# Run some code
+r_wait(c('--vanilla', '-q', '-e', 'sessionInfo()'))
+
+# Run a script via stdin
+tmp &lt;- tempfile()
+writeLines(c("x &lt;- rnorm(100)", "mean(x)"), con = tmp)
+r_wait(std_in = tmp)
+</code><code class="language-r"><span class="token comment"># Hello world</span>
 r_wait<span class="token punctuation">(</span><span class="token string">"--version"</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Run some code</span>
@@ -413,10 +473,9 @@ writeLines<span class="token punctuation">(</span>c<span class="token punctuatio
 r_wait<span class="token punctuation">(</span>std_in <span class="token operator">=</span> tmp<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="quote">
-
-<a href="#quote" class="help-page-title"><h2 id="quote">Quote arguments on Windows</h2></a>
+</div></div>
+<div class="container manual-page" id="quote"><div class="page-main">
+<a href="#quote" class="help-page-title"><h2>Quote arguments on Windows</h2></a>
 
 <h3>Description</h3>
 
@@ -428,13 +487,14 @@ system commands, the user should normally not quote arguments manually.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">windows_quote<span class="token punctuation">(</span>args<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">windows_quote(args)
+</code><code class="language-r">windows_quote<span class="token punctuation">(</span>args<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="quote_:_args">args</code></td>
+<td><code id="args">args</code></td>
 <td>
 <p>character vector with arguments</p>
 </td>
@@ -446,10 +506,9 @@ system commands, the user should normally not quote arguments manually.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="deprecated">
-
-<a href="#deprecated" class="help-page-title"><h2 id="sys-deprecated">Deprecated functions</h2></a>
+</div></div>
+<div class="container manual-page" id="deprecated"><div class="page-main">
+<a href="#deprecated" class="help-page-title"><h2>Deprecated functions</h2></a>
 
 <h3>Description</h3>
 
@@ -460,22 +519,25 @@ your references.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">eval_safe<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">eval_safe(...)
+
+eval_fork(...)
+</code><code class="language-r">eval_safe<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span>
 
 eval_fork<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="sys-deprecated_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
 <p>see respective functions in the unix package</p>
 </td>
 </tr></table>
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

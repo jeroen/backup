@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'openssl'</h1>
     <table class="description-table">
       <tr>
@@ -26,15 +26,18 @@ OpenSSL</td>
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Bindings to OpenSSL libssl and libcrypto, plus custom SSH key parsers.
-    Supports RSA, DSA and EC curves P-256, P-384, P-521, and curve25519. Cryptographic
-    signatures can either be created and verified manually or via x509 certificates. 
-    AES can be used in cbc, ctr or gcm mode for symmetric encryption; RSA for asymmetric
-    (public key) encryption or EC for Diffie Hellman. High-level envelope functions 
-    combine RSA and AES for encrypting arbitrary sized data. Other utilities include key
-    generators, hash functions (md5, sha1, sha256, etc), base64 encoder, a secure random
-    number generator, and 'bignum' math methods for manually performing crypto 
-    calculations on large multibyte integers.</td>
+<td class="description-description">Bindings to OpenSSL libssl and libcrypto, plus custom SSH
+        key parsers. Supports RSA, DSA and EC curves P-256, P-384,
+        P-521, and curve25519. Cryptographic signatures can either be
+        created and verified manually or via x509 certificates. AES can
+        be used in cbc, ctr or gcm mode for symmetric encryption; RSA
+        for asymmetric (public key) encryption or EC for Diffie
+        Hellman. High-level envelope functions combine RSA and AES for
+        encrypting arbitrary sized data. Other utilities include key
+        generators, hash functions (md5, sha1, sha256, etc), base64
+        encoder, a secure random number generator, and 'bignum' math
+        methods for manually performing crypto calculations on large
+        multibyte integers.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -43,7 +46,7 @@ OpenSSL</td>
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -51,11 +54,11 @@ OpenSSL</td>
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">2.0.6</td>
+<td class="description-version">2.2.2</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-07 06:54:12 UTC</td>
+<td class="description-date">2024-11-24 18:16:04 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -91,9 +94,8 @@ OpenSSL</td>
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="aes_cbc">
-
-<a href="#aes_cbc" class="help-page-title"><h2 id="aes_cbc">Symmetric AES encryption</h2></a>
+<div class="container manual-page" id="aes_cbc"><div class="page-main">
+<a href="#aes_cbc" class="help-page-title"><h2>Symmetric AES encryption</h2></a>
 
 <h3>Description</h3>
 
@@ -107,7 +109,20 @@ or <code><a href="#encrypt_envelope">encrypt_envelope()</a></code> for a high-le
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">aes_ctr_encrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> key<span class="token punctuation">,</span> iv <span class="token operator">=</span> rand_bytes<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">aes_ctr_encrypt(data, key, iv = rand_bytes(16))
+
+aes_ctr_decrypt(data, key, iv = attr(data, "iv"))
+
+aes_cbc_encrypt(data, key, iv = rand_bytes(16))
+
+aes_cbc_decrypt(data, key, iv = attr(data, "iv"))
+
+aes_gcm_encrypt(data, key, iv = rand_bytes(12))
+
+aes_gcm_decrypt(data, key, iv = attr(data, "iv"))
+
+aes_keygen(length = 16)
+</code><code class="language-r">aes_ctr_encrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> key<span class="token punctuation">,</span> iv <span class="token operator">=</span> rand_bytes<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 aes_ctr_decrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> key<span class="token punctuation">,</span> iv <span class="token operator">=</span> attr<span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token string">"iv"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
@@ -122,30 +137,30 @@ aes_gcm_decrypt<span class="token punctuation">(</span>data<span class="token pu
 aes_keygen<span class="token punctuation">(</span>length <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="aes_cbc_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>raw vector or path to file with data to encrypt or decrypt</p>
 </td>
 </tr>
 <tr>
-<td><code id="aes_cbc_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>raw vector of length 16, 24 or 32, e.g. the hash of a shared secret</p>
 </td>
 </tr>
 <tr>
-<td><code id="aes_cbc_:_iv">iv</code></td>
+<td><code id="iv">iv</code></td>
 <td>
 <p>raw vector of length 16 (aes block size) or NULL. The initialization vector
 is not secret but should be random</p>
 </td>
 </tr>
 <tr>
-<td><code id="aes_cbc_:_length">length</code></td>
+<td><code id="length">length</code></td>
 <td>
 <p>how many bytes to generate. Usually 16 (128-bit) or 12 (92-bit) for <code>aes_gcm</code></p>
 </td>
@@ -153,7 +168,16 @@ is not secret but should be random</p>
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># aes-256 requires 32 byte key</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># aes-256 requires 32 byte key
+passphrase &lt;- charToRaw("This is super secret")
+key &lt;- sha256(passphrase)
+
+# symmetric encryption uses same key for decryption
+x &lt;- serialize(iris, NULL)
+y &lt;- aes_cbc_encrypt(x, key = key)
+x2 &lt;- aes_cbc_decrypt(y, key = key)
+stopifnot(identical(x, x2))
+</code><code class="language-r"><span class="token comment"># aes-256 requires 32 byte key</span>
 passphrase <span class="token operator">&lt;-</span> charToRaw<span class="token punctuation">(</span><span class="token string">"This is super secret"</span><span class="token punctuation">)</span>
 key <span class="token operator">&lt;-</span> sha256<span class="token punctuation">(</span>passphrase<span class="token punctuation">)</span>
 
@@ -164,10 +188,9 @@ x2 <span class="token operator">&lt;-</span> aes_cbc_decrypt<span class="token p
 stopifnot<span class="token punctuation">(</span>identical<span class="token punctuation">(</span>x<span class="token punctuation">,</span> x2<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="base64_encode">
-
-<a href="#base64_encode" class="help-page-title"><h2 id="base64_encode">Encode and decode base64</h2></a>
+</div></div>
+<div class="container manual-page" id="base64_encode"><div class="page-main">
+<a href="#base64_encode" class="help-page-title"><h2>Encode and decode base64</h2></a>
 
 <h3>Description</h3>
 
@@ -178,28 +201,31 @@ automatically collapsed into a single string.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">base64_encode<span class="token punctuation">(</span>bin<span class="token punctuation">,</span> linebreaks <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">base64_encode(bin, linebreaks = FALSE)
+
+base64_decode(text)
+</code><code class="language-r">base64_encode<span class="token punctuation">(</span>bin<span class="token punctuation">,</span> linebreaks <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 base64_decode<span class="token punctuation">(</span>text<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="base64_encode_:_bin">bin</code></td>
+<td><code id="bin">bin</code></td>
 <td>
 <p>raw or character vector with data to encode into base64</p>
 </td>
 </tr>
 <tr>
-<td><code id="base64_encode_:_linebreaks">linebreaks</code></td>
+<td><code id="linebreaks">linebreaks</code></td>
 <td>
 <p>insert linebreaks in the base64 message to make it more readable</p>
 </td>
 </tr>
 <tr>
-<td><code id="base64_encode_:_text">text</code></td>
+<td><code id="text">text</code></td>
 <td>
 <p>string with base64 data to decode</p>
 </td>
@@ -207,16 +233,19 @@ base64_decode<span class="token punctuation">(</span>text<span class="token punc
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">input <span class="token operator">&lt;-</span> charToRaw<span class="token punctuation">(</span><span class="token string">"foo = bar + 5"</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">input &lt;- charToRaw("foo = bar + 5")
+message &lt;- base64_encode(input)
+output &lt;- base64_decode(message)
+identical(output, input)
+</code><code class="language-r">input <span class="token operator">&lt;-</span> charToRaw<span class="token punctuation">(</span><span class="token string">"foo = bar + 5"</span><span class="token punctuation">)</span>
 message <span class="token operator">&lt;-</span> base64_encode<span class="token punctuation">(</span>input<span class="token punctuation">)</span>
 output <span class="token operator">&lt;-</span> base64_decode<span class="token punctuation">(</span>message<span class="token punctuation">)</span>
 identical<span class="token punctuation">(</span>output<span class="token punctuation">,</span> input<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="pbkdf">
-
-<a href="#pbkdf" class="help-page-title"><h2 id="bcrypt_pbkdf">Bcrypt PWKDF</h2></a>
+</div></div>
+<div class="container manual-page" id="pbkdf"><div class="page-main">
+<a href="#pbkdf" class="help-page-title"><h2>Bcrypt PWKDF</h2></a>
 
 <h3>Description</h3>
 
@@ -228,42 +257,42 @@ encoded in the <a href="https://cvsweb.openbsd.org/src/usr.bin/ssh/PROTOCOL.key?
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">bcrypt_pbkdf<span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">,</span> rounds <span class="token operator">=</span> <span class="token number">16L</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">32L</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">bcrypt_pbkdf(password, salt, rounds = 16L, size = 32L)
+</code><code class="language-r">bcrypt_pbkdf<span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">,</span> rounds <span class="token operator">=</span> <span class="token number">16L</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">32L</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="bcrypt_pbkdf_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>string or raw vector with password</p>
 </td>
 </tr>
 <tr>
-<td><code id="bcrypt_pbkdf_:_salt">salt</code></td>
+<td><code id="salt">salt</code></td>
 <td>
 <p>raw vector with (usually 16) bytes</p>
 </td>
 </tr>
 <tr>
-<td><code id="bcrypt_pbkdf_:_rounds">rounds</code></td>
+<td><code id="rounds">rounds</code></td>
 <td>
 <p>number of hashing rounds</p>
 </td>
 </tr>
 <tr>
-<td><code id="bcrypt_pbkdf_:_size">size</code></td>
+<td><code id="size">size</code></td>
 <td>
 <p>desired length of the output key</p>
 </td>
 </tr>
 </table>
 <hr>
-</div>
-<div class="container manual-page" id="bignum">
-
-<a href="#bignum" class="help-page-title"><h2 id="bignum">Big number arithmetic</h2></a>
+</div></div>
+<div class="container manual-page" id="bignum"><div class="page-main">
+<a href="#bignum" class="help-page-title"><h2>Big number arithmetic</h2></a>
 
 <h3>Description</h3>
 
@@ -281,42 +310,47 @@ when <code>b</code> is too large for calculating <code>a^b</code> directly.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">bignum<span class="token punctuation">(</span>x<span class="token punctuation">,</span> hex <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">bignum(x, hex = FALSE)
+
+bignum_mod_exp(a, b, m)
+
+bignum_mod_inv(a, m)
+</code><code class="language-r">bignum<span class="token punctuation">(</span>x<span class="token punctuation">,</span> hex <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 bignum_mod_exp<span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> m<span class="token punctuation">)</span>
 
 bignum_mod_inv<span class="token punctuation">(</span>a<span class="token punctuation">,</span> m<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="bignum_:_x">x</code></td>
+<td><code id="x">x</code></td>
 <td>
 <p>an integer, string (hex or dec) or raw vector</p>
 </td>
 </tr>
 <tr>
-<td><code id="bignum_:_hex">hex</code></td>
+<td><code id="hex">hex</code></td>
 <td>
 <p>set to TRUE to parse strings as hex rather than decimal notation</p>
 </td>
 </tr>
 <tr>
-<td><code id="bignum_:_a">a</code></td>
+<td><code id="a">a</code></td>
 <td>
 <p>bignum value for <code>(a^b %% m)</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="bignum_:_b">b</code></td>
+<td><code id="b">b</code></td>
 <td>
 <p>bignum value for <code>(a^b %% m)</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="bignum_:_m">m</code></td>
+<td><code id="m">m</code></td>
 <td>
 <p>bignum value for <code>(a^b %% m)</code></p>
 </td>
@@ -324,7 +358,18 @@ bignum_mod_inv<span class="token punctuation">(</span>a<span class="token punctu
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># create a bignum</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># create a bignum
+x &lt;- bignum(123L)
+y &lt;- bignum("123456789123456789")
+z &lt;- bignum("D41D8CD98F00B204E9800998ECF8427E", hex = TRUE)
+
+# Basic arithmetic
+div &lt;- z %/% y
+mod &lt;- z %% y
+z2 &lt;- div * y + mod
+stopifnot(z2 == z)
+stopifnot(div &lt; z)
+</code><code class="language-r"><span class="token comment"># create a bignum</span>
 x <span class="token operator">&lt;-</span> bignum<span class="token punctuation">(</span><span class="token number">123L</span><span class="token punctuation">)</span>
 y <span class="token operator">&lt;-</span> bignum<span class="token punctuation">(</span><span class="token string">"123456789123456789"</span><span class="token punctuation">)</span>
 z <span class="token operator">&lt;-</span> bignum<span class="token punctuation">(</span><span class="token string">"D41D8CD98F00B204E9800998ECF8427E"</span><span class="token punctuation">,</span> hex <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
@@ -337,10 +382,9 @@ stopifnot<span class="token punctuation">(</span>z2 <span class="token operator"
 stopifnot<span class="token punctuation">(</span>div <span class="token operator">&lt;</span> z<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="certificates">
-
-<a href="#certificates" class="help-page-title"><h2 id="cert_verify">X509 certificates</h2></a>
+</div></div>
+<div class="container manual-page" id="certificates"><div class="page-main">
+<a href="#certificates" class="help-page-title"><h2>X509 certificates</h2></a>
 
 <h3>Description</h3>
 
@@ -350,42 +394,47 @@ stopifnot<span class="token punctuation">(</span>div <span class="token operator
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">cert_verify<span class="token punctuation">(</span>cert<span class="token punctuation">,</span> root <span class="token operator">=</span> ca_bundle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">cert_verify(cert, root = ca_bundle())
+
+download_ssl_cert(host = "localhost", port = 443, ipv4_only = FALSE)
+
+ca_bundle()
+</code><code class="language-r">cert_verify<span class="token punctuation">(</span>cert<span class="token punctuation">,</span> root <span class="token operator">=</span> ca_bundle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 download_ssl_cert<span class="token punctuation">(</span>host <span class="token operator">=</span> <span class="token string">"localhost"</span><span class="token punctuation">,</span> port <span class="token operator">=</span> <span class="token number">443</span><span class="token punctuation">,</span> ipv4_only <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 ca_bundle<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="cert_verify_:_cert">cert</code></td>
+<td><code id="cert">cert</code></td>
 <td>
 <p>certificate (or certificate-chain) to be verified. Must be cert or list or path.</p>
 </td>
 </tr>
 <tr>
-<td><code id="cert_verify_:_root">root</code></td>
+<td><code id="root">root</code></td>
 <td>
 <p>trusted pubkey or certificate(s) e.g. CA bundle.</p>
 </td>
 </tr>
 <tr>
-<td><code id="cert_verify_:_host">host</code></td>
+<td><code id="host">host</code></td>
 <td>
 <p>string: hostname of the server to connect to</p>
 </td>
 </tr>
 <tr>
-<td><code id="cert_verify_:_port">port</code></td>
+<td><code id="port">port</code></td>
 <td>
 <p>string or integer: port or protocol to use, e.g: <code>443</code> or <code>"https"</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="cert_verify_:_ipv4_only">ipv4_only</code></td>
+<td><code id="ipv4_only">ipv4_only</code></td>
 <td>
 <p>do not use IPv6 connections</p>
 </td>
@@ -399,7 +448,19 @@ ca_bundle<span class="token punctuation">(</span><span class="token punctuation"
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Verify the r-project HTTPS cert</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">
+# Verify the r-project HTTPS cert
+chain &lt;- download_ssl_cert("cran.r-project.org", 443)
+print(chain)
+cert_data &lt;- as.list(chain[[1]])
+print(cert_data$pubkey)
+print(cert_data$alt_names)
+cert_verify(chain, ca_bundle())
+
+# Write cert in PEM format
+cat(write_pem(chain[[1]]))
+
+</code><code class="language-r"><span class="token comment"># Verify the r-project HTTPS cert</span>
 chain <span class="token operator">&lt;-</span> download_ssl_cert<span class="token punctuation">(</span><span class="token string">"cran.r-project.org"</span><span class="token punctuation">,</span> <span class="token number">443</span><span class="token punctuation">)</span>
 print<span class="token punctuation">(</span>chain<span class="token punctuation">)</span>
 cert_data <span class="token operator">&lt;-</span> as.list<span class="token punctuation">(</span>chain<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
@@ -411,10 +472,9 @@ cert_verify<span class="token punctuation">(</span>chain<span class="token punct
 cat<span class="token punctuation">(</span>write_pem<span class="token punctuation">(</span>chain<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="curve25519">
-
-<a href="#curve25519" class="help-page-title"><h2 id="curve25519">Curve25519</h2></a>
+</div></div>
+<div class="container manual-page" id="curve25519"><div class="page-main">
+<a href="#curve25519" class="help-page-title"><h2>Curve25519</h2></a>
 
 <h3>Description</h3>
 
@@ -428,7 +488,20 @@ sodium R package.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">read_ed25519_key<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">read_ed25519_key(x)
+
+read_ed25519_pubkey(x)
+
+read_x25519_key(x)
+
+read_x25519_pubkey(x)
+
+ed25519_sign(data, key)
+
+ed25519_verify(data, sig, pubkey)
+
+x25519_diffie_hellman(key, pubkey)
+</code><code class="language-r">read_ed25519_key<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
 
 read_ed25519_pubkey<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
 
@@ -443,35 +516,35 @@ ed25519_verify<span class="token punctuation">(</span>data<span class="token pun
 x25519_diffie_hellman<span class="token punctuation">(</span>key<span class="token punctuation">,</span> pubkey<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="curve25519_:_x">x</code></td>
+<td><code id="x">x</code></td>
 <td>
 <p>a 32 byte raw vector with (pub)key data</p>
 </td>
 </tr>
 <tr>
-<td><code id="curve25519_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>raw vector with data to sign or verify</p>
 </td>
 </tr>
 <tr>
-<td><code id="curve25519_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>private key as returned by <code>read_ed25519_key</code> or <code>ed25519_keygen</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="curve25519_:_sig">sig</code></td>
+<td><code id="sig">sig</code></td>
 <td>
 <p>raw vector of length 64 with signature as returned by <code>ed25519_sign</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="curve25519_:_pubkey">pubkey</code></td>
+<td><code id="pubkey">pubkey</code></td>
 <td>
 <p>public key as returned by <code>read_ed25519_pubkey</code> or <code>key$pubkey</code></p>
 </td>
@@ -479,7 +552,37 @@ x25519_diffie_hellman<span class="token punctuation">(</span>key<span class="tok
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Generate a keypair</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Generate a keypair
+if(openssl_config()$x25519){
+key &lt;- ed25519_keygen()
+pubkey &lt;- as.list(key)$pubkey
+
+# Sign message
+msg &lt;- serialize(iris, NULL)
+sig &lt;- ed25519_sign(msg, key)
+
+# Verify the signature
+ed25519_verify(msg, sig, pubkey)
+
+# Diffie Hellman example:
+key1 &lt;- x25519_keygen()
+key2 &lt;- x25519_keygen()
+
+# Both parties can derive the same secret
+x25519_diffie_hellman(key1, key2$pubkey)
+x25519_diffie_hellman(key2, key1$pubkey)
+
+# Import/export sodium keys
+rawkey &lt;- sodium::sig_keygen()
+rawpubkey &lt;- sodium::sig_pubkey(rawkey)
+key &lt;- read_ed25519_key(rawkey)
+pubkey &lt;- read_ed25519_pubkey(rawpubkey)
+
+# To get the raw key data back for use in sodium
+as.list(key)$data
+as.list(pubkey)$data
+}
+</code><code class="language-r"><span class="token comment"># Generate a keypair</span>
 <span class="token keyword">if</span><span class="token punctuation">(</span>openssl_config<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">$</span>x25519<span class="token punctuation">)</span><span class="token punctuation">{</span>
 key <span class="token operator">&lt;-</span> ed25519_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 pubkey <span class="token operator">&lt;-</span> as.list<span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token operator">$</span>pubkey
@@ -511,10 +614,9 @@ as.list<span class="token punctuation">(</span>pubkey<span class="token punctuat
 <span class="token punctuation">}</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="ec_dh">
-
-<a href="#ec_dh" class="help-page-title"><h2 id="ec_dh">Diffie-Hellman Key Agreement</h2></a>
+</div></div>
+<div class="container manual-page" id="ec_dh"><div class="page-main">
+<a href="#ec_dh" class="help-page-title"><h2>Diffie-Hellman Key Agreement</h2></a>
 
 <h3>Description</h3>
 
@@ -526,26 +628,27 @@ his or her private key with the public key from the peer.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">ec_dh<span class="token punctuation">(</span>key <span class="token operator">=</span> my_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> peerkey<span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">ec_dh(key = my_key(), peerkey, password = askpass)
+</code><code class="language-r">ec_dh<span class="token punctuation">(</span>key <span class="token operator">=</span> my_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> peerkey<span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="ec_dh_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>your own private key</p>
 </td>
 </tr>
 <tr>
-<td><code id="ec_dh_:_peerkey">peerkey</code></td>
+<td><code id="peerkey">peerkey</code></td>
 <td>
 <p>the public key from your peer</p>
 </td>
 </tr>
 <tr>
-<td><code id="ec_dh_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>passed to <a href="#read_key">read_key</a> for reading protected private keys</p>
 </td>
@@ -566,7 +669,21 @@ his or her private key with the public key from the peer.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+# Need two EC keypairs from the same curve
+alice_key &lt;- ec_keygen("P-521")
+bob_key &lt;- ec_keygen("P-521")
+
+# Derive public keys
+alice_pub &lt;- as.list(alice_key)$pubkey
+bob_pub &lt;- as.list(bob_key)$pubkey
+
+# Both peers can derive the (same) shared secret via each other's pubkey
+ec_dh(alice_key, bob_pub)
+ec_dh(bob_key, alice_pub)
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: </span>
 <span class="token comment"># Need two EC keypairs from the same curve</span>
 alice_key <span class="token operator">&lt;-</span> ec_keygen<span class="token punctuation">(</span><span class="token string">"P-521"</span><span class="token punctuation">)</span>
 bob_key <span class="token operator">&lt;-</span> ec_keygen<span class="token punctuation">(</span><span class="token string">"P-521"</span><span class="token punctuation">)</span>
@@ -582,10 +699,9 @@ ec_dh<span class="token punctuation">(</span>bob_key<span class="token punctuati
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="encrypt_envelope">
-
-<a href="#encrypt_envelope" class="help-page-title"><h2 id="encrypt_envelope">Envelope encryption</h2></a>
+</div></div>
+<div class="container manual-page" id="encrypt_envelope"><div class="page-main">
+<a href="#encrypt_envelope" class="help-page-title"><h2>Envelope encryption</h2></a>
 
 <h3>Description</h3>
 
@@ -601,47 +717,50 @@ the data with the corresponding private key.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">encrypt_envelope<span class="token punctuation">(</span>data<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> my_pubkey<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">encrypt_envelope(data, pubkey = my_pubkey())
+
+decrypt_envelope(data, iv, session, key = my_key(), password)
+</code><code class="language-r">encrypt_envelope<span class="token punctuation">(</span>data<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> my_pubkey<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 decrypt_envelope<span class="token punctuation">(</span>data<span class="token punctuation">,</span> iv<span class="token punctuation">,</span> session<span class="token punctuation">,</span> key <span class="token operator">=</span> my_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> password<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="encrypt_envelope_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>raw data vector or file path for message to be signed.
 If <code>hash == NULL</code> then <code>data</code> must be a hash string or raw vector.</p>
 </td>
 </tr>
 <tr>
-<td><code id="encrypt_envelope_:_pubkey">pubkey</code></td>
+<td><code id="pubkey">pubkey</code></td>
 <td>
 <p>public key or file path. See <code><a href="#read_key">read_pubkey()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="encrypt_envelope_:_iv">iv</code></td>
+<td><code id="iv">iv</code></td>
 <td>
 <p>16 byte raw vector returned by <code>encrypt_envelope</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="encrypt_envelope_:_session">session</code></td>
+<td><code id="session">session</code></td>
 <td>
 <p>raw vector with encrypted session key as returned by <code>encrypt_envelope</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="encrypt_envelope_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>private key or file path. See <code><a href="#read_key">read_key()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="encrypt_envelope_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>string or a function to read protected keys. See <code><a href="#read_key">read_key()</a></code>.</p>
 </td>
@@ -655,7 +774,19 @@ If <code>hash == NULL</code> then <code>data</code> must be a hash string or raw
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Requires RSA key</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Requires RSA key
+key &lt;- rsa_keygen()
+pubkey &lt;- key$pubkey
+msg &lt;- serialize(iris, NULL)
+
+# Encrypt
+out &lt;- encrypt_envelope(msg, pubkey)
+str(out)
+
+# Decrypt
+orig &lt;- decrypt_envelope(out$data, out$iv, out$session, key)
+stopifnot(identical(msg, orig))
+</code><code class="language-r"><span class="token comment"># Requires RSA key</span>
 key <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 pubkey <span class="token operator">&lt;-</span> key<span class="token operator">$</span>pubkey
 msg <span class="token operator">&lt;-</span> serialize<span class="token punctuation">(</span>iris<span class="token punctuation">,</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
@@ -669,10 +800,9 @@ orig <span class="token operator">&lt;-</span> decrypt_envelope<span class="toke
 stopifnot<span class="token punctuation">(</span>identical<span class="token punctuation">(</span>msg<span class="token punctuation">,</span> orig<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="fingerprint">
-
-<a href="#fingerprint" class="help-page-title"><h2 id="fingerprint">OpenSSH fingerprint</h2></a>
+</div></div>
+<div class="container manual-page" id="fingerprint"><div class="page-main">
+<a href="#fingerprint" class="help-page-title"><h2>OpenSSH fingerprint</h2></a>
 
 <h3>Description</h3>
 
@@ -685,20 +815,21 @@ that some other systems might use a different algorithm to derive a
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">fingerprint<span class="token punctuation">(</span>key<span class="token punctuation">,</span> hashfun <span class="token operator">=</span> sha256<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">fingerprint(key, hashfun = sha256)
+</code><code class="language-r">fingerprint<span class="token punctuation">(</span>key<span class="token punctuation">,</span> hashfun <span class="token operator">=</span> sha256<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="fingerprint_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>a public or private key</p>
 </td>
 </tr>
 <tr>
-<td><code id="fingerprint_:_hashfun">hashfun</code></td>
+<td><code id="hashfun">hashfun</code></td>
 <td>
 <p>which hash function to use to calculate the fingerprint</p>
 </td>
@@ -706,7 +837,18 @@ that some other systems might use a different algorithm to derive a
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">mykey <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">mykey &lt;- rsa_keygen()
+pubkey &lt;- as.list(mykey)$pubkey
+fingerprint(mykey)
+fingerprint(pubkey)
+
+# Some systems use other hash functions
+fingerprint(pubkey, sha1)
+fingerprint(pubkey, sha256)
+
+# Other key types
+fingerprint(dsa_keygen())
+</code><code class="language-r">mykey <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 pubkey <span class="token operator">&lt;-</span> as.list<span class="token punctuation">(</span>mykey<span class="token punctuation">)</span><span class="token operator">$</span>pubkey
 fingerprint<span class="token punctuation">(</span>mykey<span class="token punctuation">)</span>
 fingerprint<span class="token punctuation">(</span>pubkey<span class="token punctuation">)</span>
@@ -719,10 +861,9 @@ fingerprint<span class="token punctuation">(</span>pubkey<span class="token punc
 fingerprint<span class="token punctuation">(</span>dsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="hash">
-
-<a href="#hash" class="help-page-title"><h2 id="hashing">Vectorized hash/hmac functions</h2></a>
+</div></div>
+<div class="container manual-page" id="hash"><div class="page-main">
+<a href="#hash" class="help-page-title"><h2>Vectorized hash/hmac functions</h2></a>
 
 <h3>Description</h3>
 
@@ -734,7 +875,34 @@ inputs are binary (raw vector), strings (character vector) or a connection objec
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">sha1<span class="token punctuation">(</span>x<span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">sha1(x, key = NULL)
+
+sha224(x, key = NULL)
+
+sha256(x, key = NULL)
+
+sha384(x, key = NULL)
+
+sha512(x, key = NULL)
+
+keccak(x, size = 256, key = NULL)
+
+sha2(x, size = 256, key = NULL)
+
+sha3(x, size = 256, key = NULL)
+
+md4(x, key = NULL)
+
+md5(x, key = NULL)
+
+blake2b(x, key = NULL)
+
+blake2s(x, key = NULL)
+
+ripemd160(x, key = NULL)
+
+multihash(x, algos = c("md5", "sha1", "sha256", "sha384", "sha512"))
+</code><code class="language-r">sha1<span class="token punctuation">(</span>x<span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
 sha224<span class="token punctuation">(</span>x<span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
@@ -744,7 +912,11 @@ sha384<span class="token punctuation">(</span>x<span class="token punctuation">,
 
 sha512<span class="token punctuation">(</span>x<span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
+keccak<span class="token punctuation">(</span>x<span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">256</span><span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
 sha2<span class="token punctuation">(</span>x<span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">256</span><span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+sha3<span class="token punctuation">(</span>x<span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">256</span><span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
 md4<span class="token punctuation">(</span>x<span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
@@ -759,29 +931,29 @@ ripemd160<span class="token punctuation">(</span>x<span class="token punctuation
 multihash<span class="token punctuation">(</span>x<span class="token punctuation">,</span> algos <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"md5"</span><span class="token punctuation">,</span> <span class="token string">"sha1"</span><span class="token punctuation">,</span> <span class="token string">"sha256"</span><span class="token punctuation">,</span> <span class="token string">"sha384"</span><span class="token punctuation">,</span> <span class="token string">"sha512"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="hashing_:_x">x</code></td>
+<td><code id="x">x</code></td>
 <td>
 <p>character vector, raw vector or connection object.</p>
 </td>
 </tr>
 <tr>
-<td><code id="hashing_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>string or raw vector used as the key for HMAC hashing</p>
 </td>
 </tr>
 <tr>
-<td><code id="hashing_:_size">size</code></td>
+<td><code id="size">size</code></td>
 <td>
 <p>must be equal to 224 256 384 or 512</p>
 </td>
 </tr>
 <tr>
-<td><code id="hashing_:_algos">algos</code></td>
+<td><code id="algos">algos</code></td>
 <td>
 <p>string vector with names of hashing algorithms</p>
 </td>
@@ -816,17 +988,51 @@ dataset, while simultaneously rendering the results incomparable to other datase
 <p>The <code>blake2b</code> and <code>blake2s</code> algorithms are only available if your system has
 libssl 1.1 or newer.
 </p>
+<p>NB R base <code>file()</code> function has a poor default <code>raw = FALSE</code> which causes files to get
+altereted (e.g. decompressed) when reading. Use <code>file(path, raw = TRUE)</code> to get the
+hash of the file as it exists on your disk.
+</p>
 
 
 <h3>References</h3>
 
-<p>Digest types: <a href="https://www.openssl.org/docs/man1.1.1/man1/openssl-dgst.html" target="_blank">https://www.openssl.org/docs/man1.1.1/man1/openssl-dgst.html</a>
+<p>Digest types: <a href="https://docs.openssl.org/1.1.1/man1/dgst/" target="_blank">https://docs.openssl.org/1.1.1/man1/dgst/</a>
 </p>
 
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Support both strings and binary</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Support both strings and binary
+md5(c("foo", "bar"))
+md5("foo", key = "secret")
+
+hash &lt;- md5(charToRaw("foo"))
+as.character(hash, sep = ":")
+
+# Compare to digest
+digest::digest("foo", "md5", serialize = FALSE)
+
+# Other way around
+digest::digest(cars, skip = 0)
+md5(serialize(cars, NULL))
+
+# Stream-verify from connections (including files)
+myfile &lt;- system.file("CITATION")
+md5(file(myfile, raw = TRUE))
+md5(file(myfile, raw = TRUE), key = "secret")
+
+## Not run: check md5 from: http://cran.r-project.org/bin/windows/base/old/3.1.1/md5sum.txt
+md5(url("http://cran.r-project.org/bin/windows/base/old/3.1.1/R-3.1.1-win.exe"))
+## End(Not run)
+
+# Use a salt to prevent dictionary attacks
+sha1("admin") # googleable
+sha1("admin", key = "random_salt_value") #not googleable
+
+# Use a random salt to identify duplicates while anonymizing values
+sha256("john") # googleable
+sha256(c("john", "mary", "john"), key = "random_salt_value")
+</code><code class="language-r"><span class="token comment"># Support both strings and binary</span>
 md5<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">,</span> <span class="token string">"bar"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 md5<span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token string">"secret"</span><span class="token punctuation">)</span>
 
@@ -842,8 +1048,8 @@ md5<span class="token punctuation">(</span>serialize<span class="token punctuati
 
 <span class="token comment"># Stream-verify from connections (including files)</span>
 myfile <span class="token operator">&lt;-</span> system.file<span class="token punctuation">(</span><span class="token string">"CITATION"</span><span class="token punctuation">)</span>
-md5<span class="token punctuation">(</span>file<span class="token punctuation">(</span>myfile<span class="token punctuation">)</span><span class="token punctuation">)</span>
-md5<span class="token punctuation">(</span>file<span class="token punctuation">(</span>myfile<span class="token punctuation">)</span><span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token string">"secret"</span><span class="token punctuation">)</span>
+md5<span class="token punctuation">(</span>file<span class="token punctuation">(</span>myfile<span class="token punctuation">,</span> raw <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+md5<span class="token punctuation">(</span>file<span class="token punctuation">(</span>myfile<span class="token punctuation">,</span> raw <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span><span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token string">"secret"</span><span class="token punctuation">)</span>
 
 <span class="token comment">## Not run: check md5 from: http://cran.r-project.org/bin/windows/base/old/3.1.1/md5sum.txt</span>
 md5<span class="token punctuation">(</span>url<span class="token punctuation">(</span><span class="token string">"http://cran.r-project.org/bin/windows/base/old/3.1.1/R-3.1.1-win.exe"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -858,10 +1064,9 @@ sha256<span class="token punctuation">(</span><span class="token string">"john"<
 sha256<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token string">"john"</span><span class="token punctuation">,</span> <span class="token string">"mary"</span><span class="token punctuation">,</span> <span class="token string">"john"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> key <span class="token operator">=</span> <span class="token string">"random_salt_value"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="keygen">
-
-<a href="#keygen" class="help-page-title"><h2 id="keygen">Generate Key pair</h2></a>
+</div></div>
+<div class="container manual-page" id="keygen"><div class="page-main">
+<a href="#keygen" class="help-page-title"><h2>Generate Key pair</h2></a>
 
 <h3>Description</h3>
 
@@ -873,7 +1078,16 @@ to a file, optionally with a password.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">rsa_keygen<span class="token punctuation">(</span>bits <span class="token operator">=</span> <span class="token number">2048</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">rsa_keygen(bits = 2048)
+
+dsa_keygen(bits = 1024)
+
+ec_keygen(curve = c("P-256", "P-384", "P-521"))
+
+x25519_keygen()
+
+ed25519_keygen()
+</code><code class="language-r">rsa_keygen<span class="token punctuation">(</span>bits <span class="token operator">=</span> <span class="token number">2048</span><span class="token punctuation">)</span>
 
 dsa_keygen<span class="token punctuation">(</span>bits <span class="token operator">=</span> <span class="token number">1024</span><span class="token punctuation">)</span>
 
@@ -884,17 +1098,17 @@ x25519_keygen<span class="token punctuation">(</span><span class="token punctuat
 ed25519_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="keygen_:_bits">bits</code></td>
+<td><code id="bits">bits</code></td>
 <td>
 <p>bitsize of the generated RSA/DSA key</p>
 </td>
 </tr>
 <tr>
-<td><code id="keygen_:_curve">curve</code></td>
+<td><code id="curve">curve</code></td>
 <td>
 <p>which NIST curve to use</p>
 </td>
@@ -902,7 +1116,15 @@ ed25519_keygen<span class="token punctuation">(</span><span class="token punctua
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Generate keypair</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Generate keypair
+key &lt;- rsa_keygen()
+pubkey &lt;- as.list(key)$pubkey
+
+# Write/read the key with a passphrase
+write_pem(key, "id_rsa", password = "supersecret")
+read_key("id_rsa", password = "supersecret")
+unlink("id_rsa")
+</code><code class="language-r"><span class="token comment"># Generate keypair</span>
 key <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 pubkey <span class="token operator">&lt;-</span> as.list<span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token operator">$</span>pubkey
 
@@ -912,10 +1134,9 @@ read_key<span class="token punctuation">(</span><span class="token string">"id_r
 unlink<span class="token punctuation">(</span><span class="token string">"id_rsa"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="my_key">
-
-<a href="#my_key" class="help-page-title"><h2 id="my_key">Default key</h2></a>
+</div></div>
+<div class="container manual-page" id="my_key"><div class="page-main">
+<a href="#my_key" class="help-page-title"><h2>Default key</h2></a>
 
 <h3>Description</h3>
 
@@ -927,7 +1148,10 @@ home (and not the documents folder).
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">my_key<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">my_key()
+
+my_pubkey()
+</code><code class="language-r">my_key<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 my_pubkey<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
@@ -943,7 +1167,16 @@ may be prompted for a passphrase if the private key is protected.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Set random RSA key as default</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Set random RSA key as default
+key &lt;- rsa_keygen()
+write_pem(key, tmp &lt;- tempfile(), password = "")
+rm(key)
+Sys.setenv("USER_KEY" = tmp)
+
+# Check the new keys
+print(my_key())
+print(my_pubkey())
+</code><code class="language-r"><span class="token comment"># Set random RSA key as default</span>
 key <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 write_pem<span class="token punctuation">(</span>key<span class="token punctuation">,</span> tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> password <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">)</span>
 rm<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
@@ -954,10 +1187,9 @@ print<span class="token punctuation">(</span>my_key<span class="token punctuatio
 print<span class="token punctuation">(</span>my_pubkey<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="openssl">
-
-<a href="#openssl" class="help-page-title"><h2 id="openssl">Toolkit for Encryption, Signatures and Certificates based on OpenSSL</h2></a>
+</div></div>
+<div class="container manual-page" id="openssl"><div class="page-main">
+<a href="#openssl" class="help-page-title"><h2>Toolkit for Encryption, Signatures and Certificates based on OpenSSL</h2></a>
 
 <h3>Description</h3>
 
@@ -982,11 +1214,25 @@ calculations on large multibyte integers.
 <p>Jeroen Ooms, Oliver Keyes
 </p>
 
-<hr>
-</div>
-<div class="container manual-page" id="openssl_config">
 
-<a href="#openssl_config" class="help-page-title"><h2 id="openssl_config">OpenSSL Configuration Info</h2></a>
+<h3>See Also</h3>
+
+<p>Useful links:
+</p>
+
+<ul>
+<li> <p><a href="https://jeroen.r-universe.dev/openssl" target="_blank">https://jeroen.r-universe.dev/openssl</a>
+</p>
+</li>
+<li>
+<p> Report bugs at <a href="https://github.com/jeroen/openssl/issues" target="_blank">https://github.com/jeroen/openssl/issues</a>
+</p>
+</li>
+</ul>
+<hr>
+</div></div>
+<div class="container manual-page" id="openssl_config"><div class="page-main">
+<a href="#openssl_config" class="help-page-title"><h2>OpenSSL Configuration Info</h2></a>
 
 <h3>Description</h3>
 
@@ -996,7 +1242,10 @@ calculations on large multibyte integers.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">openssl_config<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">openssl_config()
+
+fips_mode()
+</code><code class="language-r">openssl_config<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 fips_mode<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
@@ -1011,10 +1260,9 @@ The <code>fips_mode()</code> function shows if FIPS is currently enforced.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="pkcs7">
-
-<a href="#pkcs7" class="help-page-title"><h2 id="pkcs7_encrypt">Encrypt/decrypt pkcs7 messages</h2></a>
+</div></div>
+<div class="container manual-page" id="pkcs7"><div class="page-main">
+<a href="#pkcs7" class="help-page-title"><h2>Encrypt/decrypt pkcs7 messages</h2></a>
 
 <h3>Description</h3>
 
@@ -1025,46 +1273,49 @@ Note PKCS7 only supports RSA keys.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">pkcs7_encrypt<span class="token punctuation">(</span>message<span class="token punctuation">,</span> cert<span class="token punctuation">,</span> pem <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">pkcs7_encrypt(message, cert, pem = TRUE)
+
+pkcs7_decrypt(input, key, der = is.raw(input))
+</code><code class="language-r">pkcs7_encrypt<span class="token punctuation">(</span>message<span class="token punctuation">,</span> cert<span class="token punctuation">,</span> pem <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
 
 pkcs7_decrypt<span class="token punctuation">(</span>input<span class="token punctuation">,</span> key<span class="token punctuation">,</span> der <span class="token operator">=</span> is.raw<span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="pkcs7_encrypt_:_message">message</code></td>
+<td><code id="message">message</code></td>
 <td>
 <p>text or raw vector with data to encrypt</p>
 </td>
 </tr>
 <tr>
-<td><code id="pkcs7_encrypt_:_cert">cert</code></td>
+<td><code id="cert">cert</code></td>
 <td>
 <p>the certificate with public key to use for encryption</p>
 </td>
 </tr>
 <tr>
-<td><code id="pkcs7_encrypt_:_pem">pem</code></td>
+<td><code id="pem">pem</code></td>
 <td>
 <p>convert output pkcs7 data to PEM format</p>
 </td>
 </tr>
 <tr>
-<td><code id="pkcs7_encrypt_:_input">input</code></td>
+<td><code id="input">input</code></td>
 <td>
 <p>file path or string with PEM or raw vector with p7b data</p>
 </td>
 </tr>
 <tr>
-<td><code id="pkcs7_encrypt_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>private key to decrypt data</p>
 </td>
 </tr>
 <tr>
-<td><code id="pkcs7_encrypt_:_der">der</code></td>
+<td><code id="der">der</code></td>
 <td>
 <p>assume input is in DER format (rather than PEM)</p>
 </td>
@@ -1076,10 +1327,9 @@ pkcs7_decrypt<span class="token punctuation">(</span>input<span class="token pun
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="rand_bytes">
-
-<a href="#rand_bytes" class="help-page-title"><h2 id="rand_bytes">Generate random bytes and numbers with OpenSSL</h2></a>
+</div></div>
+<div class="container manual-page" id="rand_bytes"><div class="page-main">
+<a href="#rand_bytes" class="help-page-title"><h2>Generate random bytes and numbers with OpenSSL</h2></a>
 
 <h3>Description</h3>
 
@@ -1091,28 +1341,49 @@ provides a cryptographically secure alternative to R's default random number gen
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">rand_bytes<span class="token punctuation">(</span>n <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">rand_bytes(n = 1)
+
+rand_num(n = 1)
+</code><code class="language-r">rand_bytes<span class="token punctuation">(</span>n <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
 
 rand_num<span class="token punctuation">(</span>n <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="rand_bytes_:_n">n</code></td>
+<td><code id="n">n</code></td>
 <td>
 <p>number of random bytes or numbers to generate</p>
 </td>
 </tr></table>
 <h3>References</h3>
 
-<p>OpenSSL manual: <a href="https://www.openssl.org/docs/man1.1.1/man3/RAND_bytes.html" target="_blank">https://www.openssl.org/docs/man1.1.1/man3/RAND_bytes.html</a>
+<p>OpenSSL manual: <a href="https://docs.openssl.org/1.1.1/man3/RAND_bytes/" target="_blank">https://docs.openssl.org/1.1.1/man3/RAND_bytes/</a>
 </p>
 
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">rnd <span class="token operator">&lt;-</span> rand_bytes<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">rnd &lt;- rand_bytes(10)
+as.numeric(rnd)
+as.character(rnd)
+as.logical(rawToBits(rnd))
+
+# bytes range from 0 to 255
+rnd &lt;- rand_bytes(100000)
+hist(as.numeric(rnd), breaks=-1:255)
+
+# Generate random doubles between 0 and 1
+rand_num(5)
+
+# Use CDF to map [0,1] into random draws from a distribution
+x &lt;- qnorm(rand_num(1000), mean=100, sd=15)
+hist(x)
+
+y &lt;- qbinom(rand_num(1000), size=10, prob=0.3)
+hist(y)
+</code><code class="language-r">rnd <span class="token operator">&lt;-</span> rand_bytes<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
 as.numeric<span class="token punctuation">(</span>rnd<span class="token punctuation">)</span>
 as.character<span class="token punctuation">(</span>rnd<span class="token punctuation">)</span>
 as.logical<span class="token punctuation">(</span>rawToBits<span class="token punctuation">(</span>rnd<span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -1132,10 +1403,9 @@ y <span class="token operator">&lt;-</span> qbinom<span class="token punctuation
 hist<span class="token punctuation">(</span>y<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="read_key">
-
-<a href="#read_key" class="help-page-title"><h2 id="read_key">Parsing keys and certificates</h2></a>
+</div></div>
+<div class="container manual-page" id="read_key"><div class="page-main">
+<a href="#read_key" class="help-page-title"><h2>Parsing keys and certificates</h2></a>
 
 <h3>Description</h3>
 
@@ -1149,7 +1419,16 @@ with multiple certificates.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">read_key<span class="token punctuation">(</span>file<span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">,</span> der <span class="token operator">=</span> is.raw<span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">read_key(file, password = askpass, der = is.raw(file))
+
+read_pubkey(file, der = is.raw(file))
+
+read_cert(file, der = is.raw(file))
+
+read_cert_bundle(file)
+
+read_pem(file)
+</code><code class="language-r">read_key<span class="token punctuation">(</span>file<span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">,</span> der <span class="token operator">=</span> is.raw<span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 read_pubkey<span class="token punctuation">(</span>file<span class="token punctuation">,</span> der <span class="token operator">=</span> is.raw<span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
@@ -1160,24 +1439,24 @@ read_cert_bundle<span class="token punctuation">(</span>file<span class="token p
 read_pem<span class="token punctuation">(</span>file<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="read_key_:_file">file</code></td>
+<td><code id="file">file</code></td>
 <td>
 <p>Either a path to a file, a connection, or literal data (a string for
 pem/ssh format, or a raw vector in der format)</p>
 </td>
 </tr>
 <tr>
-<td><code id="read_key_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>A string or callback function to read protected keys</p>
 </td>
 </tr>
 <tr>
-<td><code id="read_key_:_der">der</code></td>
+<td><code id="der">der</code></td>
 <td>
 <p>set to <code>TRUE</code> if <code>file</code> is in binary DER format</p>
 </td>
@@ -1211,7 +1490,21 @@ in binary DER format and can be decomposed using <code>as.list</code>.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: # Read private key</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: # Read private key
+key &lt;- read_key("~/.ssh/id_rsa")
+str(key)
+
+# Read public key
+pubkey &lt;- read_pubkey("~/.ssh/id_rsa.pub")
+str(pubkey)
+
+# Read certificates
+txt &lt;- readLines("https://curl.haxx.se/ca/cacert.pem")
+bundle &lt;- read_cert_bundle(txt)
+print(bundle)
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: # Read private key</span>
 key <span class="token operator">&lt;-</span> read_key<span class="token punctuation">(</span><span class="token string">"~/.ssh/id_rsa"</span><span class="token punctuation">)</span>
 str<span class="token punctuation">(</span>key<span class="token punctuation">)</span>
 
@@ -1227,10 +1520,9 @@ print<span class="token punctuation">(</span>bundle<span class="token punctuatio
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="rsa_encrypt">
-
-<a href="#rsa_encrypt" class="help-page-title"><h2 id="rsa_encrypt">Low-level RSA encryption</h2></a>
+</div></div>
+<div class="container manual-page" id="rsa_encrypt"><div class="page-main">
+<a href="#rsa_encrypt" class="help-page-title"><h2>Low-level RSA encryption</h2></a>
 
 <h3>Description</h3>
 
@@ -1244,34 +1536,43 @@ wrappers combining RSA and AES in this way.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">rsa_encrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> my_pubkey<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">rsa_encrypt(data, pubkey = my_pubkey(), oaep = FALSE)
 
-rsa_decrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> key <span class="token operator">=</span> my_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">)</span></code></pre>
+rsa_decrypt(data, key = my_key(), password = askpass, oaep = FALSE)
+</code><code class="language-r">rsa_encrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> my_pubkey<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> oaep <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+rsa_decrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> key <span class="token operator">=</span> my_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">,</span> oaep <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="rsa_encrypt_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>raw vector of max 245 bytes (for 2048 bit keys) with data to encrypt/decrypt</p>
 </td>
 </tr>
 <tr>
-<td><code id="rsa_encrypt_:_pubkey">pubkey</code></td>
+<td><code id="pubkey">pubkey</code></td>
 <td>
 <p>public key or file path. See <code><a href="#read_key">read_pubkey()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="rsa_encrypt_:_key">key</code></td>
+<td><code id="oaep">oaep</code></td>
+<td>
+<p>if TRUE, changes padding to EME-OAEP as defined in PKCS #1 v2.0</p>
+</td>
+</tr>
+<tr>
+<td><code id="key">key</code></td>
 <td>
 <p>private key or file path. See <code><a href="#read_key">read_key()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="rsa_encrypt_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>string or a function to read protected keys. See <code><a href="#read_key">read_key()</a></code>.</p>
 </td>
@@ -1279,7 +1580,23 @@ rsa_decrypt<span class="token punctuation">(</span>data<span class="token punctu
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Generate test keys</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Generate test keys
+key &lt;- rsa_keygen()
+pubkey &lt;- key$pubkey
+
+# Encrypt data with AES
+tempkey &lt;- rand_bytes(32)
+iv &lt;- rand_bytes(16)
+blob &lt;- aes_cbc_encrypt(system.file("CITATION"), tempkey, iv = iv)
+
+# Encrypt tempkey using receivers public RSA key
+ciphertext &lt;- rsa_encrypt(tempkey, pubkey)
+
+# Receiver decrypts tempkey from private RSA key
+tempkey &lt;- rsa_decrypt(ciphertext, key)
+message &lt;- aes_cbc_decrypt(blob, tempkey, iv)
+out &lt;- rawToChar(message)
+</code><code class="language-r"><span class="token comment"># Generate test keys</span>
 key <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 pubkey <span class="token operator">&lt;-</span> key<span class="token operator">$</span>pubkey
 
@@ -1297,10 +1614,9 @@ message <span class="token operator">&lt;-</span> aes_cbc_decrypt<span class="to
 out <span class="token operator">&lt;-</span> rawToChar<span class="token punctuation">(</span>message<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="signatures">
-
-<a href="#signatures" class="help-page-title"><h2 id="signature_create">Signatures</h2></a>
+</div></div>
+<div class="container manual-page" id="signatures"><div class="page-main">
+<a href="#signatures" class="help-page-title"><h2>Signatures</h2></a>
 
 <h3>Description</h3>
 
@@ -1312,7 +1628,14 @@ set <code>hash</code> to <code>NULL</code> to sign the raw input data.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">signature_create<span class="token punctuation">(</span>data<span class="token punctuation">,</span> hash <span class="token operator">=</span> sha1<span class="token punctuation">,</span> key <span class="token operator">=</span> my_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">signature_create(data, hash = sha1, key = my_key(), password = askpass)
+
+signature_verify(data, sig, hash = sha1, pubkey = my_pubkey())
+
+ecdsa_parse(sig)
+
+ecdsa_write(r, s)
+</code><code class="language-r">signature_create<span class="token punctuation">(</span>data<span class="token punctuation">,</span> hash <span class="token operator">=</span> sha1<span class="token punctuation">,</span> key <span class="token operator">=</span> my_key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> password <span class="token operator">=</span> askpass<span class="token punctuation">)</span>
 
 signature_verify<span class="token punctuation">(</span>data<span class="token punctuation">,</span> sig<span class="token punctuation">,</span> hash <span class="token operator">=</span> sha1<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> my_pubkey<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
@@ -1321,55 +1644,55 @@ ecdsa_parse<span class="token punctuation">(</span>sig<span class="token punctua
 ecdsa_write<span class="token punctuation">(</span>r<span class="token punctuation">,</span> s<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="signature_create_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>raw data vector or file path for message to be signed.
 If <code>hash == NULL</code> then <code>data</code> must be a hash string or raw vector.</p>
 </td>
 </tr>
 <tr>
-<td><code id="signature_create_:_hash">hash</code></td>
+<td><code id="hash">hash</code></td>
 <td>
 <p>the digest function to use. Must be one of <code><a href="#hash">md5()</a></code>,
 <code><a href="#hash">sha1()</a></code>, <code><a href="#hash">sha256()</a></code>, <code><a href="#hash">sha512()</a></code> or <code>NULL</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="signature_create_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>private key or file path. See <code><a href="#read_key">read_key()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="signature_create_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>string or a function to read protected keys. See <code><a href="#read_key">read_key()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="signature_create_:_sig">sig</code></td>
+<td><code id="sig">sig</code></td>
 <td>
 <p>raw vector or file path for the signature data.</p>
 </td>
 </tr>
 <tr>
-<td><code id="signature_create_:_pubkey">pubkey</code></td>
+<td><code id="pubkey">pubkey</code></td>
 <td>
 <p>public key or file path. See <code><a href="#read_key">read_pubkey()</a></code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="signature_create_:_r">r</code></td>
+<td><code id="r">r</code></td>
 <td>
 <p>bignum value for r parameter</p>
 </td>
 </tr>
 <tr>
-<td><code id="signature_create_:_s">s</code></td>
+<td><code id="s">s</code></td>
 <td>
 <p>bignum value for s parameter</p>
 </td>
@@ -1386,14 +1709,44 @@ use DER).
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Generate a keypair</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Generate a keypair
+key &lt;- rsa_keygen()
+pubkey &lt;- key$pubkey
+
+# Sign a file
+data &lt;- system.file("DESCRIPTION")
+sig &lt;- signature_create(data, sha256, key = key)
+stopifnot(signature_verify(data, sig, sha256, pubkey = pubkey))
+
+# Sign raw data
+data &lt;- serialize(iris, NULL)
+sig &lt;- signature_create(data, sha256, key = key)
+stopifnot(signature_verify(data, sig, sha256, pubkey = pubkey))
+
+# Sign a hash
+md &lt;- md5(data)
+sig &lt;- signature_create(md, hash = sha256, key = key)
+stopifnot(signature_verify(md, sig, hash = sha256, pubkey = pubkey))
+#
+# ECDSA example
+data &lt;- serialize(iris, NULL)
+key &lt;- ec_keygen()
+pubkey &lt;- key$pubkey
+sig &lt;- signature_create(data, sha256, key = key)
+stopifnot(signature_verify(data, sig, sha256, pubkey = pubkey))
+
+# Convert signature to (r, s) parameters and then back
+params &lt;- ecdsa_parse(sig)
+out &lt;- ecdsa_write(params$r, params$s)
+identical(sig, out)
+</code><code class="language-r"><span class="token comment"># Generate a keypair</span>
 key <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 pubkey <span class="token operator">&lt;-</span> key<span class="token operator">$</span>pubkey
 
 <span class="token comment"># Sign a file</span>
 data <span class="token operator">&lt;-</span> system.file<span class="token punctuation">(</span><span class="token string">"DESCRIPTION"</span><span class="token punctuation">)</span>
-sig <span class="token operator">&lt;-</span> signature_create<span class="token punctuation">(</span>data<span class="token punctuation">,</span> key <span class="token operator">=</span> key<span class="token punctuation">)</span>
-stopifnot<span class="token punctuation">(</span>signature_verify<span class="token punctuation">(</span>data<span class="token punctuation">,</span> sig<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> pubkey<span class="token punctuation">)</span><span class="token punctuation">)</span>
+sig <span class="token operator">&lt;-</span> signature_create<span class="token punctuation">(</span>data<span class="token punctuation">,</span> sha256<span class="token punctuation">,</span> key <span class="token operator">=</span> key<span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>signature_verify<span class="token punctuation">(</span>data<span class="token punctuation">,</span> sig<span class="token punctuation">,</span> sha256<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> pubkey<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Sign raw data</span>
 data <span class="token operator">&lt;-</span> serialize<span class="token punctuation">(</span>iris<span class="token punctuation">,</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
@@ -1402,8 +1755,8 @@ stopifnot<span class="token punctuation">(</span>signature_verify<span class="to
 
 <span class="token comment"># Sign a hash</span>
 md <span class="token operator">&lt;-</span> md5<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-sig <span class="token operator">&lt;-</span> signature_create<span class="token punctuation">(</span>md<span class="token punctuation">,</span> hash <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> key <span class="token operator">=</span> key<span class="token punctuation">)</span>
-stopifnot<span class="token punctuation">(</span>signature_verify<span class="token punctuation">(</span>md<span class="token punctuation">,</span> sig<span class="token punctuation">,</span> hash <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> pubkey <span class="token operator">=</span> pubkey<span class="token punctuation">)</span><span class="token punctuation">)</span>
+sig <span class="token operator">&lt;-</span> signature_create<span class="token punctuation">(</span>md<span class="token punctuation">,</span> hash <span class="token operator">=</span> sha256<span class="token punctuation">,</span> key <span class="token operator">=</span> key<span class="token punctuation">)</span>
+stopifnot<span class="token punctuation">(</span>signature_verify<span class="token punctuation">(</span>md<span class="token punctuation">,</span> sig<span class="token punctuation">,</span> hash <span class="token operator">=</span> sha256<span class="token punctuation">,</span> pubkey <span class="token operator">=</span> pubkey<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token comment">#</span>
 <span class="token comment"># ECDSA example</span>
 data <span class="token operator">&lt;-</span> serialize<span class="token punctuation">(</span>iris<span class="token punctuation">,</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
@@ -1418,10 +1771,9 @@ out <span class="token operator">&lt;-</span> ecdsa_write<span class="token punc
 identical<span class="token punctuation">(</span>sig<span class="token punctuation">,</span> out<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="ssl_ctx">
-
-<a href="#ssl_ctx" class="help-page-title"><h2 id="ssl_ctx">Hooks to manipulate the SSL context for curl requests</h2></a>
+</div></div>
+<div class="container manual-page" id="ssl_ctx"><div class="page-main">
+<a href="#ssl_ctx" class="help-page-title"><h2>Hooks to manipulate the SSL context for curl requests</h2></a>
 
 <h3>Description</h3>
 
@@ -1437,31 +1789,36 @@ accomplished using standard libcurl TLS options, e.g. those listed in
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">ssl_ctx_add_cert_to_store<span class="token punctuation">(</span>ssl_ctx<span class="token punctuation">,</span> cert<span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">ssl_ctx_add_cert_to_store(ssl_ctx, cert)
+
+ssl_ctx_set_verify_callback(ssl_ctx, cb)
+
+ssl_ctx_curl_version_match()
+</code><code class="language-r">ssl_ctx_add_cert_to_store<span class="token punctuation">(</span>ssl_ctx<span class="token punctuation">,</span> cert<span class="token punctuation">)</span>
 
 ssl_ctx_set_verify_callback<span class="token punctuation">(</span>ssl_ctx<span class="token punctuation">,</span> cb<span class="token punctuation">)</span>
 
 ssl_ctx_curl_version_match<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="ssl_ctx_:_ssl_ctx">ssl_ctx</code></td>
+<td><code id="ssl_ctx">ssl_ctx</code></td>
 <td>
 <p>pointer object to the SSL context provided in the
 ssl_ctx_function callback.</p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_ctx_:_cert">cert</code></td>
+<td><code id="cert">cert</code></td>
 <td>
 <p>certificate object, e.g from <a href="#read_key">read_cert</a> or <a href="#certificates">download_ssl_cert</a>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_ctx_:_cb">cb</code></td>
+<td><code id="cb">cb</code></td>
 <td>
 <p>callback function with 1 parameter (the server certificate)
 and which returns TRUE (for proceed) or FALSE (for abort).</p>
@@ -1510,7 +1867,34 @@ SSL_CTX structure.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+# Example 1: accept your local snakeoil https cert
+mycert &lt;- openssl::download_ssl_cert('localhost')[[1]]
+
+# Setup the callback
+h &lt;- curl::new_handle(ssl_ctx_function = function(ssl_ctx){
+  ssl_ctx_add_cert_to_store(ssl_ctx, mycert)
+}, verbose = TRUE, forbid_reuse = TRUE)
+
+# Perform the request
+req &lt;- curl::curl_fetch_memory('https://localhost', handle = h)
+
+# Example 2 using a custom verify function
+verify_cb &lt;- function(cert){
+  id &lt;- cert$pubkey$fingerprint
+  cat("Server cert from:", as.character(id), "\n")
+  TRUE # always accept cert
+}
+
+h &lt;- curl::new_handle(ssl_ctx_function = function(ssl_ctx){
+  ssl_ctx_set_verify_callback(ssl_ctx, verify_cb)
+}, verbose = TRUE, forbid_reuse = TRUE)
+
+# Perform the request
+req &lt;- curl::curl_fetch_memory('https://localhost', handle = h)
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: </span>
 <span class="token comment"># Example 1: accept your local snakeoil https cert</span>
 mycert <span class="token operator">&lt;-</span> openssl<span class="token operator">::</span>download_ssl_cert<span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
 
@@ -1539,10 +1923,9 @@ req <span class="token operator">&lt;-</span> curl<span class="token operator">:
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="pkcs12">
-
-<a href="#pkcs12" class="help-page-title"><h2 id="write_p12">PKCS7 / PKCS12 bundles</h2></a>
+</div></div>
+<div class="container manual-page" id="pkcs12"><div class="page-main">
+<a href="#pkcs12" class="help-page-title"><h2>PKCS7 / PKCS12 bundles</h2></a>
 
 <h3>Description</h3>
 
@@ -1552,7 +1935,21 @@ req <span class="token operator">&lt;-</span> curl<span class="token operator">:
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">write_p12<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">write_p12(
+  key = NULL,
+  cert = NULL,
+  ca = NULL,
+  name = NULL,
+  password = NULL,
+  path = NULL
+)
+
+write_p7b(ca, path = NULL)
+
+read_p12(file, password = askpass)
+
+read_p7b(file, der = is.raw(file))
+</code><code class="language-r">write_p12<span class="token punctuation">(</span>
   key <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
   cert <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
   ca <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
@@ -1568,54 +1965,54 @@ read_p12<span class="token punctuation">(</span>file<span class="token punctuati
 read_p7b<span class="token punctuation">(</span>file<span class="token punctuation">,</span> der <span class="token operator">=</span> is.raw<span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="write_p12_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>a private key</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_p12_:_cert">cert</code></td>
+<td><code id="cert">cert</code></td>
 <td>
 <p>certificate that matches <code>key</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="write_p12_:_ca">ca</code></td>
+<td><code id="ca">ca</code></td>
 <td>
 <p>a list of certificates (the CA chain)</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_p12_:_name">name</code></td>
+<td><code id="name">name</code></td>
 <td>
 <p>a friendly title for the bundle</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_p12_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>string or function to set/get the password.</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_p12_:_path">path</code></td>
+<td><code id="path">path</code></td>
 <td>
 <p>a file where to write the output to. If <code>NULL</code> the output is returned
 as a raw vector.</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_p12_:_file">file</code></td>
+<td><code id="file">file</code></td>
 <td>
 <p>path or raw vector with binary PKCS12 data to parse</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_p12_:_der">der</code></td>
+<td><code id="der">der</code></td>
 <td>
 <p>set to TRUE for binary files and FALSE for PEM files</p>
 </td>
@@ -1637,10 +2034,9 @@ and these are currently ignored.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="write_pem">
-
-<a href="#write_pem" class="help-page-title"><h2 id="write_pem">Export key or certificate</h2></a>
+</div></div>
+<div class="container manual-page" id="write_pem"><div class="page-main">
+<a href="#write_pem" class="help-page-title"><h2>Export key or certificate</h2></a>
 
 <h3>Description</h3>
 
@@ -1651,7 +2047,16 @@ base64 PEM format. For private keys it is possible to set a password.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">write_pem<span class="token punctuation">(</span>x<span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> password <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">write_pem(x, path = NULL, password = NULL)
+
+write_der(x, path = NULL)
+
+write_pkcs1(x, path = NULL, password = NULL)
+
+write_ssh(pubkey, path = NULL)
+
+write_openssh_pem(key, path = NULL)
+</code><code class="language-r">write_pem<span class="token punctuation">(</span>x<span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> password <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
 write_der<span class="token punctuation">(</span>x<span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
@@ -1662,36 +2067,36 @@ write_ssh<span class="token punctuation">(</span>pubkey<span class="token punctu
 write_openssh_pem<span class="token punctuation">(</span>key<span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="write_pem_:_x">x</code></td>
+<td><code id="x">x</code></td>
 <td>
 <p>a public/private key or certificate object</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_pem_:_path">path</code></td>
+<td><code id="path">path</code></td>
 <td>
 <p>file to write to. If <code>NULL</code> it returns the output as a string.</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_pem_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>string or callback function to set password (only applicable for
 private keys).</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_pem_:_pubkey">pubkey</code></td>
+<td><code id="pubkey">pubkey</code></td>
 <td>
 <p>a public key</p>
 </td>
 </tr>
 <tr>
-<td><code id="write_pem_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>a private key</p>
 </td>
@@ -1708,7 +2113,15 @@ and certs into the recommended formats.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Generate RSA keypair</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Generate RSA keypair
+key &lt;- rsa_keygen()
+pubkey &lt;- key$pubkey
+
+# Write to output formats
+write_ssh(pubkey)
+write_pem(pubkey)
+write_pem(key, password = "super secret")
+</code><code class="language-r"><span class="token comment"># Generate RSA keypair</span>
 key <span class="token operator">&lt;-</span> rsa_keygen<span class="token punctuation">(</span><span class="token punctuation">)</span>
 pubkey <span class="token operator">&lt;-</span> key<span class="token operator">$</span>pubkey
 
@@ -1718,8 +2131,8 @@ write_pem<span class="token punctuation">(</span>pubkey<span class="token punctu
 write_pem<span class="token punctuation">(</span>key<span class="token punctuation">,</span> password <span class="token operator">=</span> <span class="token string">"super secret"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

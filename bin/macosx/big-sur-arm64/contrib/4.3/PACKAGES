@@ -1,0 +1,208 @@
+Package: RAppArmor
+Version: 3.2.5
+License: Apache License 2.0
+OS_type: unix
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 05:59:49 UTC; unix
+MD5sum: 62f89ca1a110c2a5a2555ce306232379
+Filesize: 399993
+SHA256: 0022544b2a6881160e5baea25d6d74baf49afdccd8580db15eee8fa0efe640dc
+Depends: unix (>= 1.4)
+Suggests: testthat, R.rsp
+
+Package: V8
+Version: 6.0.0
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-11 06:48:29 UTC; unix
+MD5sum: 15fdb9fa0b63d071226ce5e529cb4757
+Filesize: 9195350
+SHA256: 6a991f652e56d162540cde9107785c8a33fc3d54d330fea414babed66f7dce5d
+LinkingTo: Rcpp
+Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
+Suggests: testthat, knitr, rmarkdown
+
+Package: badgen
+Version: 1.0.1
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.3; ; 2024-11-02 05:44:07 UTC; unix
+MD5sum: 00694f176614c6e2e92056a96d2736fc
+Filesize: 18362
+SHA256: 72e9cb3feda95af55238e243fdb39b6f770a9d7ac5dd1232857c15cc37f344a7
+Imports: jsonlite, V8
+Suggests: rsvg
+
+Package: base64
+Version: 2.0.2
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.3; ; 2024-11-02 05:44:08 UTC; unix
+MD5sum: 23c7fa7bfb537b1d6b9ec7fd21740c24
+Filesize: 44159
+SHA256: 2bf247f247b521074837370f08ffd5ae5ae3d0bf3eab30da01b2b42fc096dcfd
+Imports: openssl
+
+Package: bcrypt
+Version: 1.2.0
+License: BSD_2_clause + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-03 06:08:29 UTC; unix
+MD5sum: 666c4b9a769f4f9492a8d890792d3e79
+Filesize: 26712
+SHA256: 8d0e361914d73bac4d153525af8a7b2d0c52d94bdb07559fc8bd1c043578d497
+Imports: openssl
+Suggests: spelling
+
+Package: brotli
+Version: 1.3.1
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 06:05:10 UTC; unix
+MD5sum: 22ea4ba27f84da4c359b9f981b7d7316
+Filesize: 1070268
+SHA256: 9b2996b6f22f83f18f99c52a02c2c04618141317bb25c629ba5cab33785d3ba7
+Suggests: spelling, knitr, R.rsp, microbenchmark, rmarkdown, ggplot2
+
+Package: curl
+Version: 6.0.2
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-29 15:50:48 UTC; unix
+MD5sum: 18ba9d83ac506e28a10c5392ec69f3fb
+Filesize: 203095
+SHA256: 1e29daec6161efccaf5ce24f5aba5805cf4c6cb1001f39442cc67ac2f3a097a6
+Depends: R (>= 3.0.0)
+Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, later, rmarkdown, httpuv (>= 1.4.4), webutils
+
+Package: gpg
+Version: 1.3.0
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-30 07:37:50 UTC; unix
+MD5sum: 8af8f92572ab4beb943b37b298508c7d
+Filesize: 1932541
+SHA256: e38d69074483cc5a9ee7616d857d32958257f4a195a8c41a936d4b34d2fb3c39
+Imports: curl, askpass
+Suggests: knitr, rmarkdown
+
+Package: js
+Version: 1.2.1
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.3; ; 2024-11-02 05:45:21 UTC; unix
+MD5sum: 7dc083ae4a9f7d809babd8eb29411673
+Filesize: 332475
+SHA256: ddba0741599a456b0a37560837e6d2ec88daae6de512a37527238f102bbfab19
+Imports: V8 (>= 0.5)
+Suggests: knitr, rmarkdown
+
+Package: jsonlite
+Version: 1.8.9
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-22 15:51:24 UTC; unix
+MD5sum: 7a6706b9db57ab0f707585f4de1ae86d
+Filesize: 440434
+SHA256: 1b5eb3c98f216e47ae21f7e287b9a29c4ab5e82877ac100e7694a459c8602201
+Depends: methods
+Suggests: httr, vctrs, testthat, knitr, rmarkdown, R.rsp, sf
+
+Package: maketools
+Version: 1.3.1
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.3; ; 2024-11-04 05:51:34 UTC; unix
+MD5sum: 1b84f320a6b50eb7b43ec8d9fb369eff
+Filesize: 66345
+SHA256: a9634af3a2f6760f0f0a0d02c1e58c0873e4bd702b2beda10d717559b6e85615
+Imports: sys (>= 3.1)
+Suggests: curl, knitr, rmarkdown, testthat
+
+Package: mongolite
+Version: 2.8.1
+License: Apache License 2.0
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 06:05:07 UTC; unix
+MD5sum: 46563ccbc1f4d5bce56dbc65f7442f49
+Filesize: 539110
+SHA256: f201724e90e77d4bd31981b32a607108689126cecb52ddf5fd5a3f2a91410194
+Imports: jsonlite (>= 1.4), openssl (>= 1.0), mime
+Suggests: spelling, nycflights13, ggplot2
+
+Package: openssl
+Version: 2.2.2
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-24 18:17:40 UTC; unix
+MD5sum: c52b6dbeff2bd07bf7f4733c796dad4f
+Filesize: 2664342
+SHA256: 41a745be2de2160abb0f1da0bd691fe95688153c100ad95a6e9b207c03ab28c7
+Imports: askpass
+Suggests: curl, testthat (>= 2.1.0), digest, knitr, rmarkdown, jsonlite, jose, sodium
+
+Package: protolite
+Version: 2.3.1
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 06:05:05 UTC; unix
+MD5sum: 21ff1b523f171e2bd7d0abf42ea5927b
+Filesize: 651493
+SHA256: b9d2ecbff7593135324c29a1b86de04d3da3c70a19f18ef911290ab105bfcb1c
+LinkingTo: Rcpp
+Imports: Rcpp (>= 0.12.12), jsonlite
+Suggests: spelling, curl, testthat, sf
+
+Package: rjade
+Version: 0.1.1
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.3; ; 2024-11-02 05:29:52 UTC; unix
+MD5sum: 64a484263fe45bc17032ebfb5f88113b
+Filesize: 52154
+SHA256: 2449bb84b798300bcd09ade5e54c55ebd52c7b0872189b16718571bc9cff4995
+Imports: V8 (>= 0.5)
+Suggests: knitr, rmarkdown
+
+Package: sys
+Version: 3.4.3
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 05:59:42 UTC; unix
+MD5sum: edbb746a0c350eef42306afc5c5dadc6
+Filesize: 40200
+SHA256: 8e8b8326170031f19d942bb3d84cda83822df4c008e55e6acbfd823907ad16bf
+Suggests: unix (>= 1.4), spelling, testthat
+
+Package: unix
+Version: 1.5.9
+License: MIT + file LICENSE
+OS_type: unix
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 06:00:09 UTC; unix
+MD5sum: 292ffe273b88d2b10cb70e7f51f2afed
+Filesize: 56393
+SHA256: 5892621ebe22b9fa5190551a28b8879b5aec8353646fcebb837a98fec60eddaf
+Suggests: testthat
+
+Package: webp
+Version: 1.2.1
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 05:44:04 UTC; unix
+MD5sum: a5af3926064c10309875543d0b09c66a
+Filesize: 235298
+SHA256: f4b4e830066b80524237f2fd8dba271dad5f212f7c0eca102fafaa80c148aec2
+Suggests: jpeg, png
+
+Package: webutils
+Version: 1.2.2
+License: MIT + file LICENSE
+NeedsCompilation: yes
+Built: R 4.3.3; aarch64-apple-darwin20; 2024-11-02 05:45:34 UTC; unix
+MD5sum: d30dcfec02052d14fd7fbd07e5a1c1b5
+Filesize: 34887
+SHA256: ee193887594263fb15121f95615b03b43cc1cdcc039557f5ac8125d1afd27c5b
+Imports: curl (>= 2.5), jsonlite
+Suggests: httpuv, testthat
+

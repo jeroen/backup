@@ -5,28 +5,29 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'bcrypt'</h1>
     <table class="description-table">
       <tr>
 <th>Title:</th>
-<td class="description-title">Blowfish Key Derivation and Password Hashing</td>
+<td class="description-title">'Blowfish' Key Derivation and Password Hashing</td>
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Bindings to the 'blowfish' password hashing algorithm derived from
-    the OpenBSD implementation.</td>
+<td class="description-description">Bindings to the 'blowfish' password hashing algorithm
+        &lt;https://www.openbsd.org/papers/bcrypt-paper.pdf&gt; derived from
+        the 'OpenBSD' implementation.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -36,7 +37,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -44,11 +45,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">1.2</td>
+<td class="description-version">1.2.0</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-02 05:07:45 UTC</td>
+<td class="description-date">2024-11-03 06:06:51 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -64,9 +65,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="bcrypt">
-
-<a href="#bcrypt" class="help-page-title"><h2 id="bcrypt">Bcrypt password hashing</h2></a>
+<div class="container manual-page" id="bcrypt"><div class="page-main">
+<a href="#bcrypt" class="help-page-title"><h2>Bcrypt password hashing</h2></a>
 
 <h3>Description</h3>
 
@@ -81,43 +81,48 @@ interface is fully compatible with the Python one.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">gensalt<span class="token punctuation">(</span>log_rounds <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">,</span> iv <span class="token operator">=</span> openssl<span class="token operator">::</span>rand_bytes<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gensalt(log_rounds = 12, iv = openssl::rand_bytes(16))
+
+hashpw(password, salt = gensalt())
+
+checkpw(password, hash)
+</code><code class="language-r">gensalt<span class="token punctuation">(</span>log_rounds <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">,</span> iv <span class="token operator">=</span> openssl<span class="token operator">::</span>rand_bytes<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 hashpw<span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt <span class="token operator">=</span> gensalt<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 checkpw<span class="token punctuation">(</span>password<span class="token punctuation">,</span> hash<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="bcrypt_:_log_rounds">log_rounds</code></td>
+<td><code id="log_rounds">log_rounds</code></td>
 <td>
 <p>integer between 4 and 31 that defines the complexity of
 the hashing, increasing the cost as <code>2^log_rounds</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="bcrypt_:_iv">iv</code></td>
+<td><code id="iv">iv</code></td>
 <td>
 <p>init vector to randomize the salt</p>
 </td>
 </tr>
 <tr>
-<td><code id="bcrypt_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>the message (password) to encrypt</p>
 </td>
 </tr>
 <tr>
-<td><code id="bcrypt_:_salt">salt</code></td>
+<td><code id="salt">salt</code></td>
 <td>
 <p>a salt generated with <code>gensalt</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="bcrypt_:_hash">hash</code></td>
+<td><code id="hash">hash</code></td>
 <td>
 <p>the previously generated bcrypt hash to verify</p>
 </td>
@@ -139,7 +144,29 @@ encoded randomness for seeding the hashing algorithm.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Secret message as a string</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Secret message as a string
+passwd &lt;- "supersecret"
+
+# Create the hash
+hash &lt;- hashpw(passwd)
+hash
+
+# To validate the hash
+identical(hash, hashpw(passwd, hash))
+
+# Or use the wrapper
+checkpw(passwd, hash)
+
+# Use varying complexity:
+hash11 &lt;- hashpw(passwd, gensalt(11))
+hash12 &lt;- hashpw(passwd, gensalt(12))
+hash13 &lt;- hashpw(passwd, gensalt(13))
+
+# Takes longer to verify (or crack)
+system.time(checkpw(passwd, hash11))
+system.time(checkpw(passwd, hash12))
+system.time(checkpw(passwd, hash13))
+</code><code class="language-r"><span class="token comment"># Secret message as a string</span>
 passwd <span class="token operator">&lt;-</span> <span class="token string">"supersecret"</span>
 
 <span class="token comment"># Create the hash</span>
@@ -163,10 +190,9 @@ system.time<span class="token punctuation">(</span>checkpw<span class="token pun
 system.time<span class="token punctuation">(</span>checkpw<span class="token punctuation">(</span>passwd<span class="token punctuation">,</span> hash13<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="pbkdf">
-
-<a href="#pbkdf" class="help-page-title"><h2 id="pbkdf">Bcrypt PWKDF</h2></a>
+</div></div>
+<div class="container manual-page" id="pbkdf"><div class="page-main">
+<a href="#pbkdf" class="help-page-title"><h2>Bcrypt PWKDF</h2></a>
 
 <h3>Description</h3>
 
@@ -176,40 +202,41 @@ system.time<span class="token punctuation">(</span>checkpw<span class="token pun
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">pbkdf<span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">,</span> rounds <span class="token operator">=</span> <span class="token number">16L</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">32L</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">pbkdf(password, salt, rounds = 16L, size = 32L)
+</code><code class="language-r">pbkdf<span class="token punctuation">(</span>password<span class="token punctuation">,</span> salt<span class="token punctuation">,</span> rounds <span class="token operator">=</span> <span class="token number">16L</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">32L</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="pbkdf_:_password">password</code></td>
+<td><code id="password">password</code></td>
 <td>
 <p>string or raw vector with password</p>
 </td>
 </tr>
 <tr>
-<td><code id="pbkdf_:_salt">salt</code></td>
+<td><code id="salt">salt</code></td>
 <td>
 <p>raw vector with (usually 16) bytes</p>
 </td>
 </tr>
 <tr>
-<td><code id="pbkdf_:_rounds">rounds</code></td>
+<td><code id="rounds">rounds</code></td>
 <td>
 <p>number of hashing rounds</p>
 </td>
 </tr>
 <tr>
-<td><code id="pbkdf_:_size">size</code></td>
+<td><code id="size">size</code></td>
 <td>
 <p>desired length of the output key</p>
 </td>
 </tr>
 </table>
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

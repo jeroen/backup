@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'protolite'</h1>
     <table class="description-table">
       <tr>
@@ -25,21 +25,23 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Pure C++ implementations for reading and writing several common data 
-    formats based on Google protocol-buffers. Currently supports 'rexp.proto' for 
-    serialized R objects, 'geobuf.proto' for binary geojson, and 'mvt.proto' for 
-    vector tiles. This package uses the auto-generated C++ code by protobuf-compiler, 
-    hence the entire serialization is optimized at compile time. The 'RProtoBuf' 
-    package on the other hand uses the protobuf runtime library to provide a general-
-    purpose toolkit for reading and writing arbitrary protocol-buffer data in R.</td>
+<td class="description-description">Pure C++ implementations for reading and writing several
+        common data formats based on Google protocol-buffers. Currently
+        supports 'rexp.proto' for serialized R objects, 'geobuf.proto'
+        for binary geojson, and 'mvt.proto' for vector tiles. This
+        package uses the auto-generated C++ code by protobuf-compiler,
+        hence the entire serialization is optimized at compile time.
+        The 'RProtoBuf' package on the other hand uses the protobuf
+        runtime library to provide a general- purpose toolkit for
+        reading and writing arbitrary protocol-buffer data in R.</td>
 </tr>
       <tr>
 <th>Authors:</th>
-<td class="description-author"><span>Jeroen Ooms</span></td>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -47,11 +49,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">2.2.0</td>
+<td class="description-version">2.3.1</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-02 05:38:27 UTC</td>
+<td class="description-date">2024-11-02 05:58:33 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -68,9 +70,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="geobuf">
-
-<a href="#geobuf" class="help-page-title"><h2 id="geobuf">Geobuf</h2></a>
+<div class="container manual-page" id="geobuf"><div class="page-main">
+<a href="#geobuf" class="help-page-title"><h2>Geobuf</h2></a>
 
 <h3>Description</h3>
 
@@ -83,52 +84,56 @@ utilities from the geobuf <a href="https://www.npmjs.com/package/geobuf" target=
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">read_geobuf<span class="token punctuation">(</span>x<span class="token punctuation">,</span> as_data_frame <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">read_geobuf(x, as_data_frame = TRUE)
+
+geobuf2json(x, pretty = FALSE)
+
+json2geobuf(json, decimals = 6)
+</code><code class="language-r">read_geobuf<span class="token punctuation">(</span>x<span class="token punctuation">,</span> as_data_frame <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
 
 geobuf2json<span class="token punctuation">(</span>x<span class="token punctuation">,</span> pretty <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 json2geobuf<span class="token punctuation">(</span>json<span class="token punctuation">,</span> decimals <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="geobuf_:_x">x</code></td>
+<td><code id="x">x</code></td>
 <td>
 <p>file path or raw vector with the serialized <code>geobuf.proto</code> message</p>
 </td>
 </tr>
 <tr>
-<td><code id="geobuf_:_as_data_frame">as_data_frame</code></td>
+<td><code id="as_data_frame">as_data_frame</code></td>
 <td>
 <p>simplify geojson data into data frames</p>
 </td>
 </tr>
 <tr>
-<td><code id="geobuf_:_pretty">pretty</code></td>
+<td><code id="pretty">pretty</code></td>
 <td>
 <p>indent json, see <a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#toJSON">jsonlite::toJSON</a></p>
 </td>
 </tr>
 <tr>
-<td><code id="geobuf_:_json">json</code></td>
+<td><code id="json">json</code></td>
 <td>
 <p>a text string with geojson data</p>
 </td>
 </tr>
 <tr>
-<td><code id="geobuf_:_decimals">decimals</code></td>
+<td><code id="decimals">decimals</code></td>
 <td>
 <p>how many decimals (digits behind the dot) to store for numbers</p>
 </td>
 </tr>
 </table>
 <hr>
-</div>
-<div class="container manual-page" id="mapbox">
-
-<a href="#mapbox" class="help-page-title"><h2 id="mapbox">Mapbox Vector Tiles</h2></a>
+</div></div>
+<div class="container manual-page" id="mapbox"><div class="page-main">
+<a href="#mapbox" class="help-page-title"><h2>Mapbox Vector Tiles</h2></a>
 
 <h3>Description</h3>
 
@@ -138,28 +143,31 @@ json2geobuf<span class="token punctuation">(</span>json<span class="token punctu
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">read_mvt_data<span class="token punctuation">(</span>data<span class="token punctuation">,</span> as_latlon <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> zxy <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">read_mvt_data(data, as_latlon = TRUE, zxy = NULL)
+
+read_mvt_sf(data, crs = 4326, zxy = NULL)
+</code><code class="language-r">read_mvt_data<span class="token punctuation">(</span>data<span class="token punctuation">,</span> as_latlon <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> zxy <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
 read_mvt_sf<span class="token punctuation">(</span>data<span class="token punctuation">,</span> crs <span class="token operator">=</span> <span class="token number">4326</span><span class="token punctuation">,</span> zxy <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="mapbox_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>url, path or raw vector with the mvt data</p>
 </td>
 </tr>
 <tr>
-<td><code id="mapbox_:_as_latlon">as_latlon</code></td>
+<td><code id="as_latlon">as_latlon</code></td>
 <td>
 <p>return the data as lat/lon instead of raw EPSG:3857 positions</p>
 </td>
 </tr>
 <tr>
-<td><code id="mapbox_:_zxy">zxy</code></td>
+<td><code id="zxy">zxy</code></td>
 <td>
 <p>vector of length 3 with respectively z (zoom), x (column) and y (row).
 For file/url in the standard <code style="white-space: pre;">⁠../{z}/{x}/{y}.mvt⁠</code> format, these are automatically
@@ -167,7 +175,7 @@ inferred from the input path.</p>
 </td>
 </tr>
 <tr>
-<td><code id="mapbox_:_crs">crs</code></td>
+<td><code id="crs">crs</code></td>
 <td>
 <p>desired output coordinate system (passed to <a href="https://r-spatial.r-universe.dev/sf/doc/manual.html#st_transform">sf::st_transform</a>).
 Note that mvt input is always by definition 3857.</p>
@@ -175,10 +183,9 @@ Note that mvt input is always by definition 3857.</p>
 </tr>
 </table>
 <hr>
-</div>
-<div class="container manual-page" id="serialize_pb">
-
-<a href="#serialize_pb" class="help-page-title"><h2 id="serialize_pb">Serialize to Protocol Buffers</h2></a>
+</div></div>
+<div class="container manual-page" id="serialize_pb"><div class="page-main">
+<a href="#serialize_pb" class="help-page-title"><h2>Serialize to Protocol Buffers</h2></a>
 
 <h3>Description</h3>
 
@@ -191,28 +198,31 @@ descriptor and mapping between R objects and protobuf messages as RHIPE and the
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">serialize_pb<span class="token punctuation">(</span>object<span class="token punctuation">,</span> connection <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> skip_native <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">serialize_pb(object, connection = NULL, skip_native = FALSE)
+
+unserialize_pb(msg)
+</code><code class="language-r">serialize_pb<span class="token punctuation">(</span>object<span class="token punctuation">,</span> connection <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> skip_native <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 unserialize_pb<span class="token punctuation">(</span>msg<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="serialize_pb_:_object">object</code></td>
+<td><code id="object">object</code></td>
 <td>
 <p>an R object to serialize</p>
 </td>
 </tr>
 <tr>
-<td><code id="serialize_pb_:_connection">connection</code></td>
+<td><code id="connection">connection</code></td>
 <td>
 <p>a connection, file, or <code>NULL</code> for a raw vector</p>
 </td>
 </tr>
 <tr>
-<td><code id="serialize_pb_:_skip_native">skip_native</code></td>
+<td><code id="skip_native">skip_native</code></td>
 <td>
 <p>do not serialize 'native' (non-data) R objects. Setting to <code>TRUE</code>
 will only serialize <em>data</em> types (numeric, boolean, string, raw, list). The default
@@ -220,7 +230,7 @@ behavior is to fall back on base R <code><a href="https://r-universe.dev/manuals
 </td>
 </tr>
 <tr>
-<td><code id="serialize_pb_:_msg">msg</code></td>
+<td><code id="msg">msg</code></td>
 <td>
 <p>raw vector with the serialized <code>rexp.proto</code> message</p>
 </td>
@@ -236,7 +246,23 @@ the function faster and simpler, but the output should be identical.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Serialize and unserialize an object</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Serialize and unserialize an object
+buf &lt;- serialize_pb(iris)
+out &lt;- unserialize_pb(buf)
+stopifnot(identical(iris, out))
+
+## Not run:  #Fully compatible with RProtoBuf
+buf &lt;- RProtoBuf::serialize_pb(iris, NULL)
+out &lt;- protolite::unserialize_pb(buf)
+stopifnot(identical(iris, out))
+
+# Other way around
+buf &lt;- protolite::serialize_pb(mtcars, NULL)
+out &lt;- RProtoBuf::unserialize_pb(buf)
+stopifnot(identical(mtcars, out))
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment"># Serialize and unserialize an object</span>
 buf <span class="token operator">&lt;-</span> serialize_pb<span class="token punctuation">(</span>iris<span class="token punctuation">)</span>
 out <span class="token operator">&lt;-</span> unserialize_pb<span class="token punctuation">(</span>buf<span class="token punctuation">)</span>
 stopifnot<span class="token punctuation">(</span>identical<span class="token punctuation">(</span>iris<span class="token punctuation">,</span> out<span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -254,8 +280,8 @@ stopifnot<span class="token punctuation">(</span>identical<span class="token pun
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'V8'</h1>
     <table class="description-table">
       <tr>
@@ -25,9 +25,10 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">An R interface to V8: Google's open source JavaScript and WebAssembly 
-    engine. This package can be compiled either with V8 version 6 and up or NodeJS
-    when built as a shared library.</td>
+<td class="description-description">An R interface to V8 &lt;https://v8.dev&gt;: Google's open
+        source JavaScript and WebAssembly engine. This package can be
+        compiled either with V8 version 6 and up or NodeJS when built
+        as a shared library.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -36,7 +37,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -44,11 +45,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">4.3.0</td>
+<td class="description-version">6.0.0</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-08 06:54:18 UTC</td>
+<td class="description-date">2024-11-11 06:46:30 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -65,9 +66,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="JS">
-
-<a href="#JS" class="help-page-title"><h2 id="JS">Mark character strings as literal JavaScript code</h2></a>
+<div class="container manual-page" id="JS"><div class="page-main">
+<a href="#JS" class="help-page-title"><h2>Mark character strings as literal JavaScript code</h2></a>
 
 <h3>Description</h3>
 
@@ -79,13 +79,14 @@ htmlwidgets package, and does exactly the same thing.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">JS<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">JS(...)
+</code><code class="language-r">JS<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="JS_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
 <p>character vectors as the JavaScript source code (all arguments
 will be pasted into one character string)</p>
@@ -99,17 +100,21 @@ will be pasted into one character string)</p>
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">ct <span class="token operator">&lt;-</span> v8<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">ct &lt;- v8()
+ct$eval("1+1")
+ct$eval(JS("1+1"))
+ct$assign("test", JS("2+3"))
+ct$get("test")
+</code><code class="language-r">ct <span class="token operator">&lt;-</span> v8<span class="token punctuation">(</span><span class="token punctuation">)</span>
 ct<span class="token operator">$</span>eval<span class="token punctuation">(</span><span class="token string">"1+1"</span><span class="token punctuation">)</span>
 ct<span class="token operator">$</span>eval<span class="token punctuation">(</span>JS<span class="token punctuation">(</span><span class="token string">"1+1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 ct<span class="token operator">$</span>assign<span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">,</span> JS<span class="token punctuation">(</span><span class="token string">"2+3"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 ct<span class="token operator">$</span>get<span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="V8">
-
-<a href="#V8" class="help-page-title"><h2 id="V8">Run JavaScript in a V8 context</h2></a>
+</div></div>
+<div class="container manual-page" id="V8"><div class="page-main">
+<a href="#V8" class="help-page-title"><h2>Run JavaScript in a V8 context</h2></a>
 
 <h3>Description</h3>
 
@@ -122,31 +127,33 @@ tab in a browser.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">v8<span class="token punctuation">(</span>global <span class="token operator">=</span> <span class="token string">"global"</span><span class="token punctuation">,</span> console <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> typed_arrays <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">v8(global = "global", console = TRUE, ...)
+
+engine_info()
+</code><code class="language-r">v8<span class="token punctuation">(</span>global <span class="token operator">=</span> <span class="token string">"global"</span><span class="token punctuation">,</span> console <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
 
 engine_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="V8_:_global">global</code></td>
+<td><code id="global">global</code></td>
 <td>
 <p>character vector indicating name(s) of the global environment. Use NULL for no name.</p>
 </td>
 </tr>
 <tr>
-<td><code id="V8_:_console">console</code></td>
+<td><code id="console">console</code></td>
 <td>
 <p>expose <code>console</code> API (<code>console.log</code>, <code>console.warn</code>, <code>console.error</code>).</p>
 </td>
 </tr>
 <tr>
-<td><code id="V8_:_typed_arrays">typed_arrays</code></td>
+<td><code id="...">...</code></td>
 <td>
-<p>(deprecated) enable typed arrays in legacy libv8. Deprecated because
-typed arrays are natively supported in recent versions of libv8.</p>
+<p>ignored parameters for past/future versions.</p>
 </td>
 </tr>
 </table>
@@ -168,7 +175,7 @@ for example: <code>ct$eval("Object.keys(this)")</code>.
 
 <pre>
 ## ctx &lt;- v8()
-&lt;V8 engine 7.8.279.23-node.56&gt; 
+&lt;V8 engine 10.2.154.26-node.28&gt; 
  $assign(name, value, auto_unbox = TRUE, ...) 
  $call(fun, ..., auto_unbox = TRUE, await = FALSE) 
  $console() 
@@ -210,7 +217,7 @@ testing and debugging, it may not work perfectly in every IDE or R-frontend.
 One exception is raw vectors which are converted to/from Uint8Array buffers, see
 below. All other arguments and objects are automatically converted according to the mapping
 described in <a href="https://arxiv.org/abs/1403.2805" target="_blank">Ooms (2014)</a>, and implemented
-by the jsonlite package in <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">fromJSON()</a></code> and <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">toJSON()</a></code>.
+by the jsonlite package in <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">jsonlite::fromJSON()</a></code> and <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">jsonlite::toJSON()</a></code>.
 </p>
 <p>As for version 3.0 of this R package, Raw vectors are converted to <code>Uint8Array</code>
 typed arrays, and vice versa. This makes it possible to efficiently copy large chunks
@@ -239,7 +246,65 @@ we provide backports of libv8 (via libnode-dev), see the
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Create a new context</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Create a new context
+ctx &lt;- v8();
+
+# Evaluate some code
+ctx$eval("var foo = 123")
+ctx$eval("var bar = 456")
+ctx$eval("foo+bar")
+
+# Functions and closures
+ctx$eval("JSON.stringify({x:Math.random()})")
+ctx$eval("(function(x){return x+1;})(123)")
+
+# Objects (via JSON only)
+ctx$assign("mydata", mtcars)
+ctx$get("mydata")
+outlist &lt;- ctx$get("mydata", simplifyVector = FALSE)
+outlist[1]
+
+# Assign JavaScript
+ctx$assign("foo", JS("function(x){return x*x}"))
+ctx$assign("bar", JS("foo(9)"))
+ctx$get("bar")
+
+# Validate script without evaluating
+ctx$validate("function foo(x){2*x}") #TRUE
+ctx$validate("foo = function(x){2*x}") #TRUE
+ctx$validate("function(x){2*x}") #FALSE
+
+# Use a JavaScript library
+ctx$source("https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js")
+ctx$call("_.filter", mtcars, JS("function(x){return x.mpg &lt; 15}"))
+
+# Example from underscore manual
+ctx$eval("_.templateSettings = {interpolate: /\\{\\{(.+?)\\}\\}/g}")
+ctx$eval("var template = _.template('Hello {{ name }}!')")
+ctx$call("template", list(name = "Mustache"))
+
+# Call anonymous function
+ctx$call("function(x, y){return x * y}", 123, 3)
+
+## Not run: 
+#CoffeeScript
+ct2 &lt;- v8()
+ct2$source("http://coffeescript.org/v1/browser-compiler/coffee-script.js")
+jscode &lt;- ct2$call("CoffeeScript.compile", "square = (x) -&gt; x * x", list(bare = TRUE))
+ct2$eval(jscode)
+ct2$call("square", 9)
+
+# Interactive console
+ct3 &lt;- v8()
+ct3$console()
+# //this is JavaScript
+# var test = [1,2,3]
+# JSON.stringify(test)
+# exit
+
+## End(Not run)
+
+</code><code class="language-r"><span class="token comment"># Create a new context</span>
 ctx <span class="token operator">&lt;-</span> v8<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment"># Evaluate some code</span>
@@ -298,10 +363,9 @@ ct3<span class="token operator">$</span>console<span class="token punctuation">(
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="wasm">
-
-<a href="#wasm" class="help-page-title"><h2 id="wasm">Experimental WebAssembly</h2></a>
+</div></div>
+<div class="container manual-page" id="wasm"><div class="page-main">
+<a href="#wasm" class="help-page-title"><h2>Experimental WebAssembly</h2></a>
 
 <h3>Description</h3>
 
@@ -313,15 +377,18 @@ once WebAssembly matures.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">wasm<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">wasm(data)
+
+wasm_features()
+</code><code class="language-r">wasm<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
 
 wasm_features<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="wasm_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>either raw vector or file path with the binary wasm program</p>
 </td>
@@ -336,16 +403,18 @@ current version of libv8.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Load example wasm program</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span>engine_info<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">$</span>numeric_version <span class="token operator">&gt;</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Load example wasm program
+instance &lt;- wasm(system.file('wasm/add.wasm', package = 'V8'))
+instance$exports$add(12, 30)
+wasm_features()
+</code><code class="language-r"><span class="token comment"># Load example wasm program</span>
 instance <span class="token operator">&lt;-</span> wasm<span class="token punctuation">(</span>system.file<span class="token punctuation">(</span><span class="token string">'wasm/add.wasm'</span><span class="token punctuation">,</span> package <span class="token operator">=</span> <span class="token string">'V8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 instance<span class="token operator">$</span>exports<span class="token operator">$</span>add<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
 wasm_features<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

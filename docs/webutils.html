@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'webutils'</h1>
     <table class="description-table">
       <tr>
@@ -25,17 +25,18 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Parses http request data in application/json, multipart/form-data, 
-    or application/x-www-form-urlencoded format. Includes example of hosting
-    and parsing html form data in R using either 'httpuv' or 'Rhttpd'.</td>
+<td class="description-description">Parses http request data in application/json,
+        multipart/form-data, or application/x-www-form-urlencoded
+        format. Includes example of hosting and parsing html form data
+        in R using either 'httpuv' or 'Rhttpd'.</td>
 </tr>
       <tr>
 <th>Authors:</th>
-<td class="description-author"><span>Jeroen Ooms</span></td>
+<td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a></span></td>
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -43,11 +44,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">1.1</td>
+<td class="description-version">1.2.2</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-29 07:25:35 UTC</td>
+<td class="description-date">2024-11-02 05:43:33 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -66,9 +67,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="demo_httpuv">
-
-<a href="#demo_httpuv" class="help-page-title"><h2 id="demo_httpuv">Demo multipart parser with httpuv</h2></a>
+<div class="container manual-page" id="demo_httpuv"><div class="page-main">
+<a href="#demo_httpuv" class="help-page-title"><h2>Demo multipart parser with httpuv</h2></a>
 
 <h3>Description</h3>
 
@@ -79,13 +79,14 @@ upload to demo the multipart parser.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">demo_httpuv<span class="token punctuation">(</span>port <span class="token operator">=</span> <span class="token number">9359</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">demo_httpuv(port = 9359)
+</code><code class="language-r">demo_httpuv<span class="token punctuation">(</span>port <span class="token operator">=</span> <span class="token number">9359</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="demo_httpuv_:_port">port</code></td>
+<td><code id="port">port</code></td>
 <td>
 <p>which port number to run the http server</p>
 </td>
@@ -97,10 +98,9 @@ upload to demo the multipart parser.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="demo_rhttpd">
-
-<a href="#demo_rhttpd" class="help-page-title"><h2 id="demo_rhttpd">Demo multipart parser with rhttpd</h2></a>
+</div></div>
+<div class="container manual-page" id="demo_rhttpd"><div class="page-main">
+<a href="#demo_rhttpd" class="help-page-title"><h2>Demo multipart parser with rhttpd</h2></a>
 
 <h3>Description</h3>
 
@@ -111,7 +111,8 @@ upload to demo the multipart parser.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">demo_rhttpd<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">demo_rhttpd()
+</code><code class="language-r">demo_rhttpd<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
 <h3>See Also</h3>
@@ -121,43 +122,43 @@ upload to demo the multipart parser.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="parse_http">
-
-<a href="#parse_http" class="help-page-title"><h2 id="parse_http">Parse http request</h2></a>
+</div></div>
+<div class="container manual-page" id="parse_http"><div class="page-main">
+<a href="#parse_http" class="help-page-title"><h2>Parse http request</h2></a>
 
 <h3>Description</h3>
 
 <p>Parse the body of a http request, based on the <code>Content-Type</code> request
 header. Currently supports the three most important content types:
-<code>application/x-www-form-urlencoded</code> (<code><a href="#parse_query">parse_query</a></code>),
-<code>multipart/form-data</code> (<code><a href="#parse_multipart">parse_multipart</a></code>) and
-<code>application/json</code> (<code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">fromJSON</a></code>).
+<code>application/x-www-form-urlencoded</code> with <code><a href="#parse_query">parse_query()</a></code>,
+<code>multipart/form-data</code> with <code><a href="#parse_multipart">parse_multipart()</a></code>, and <code>application/json</code>
+with <code><a href="https://jeroen.r-universe.dev/jsonlite/doc/manual.html#fromJSON">jsonlite::fromJSON()</a></code>.
 </p>
 
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">parse_http<span class="token punctuation">(</span>body<span class="token punctuation">,</span> content_type<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">parse_http(body, content_type, ...)
+</code><code class="language-r">parse_http<span class="token punctuation">(</span>body<span class="token punctuation">,</span> content_type<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="parse_http_:_body">body</code></td>
+<td><code id="body">body</code></td>
 <td>
 <p>request body of the http request</p>
 </td>
 </tr>
 <tr>
-<td><code id="parse_http_:_content_type">content_type</code></td>
+<td><code id="content_type">content_type</code></td>
 <td>
 <p>content-type http request header as specified by the client</p>
 </td>
 </tr>
 <tr>
-<td><code id="parse_http_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
 <p>additional arguments passed to parser function</p>
 </td>
@@ -165,7 +166,17 @@ header. Currently supports the three most important content types:
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Parse json encoded payload:</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Parse json encoded payload:
+parse_http('{"foo":123, "bar":true}', 'application/json')
+
+# Parse url-encoded payload
+parse_http("foo=1%2B1%3D2&amp;bar=yin%26yang", "application/x-www-form-urlencoded")
+
+## Not run: use demo app to parse multipart/form-data payload
+demo_rhttpd()
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment"># Parse json encoded payload:</span>
 parse_http<span class="token punctuation">(</span><span class="token string">'{"foo":123, "bar":true}'</span><span class="token punctuation">,</span> <span class="token string">'application/json'</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Parse url-encoded payload</span>
@@ -177,10 +188,9 @@ demo_rhttpd<span class="token punctuation">(</span><span class="token punctuatio
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="parse_multipart">
-
-<a href="#parse_multipart" class="help-page-title"><h2 id="parse_multipart">Parse a multipart/form-data request</h2></a>
+</div></div>
+<div class="container manual-page" id="parse_multipart"><div class="page-main">
+<a href="#parse_multipart" class="help-page-title"><h2>Parse a multipart/form-data request</h2></a>
 
 <h3>Description</h3>
 
@@ -192,20 +202,21 @@ They can be distinguished from the presence of a <code>filename</code> attribute
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">parse_multipart<span class="token punctuation">(</span>body<span class="token punctuation">,</span> boundary<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">parse_multipart(body, boundary)
+</code><code class="language-r">parse_multipart<span class="token punctuation">(</span>body<span class="token punctuation">,</span> boundary<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="parse_multipart_:_body">body</code></td>
+<td><code id="body">body</code></td>
 <td>
 <p>body of the HTTP request. Must be raw or character vector.</p>
 </td>
 </tr>
 <tr>
-<td><code id="parse_multipart_:_boundary">boundary</code></td>
+<td><code id="boundary">boundary</code></td>
 <td>
 <p>boundary string as specified in the <code>Content-Type</code> request header.</p>
 </td>
@@ -226,16 +237,19 @@ engine.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: example form</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: example form
+demo_rhttpd()
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: example form</span>
 demo_rhttpd<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="parse_query">
-
-<a href="#parse_query" class="help-page-title"><h2 id="parse_query">Parse query string</h2></a>
+</div></div>
+<div class="container manual-page" id="parse_query"><div class="page-main">
+<a href="#parse_query" class="help-page-title"><h2>Parse query string</h2></a>
 
 <h3>Description</h3>
 
@@ -246,13 +260,14 @@ of url-encoded values.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">parse_query<span class="token punctuation">(</span>query<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">parse_query(query)
+</code><code class="language-r">parse_query<span class="token punctuation">(</span>query<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="parse_query_:_query">query</code></td>
+<td><code id="query">query</code></td>
 <td>
 <p>a url-encoded query string</p>
 </td>
@@ -268,12 +283,14 @@ is set to <code>application/x-www-form-urlencoded</code>.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">q <span class="token operator">&lt;-</span> <span class="token string">"foo=1%2B1%3D2&amp;bar=yin%26yang"</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">q &lt;- "foo=1%2B1%3D2&amp;bar=yin%26yang"
+parse_query(q)
+</code><code class="language-r">q <span class="token operator">&lt;-</span> <span class="token string">"foo=1%2B1%3D2&amp;bar=yin%26yang"</span>
 parse_query<span class="token punctuation">(</span>q<span class="token punctuation">)</span></code></pre>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

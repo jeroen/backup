@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'mongolite'</h1>
     <table class="description-table">
       <tr>
@@ -25,10 +25,12 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">High-performance MongoDB client based on 'mongo-c-driver' and 'jsonlite'.
-    Includes support for aggregation, indexing, map-reduce, streaming, encryption,
-    enterprise authentication, and GridFS. The online user manual provides an overview 
-    of the available methods in the package: &lt;https://jeroen.github.io/mongolite/&gt;.</td>
+<td class="description-description">High-performance MongoDB client based on 'mongo-c-driver'
+        and 'jsonlite'. Includes support for aggregation, indexing,
+        map-reduce, streaming, encryption, enterprise authentication,
+        and GridFS. The online user manual provides an overview of the
+        available methods in the package:
+        &lt;https://jeroen.github.io/mongolite/&gt;.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -37,7 +39,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -45,11 +47,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">2.7.2</td>
+<td class="description-version">2.8.1</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-29 06:55:15 UTC</td>
+<td class="description-date">2024-11-02 05:58:36 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -68,9 +70,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="gridfs">
-
-<a href="#gridfs" class="help-page-title"><h2 id="gridfs">GridFS API</h2></a>
+<div class="container manual-page" id="gridfs"><div class="page-main">
+<a href="#gridfs" class="help-page-title"><h2>GridFS API</h2></a>
 
 <h3>Description</h3>
 
@@ -80,7 +81,13 @@
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">gridfs<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gridfs(
+  db = "test",
+  url = "mongodb://localhost",
+  prefix = "fs",
+  options = ssl_options()
+)
+</code><code class="language-r">gridfs<span class="token punctuation">(</span>
   db <span class="token operator">=</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
   url <span class="token operator">=</span> <span class="token string">"mongodb://localhost"</span><span class="token punctuation">,</span>
   prefix <span class="token operator">=</span> <span class="token string">"fs"</span><span class="token punctuation">,</span>
@@ -88,30 +95,30 @@
 <span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="gridfs_:_db">db</code></td>
+<td><code id="db">db</code></td>
 <td>
 <p>name of database</p>
 </td>
 </tr>
 <tr>
-<td><code id="gridfs_:_url">url</code></td>
+<td><code id="url">url</code></td>
 <td>
 <p>address of the mongodb server in mongo connection string
 <a href="https://docs.mongodb.com/manual/reference/connection-string" target="_blank">URI format</a></p>
 </td>
 </tr>
 <tr>
-<td><code id="gridfs_:_prefix">prefix</code></td>
+<td><code id="prefix">prefix</code></td>
 <td>
 <p>string to prefix the collection name</p>
 </td>
 </tr>
 <tr>
-<td><code id="gridfs_:_options">options</code></td>
+<td><code id="options">options</code></td>
 <td>
 <p>additional connection options such as SSL keys/certs.</p>
 </td>
@@ -173,7 +180,46 @@ If <code>con</code> is a string it is treated as a filepath; it may also be a <a
 </dl>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Upload a file to GridFS</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Upload a file to GridFS
+fs &lt;- gridfs(url = "mongodb+srv://readwrite:test@cluster0-84vdt.mongodb.net/test")
+input &lt;- file.path(R.home('doc'), "html/logo.jpg")
+fs$upload(input, name = 'logo.jpg')
+
+# Download the file back to disk
+output &lt;- file.path(tempdir(), 'logo1.jpg')
+fs$download('logo.jpg', output)
+
+# Or you can also stream it
+con &lt;- file(file.path(tempdir(), 'logo2.jpg'))
+fs$read('logo.jpg', con)
+
+# Delete the file on the server
+fs$remove('logo.jpg')
+
+files &lt;- c(input, file.path(tempdir(), c('logo1.jpg', 'logo2.jpg')))
+hashes &lt;- tools::md5sum(files)
+stopifnot(length(unique(hashes)) == 1)
+
+## Not run: 
+# Insert Binary Data
+fs &lt;- gridfs()
+buf &lt;- serialize(nycflights13::flights, NULL)
+fs$write(buf, 'flights')
+out &lt;- fs$read('flights')
+flights &lt;- unserialize(out$data)
+
+tmp &lt;- file.path(tempdir(), 'flights.rds')
+fs$download('flights', tmp)
+flights2 &lt;- readRDS(tmp)
+stopifnot(all.equal(flights, nycflights13::flights))
+stopifnot(all.equal(flights2, nycflights13::flights))
+
+# Show what we have
+fs$find()
+fs$drop()
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment"># Upload a file to GridFS</span>
 fs <span class="token operator">&lt;-</span> gridfs<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"mongodb+srv://readwrite:test@cluster0-84vdt.mongodb.net/test"</span><span class="token punctuation">)</span>
 input <span class="token operator">&lt;-</span> file.path<span class="token punctuation">(</span>R.home<span class="token punctuation">(</span><span class="token string">'doc'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"html/logo.jpg"</span><span class="token punctuation">)</span>
 fs<span class="token operator">$</span>upload<span class="token punctuation">(</span>input<span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token string">'logo.jpg'</span><span class="token punctuation">)</span>
@@ -214,10 +260,9 @@ fs<span class="token operator">$</span>drop<span class="token punctuation">(</sp
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="mongo">
-
-<a href="#mongo" class="help-page-title"><h2 id="mongo">MongoDB client</h2></a>
+</div></div>
+<div class="container manual-page" id="mongo"><div class="page-main">
+<a href="#mongo" class="help-page-title"><h2>MongoDB client</h2></a>
 
 <h3>Description</h3>
 
@@ -229,7 +274,14 @@ and gridfs objects to the same database.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">mongo<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">mongo(
+  collection = "test",
+  db = "test",
+  url = "mongodb://localhost",
+  verbose = FALSE,
+  options = ssl_options()
+)
+</code><code class="language-r">mongo<span class="token punctuation">(</span>
   collection <span class="token operator">=</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
   db <span class="token operator">=</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
   url <span class="token operator">=</span> <span class="token string">"mongodb://localhost"</span><span class="token punctuation">,</span>
@@ -238,36 +290,36 @@ and gridfs objects to the same database.
 <span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="mongo_:_collection">collection</code></td>
+<td><code id="collection">collection</code></td>
 <td>
 <p>name of collection</p>
 </td>
 </tr>
 <tr>
-<td><code id="mongo_:_db">db</code></td>
+<td><code id="db">db</code></td>
 <td>
 <p>name of database</p>
 </td>
 </tr>
 <tr>
-<td><code id="mongo_:_url">url</code></td>
+<td><code id="url">url</code></td>
 <td>
 <p>address of the mongodb server in mongo connection string
 <a href="https://docs.mongodb.com/manual/reference/connection-string" target="_blank">URI format</a></p>
 </td>
 </tr>
 <tr>
-<td><code id="mongo_:_verbose">verbose</code></td>
+<td><code id="verbose">verbose</code></td>
 <td>
 <p>emit some more output</p>
 </td>
 </tr>
 <tr>
-<td><code id="mongo_:_options">options</code></td>
+<td><code id="options">options</code></td>
 <td>
 <p>additional connection options such as SSL keys/certs.</p>
 </td>
@@ -314,7 +366,7 @@ The collection can be interfaced using the methods described below.
 </dd>
 <dt><code>export(con = stdout(), bson = FALSE, query = '{}', fields = '{}', sort = '{"_id":1}')</code></dt>
 <dd>
-<p>Streams all data from collection to a <code><a href="https://r-universe.dev/manuals/base.html#connections">connection</a></code> in <a href="http://ndjson.org" target="_blank">jsonlines</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongoexport/" target="_blank">mongoexport</a>). Alternatively when <code>bson = TRUE</code> it outputs the binary <a href="https://bsonspec.org/faq.html" target="_blank">bson</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongodump/" target="_blank">mongodump</a>).</p>
+<p>Streams all data from collection to a <code><a href="https://r-universe.dev/manuals/base.html#connections">connection</a></code> in <a href="https://ndjson.org" target="_blank">jsonlines</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongoexport/" target="_blank">mongoexport</a>). Alternatively when <code>bson = TRUE</code> it outputs the binary <a href="https://bsonspec.org/faq.html" target="_blank">bson</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongodump/" target="_blank">mongodump</a>).</p>
 </dd>
 <dt><code>find(query = '{}', fields = '{"_id" : 0}', sort = '{}', skip = 0, limit = 0, handler = NULL, pagesize = 1000)</code></dt>
 <dd>
@@ -322,7 +374,7 @@ The collection can be interfaced using the methods described below.
 </dd>
 <dt><code>import(con, bson = FALSE)</code></dt>
 <dd>
-<p>Stream import data in <a href="http://ndjson.org" target="_blank">jsonlines</a> format from a <code><a href="https://r-universe.dev/manuals/base.html#connections">connection</a></code>, similar to the <a href="https://docs.mongodb.com/database-tools/mongoimport/" target="_blank">mongoimport</a> utility. Alternatively when <code>bson = TRUE</code> it assumes the binary <a href="https://bsonspec.org/faq.html" target="_blank">bson</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongorestore/" target="_blank">mongorestore</a>).</p>
+<p>Stream import data in <a href="https://ndjson.org" target="_blank">jsonlines</a> format from a <code><a href="https://r-universe.dev/manuals/base.html#connections">connection</a></code>, similar to the <a href="https://docs.mongodb.com/database-tools/mongoimport/" target="_blank">mongoimport</a> utility. Alternatively when <code>bson = TRUE</code> it assumes the binary <a href="https://bsonspec.org/faq.html" target="_blank">bson</a> format (similar to <a href="https://docs.mongodb.com/database-tools/mongorestore/" target="_blank">mongorestore</a>).</p>
 </dd>
 <dt><code>index(add = NULL, remove = NULL)</code></dt>
 <dd>
@@ -375,7 +427,76 @@ The collection can be interfaced using the methods described below.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Connect to demo server</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Connect to demo server
+con &lt;- mongo("mtcars", url =
+  "mongodb+srv://readwrite:test@cluster0-84vdt.mongodb.net/test")
+if(con$count() &gt; 0) con$drop()
+con$insert(mtcars)
+stopifnot(con$count() == nrow(mtcars))
+
+# Query data
+mydata &lt;- con$find()
+stopifnot(all.equal(mydata, mtcars))
+con$drop()
+
+# Automatically disconnect when connection is removed
+rm(con)
+gc()
+
+## Not run: 
+# dplyr example
+library(nycflights13)
+
+# Insert some data
+m &lt;- mongo(collection = "nycflights")
+m$drop()
+m$insert(flights)
+
+# Basic queries
+m$count('{"month":1, "day":1}')
+jan1 &lt;- m$find('{"month":1, "day":1}')
+
+# Sorting
+jan1 &lt;- m$find('{"month":1,"day":1}', sort='{"distance":-1}')
+head(jan1)
+
+# Sorting on large data requires index
+m$index(add = "distance")
+allflights &lt;- m$find(sort='{"distance":-1}')
+
+# Select columns
+jan1 &lt;- m$find('{"month":1,"day":1}', fields = '{"_id":0, "distance":1, "carrier":1}')
+
+# List unique values
+m$distinct("carrier")
+m$distinct("carrier", '{"distance":{"$gt":3000}}')
+
+# Tabulate
+m$aggregate('[{"$group":{"_id":"$carrier", "count": {"$sum":1}, "average":{"$avg":"$distance"}}}]')
+
+# Map-reduce (binning)
+hist &lt;- m$mapreduce(
+  map = "function(){emit(Math.floor(this.distance/100)*100, 1)}",
+  reduce = "function(id, counts){return Array.sum(counts)}"
+)
+
+# Stream jsonlines into a connection
+tmp &lt;- tempfile()
+m$export(file(tmp))
+
+# Remove the collection
+m$drop()
+
+# Import from jsonlines stream from connection
+dmd &lt;- mongo("diamonds")
+dmd$import(url("http://jeroen.github.io/data/diamonds.json"))
+dmd$count()
+
+# Export
+dmd$drop()
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment"># Connect to demo server</span>
 con <span class="token operator">&lt;-</span> mongo<span class="token punctuation">(</span><span class="token string">"mtcars"</span><span class="token punctuation">,</span> url <span class="token operator">=</span>
   <span class="token string">"mongodb+srv://readwrite:test@cluster0-84vdt.mongodb.net/test"</span><span class="token punctuation">)</span>
 <span class="token keyword">if</span><span class="token punctuation">(</span>con<span class="token operator">$</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> con<span class="token operator">$</span>drop<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -446,10 +567,9 @@ dmd<span class="token operator">$</span>drop<span class="token punctuation">(</s
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="mongo_options">
-
-<a href="#mongo_options" class="help-page-title"><h2 id="mongo_options">Mongo Options</h2></a>
+</div></div>
+<div class="container manual-page" id="mongo_options"><div class="page-main">
+<a href="#mongo_options" class="help-page-title"><h2>Mongo Options</h2></a>
 
 <h3>Description</h3>
 
@@ -460,26 +580,27 @@ values without modifying.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">mongo_options<span class="token punctuation">(</span>log_level <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> bigint_as_char <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> date_as_char <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">mongo_options(log_level = NULL, bigint_as_char = NULL, date_as_char = NULL)
+</code><code class="language-r">mongo_options<span class="token punctuation">(</span>log_level <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> bigint_as_char <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> date_as_char <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="mongo_options_:_log_level">log_level</code></td>
+<td><code id="log_level">log_level</code></td>
 <td>
 <p>integer between 0 and 6 or <code>NULL</code> to leave unchanged.</p>
 </td>
 </tr>
 <tr>
-<td><code id="mongo_options_:_bigint_as_char">bigint_as_char</code></td>
+<td><code id="bigint_as_char">bigint_as_char</code></td>
 <td>
 <p>logical: parse int64 as strings instead of double.</p>
 </td>
 </tr>
 <tr>
-<td><code id="mongo_options_:_date_as_char">date_as_char</code></td>
+<td><code id="date_as_char">date_as_char</code></td>
 <td>
 <p>logical: parse UTC datetime as strings instead of POSIXct.</p>
 </td>
@@ -520,10 +641,9 @@ below 1 will suppress critical errors (not recommended). The default is 4.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="oid_to_timestamp">
-
-<a href="#oid_to_timestamp" class="help-page-title"><h2 id="oid_to_timestamp">Get OID date</h2></a>
+</div></div>
+<div class="container manual-page" id="oid_to_timestamp"><div class="page-main">
+<a href="#oid_to_timestamp" class="help-page-title"><h2>Get OID date</h2></a>
 
 <h3>Description</h3>
 
@@ -534,26 +654,27 @@ the ObjectId creation, measured in seconds since the Unix epoch.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">oid_to_timestamp<span class="token punctuation">(</span>oid<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">oid_to_timestamp(oid)
+</code><code class="language-r">oid_to_timestamp<span class="token punctuation">(</span>oid<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="oid_to_timestamp_:_oid">oid</code></td>
+<td><code id="oid">oid</code></td>
 <td>
 <p>string or raw value with document oid</p>
 </td>
 </tr></table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">oid_to_timestamp<span class="token punctuation">(</span><span class="token string">'5349b4ddd2781d08c09890f3'</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">oid_to_timestamp('5349b4ddd2781d08c09890f3')
+</code><code class="language-r">oid_to_timestamp<span class="token punctuation">(</span><span class="token string">'5349b4ddd2781d08c09890f3'</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="ssl_options">
-
-<a href="#ssl_options" class="help-page-title"><h2 id="ssl_options">Connection SSL options</h2></a>
+</div></div>
+<div class="container manual-page" id="ssl_options"><div class="page-main">
+<a href="#ssl_options" class="help-page-title"><h2>Connection SSL options</h2></a>
 
 <h3>Description</h3>
 
@@ -563,7 +684,16 @@ the ObjectId creation, measured in seconds since the Unix epoch.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">ssl_options<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">ssl_options(
+  cert = NULL,
+  key = cert,
+  ca = NULL,
+  ca_dir = NULL,
+  crl_file = NULL,
+  allow_invalid_hostname = NULL,
+  weak_cert_validation = NULL
+)
+</code><code class="language-r">ssl_options<span class="token punctuation">(</span>
   cert <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
   key <span class="token operator">=</span> cert<span class="token punctuation">,</span>
   ca <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
@@ -574,18 +704,18 @@ the ObjectId creation, measured in seconds since the Unix epoch.
 <span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="ssl_options_:_cert">cert</code></td>
+<td><code id="cert">cert</code></td>
 <td>
 <p>path to PEM file with client certificate, or a certificate as
 returned by <code><a href="https://jeroen.r-universe.dev/openssl/doc/manual.html#read_key">openssl::read_cert()</a></code></p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_options_:_key">key</code></td>
+<td><code id="key">key</code></td>
 <td>
 <p>path to PEM file with private key from the above certificate, or
 a key as returned by <code><a href="https://jeroen.r-universe.dev/openssl/doc/manual.html#read_key">openssl::read_key()</a></code>. This can
@@ -593,39 +723,39 @@ be the same PEM file as cert.</p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_options_:_ca">ca</code></td>
+<td><code id="ca">ca</code></td>
 <td>
 <p>a certificate authority PEM file</p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_options_:_ca_dir">ca_dir</code></td>
+<td><code id="ca_dir">ca_dir</code></td>
 <td>
 <p>directory with CA files</p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_options_:_crl_file">crl_file</code></td>
+<td><code id="crl_file">crl_file</code></td>
 <td>
 <p>file with revocations</p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_options_:_allow_invalid_hostname">allow_invalid_hostname</code></td>
+<td><code id="allow_invalid_hostname">allow_invalid_hostname</code></td>
 <td>
 <p>do not verify hostname on server certificate</p>
 </td>
 </tr>
 <tr>
-<td><code id="ssl_options_:_weak_cert_validation">weak_cert_validation</code></td>
+<td><code id="weak_cert_validation">weak_cert_validation</code></td>
 <td>
 <p>disable certificate verification</p>
 </td>
 </tr>
 </table>
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

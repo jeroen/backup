@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'js'</h1>
     <table class="description-table">
       <tr>
@@ -25,9 +25,9 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">A set of utilities for working with JavaScript syntax in R.
-    Includes tools to parse, tokenize, compile, validate, reformat, optimize 
-    and analyze JavaScript code.</td>
+<td class="description-description">A set of utilities for working with JavaScript syntax in
+        R. Includes tools to parse, tokenize, compile, validate,
+        reformat, optimize and analyze JavaScript code.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -35,7 +35,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -43,11 +43,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">1.2</td>
+<td class="description-version">1.2.1</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-22 04:37:40 UTC</td>
+<td class="description-date">2024-11-02 05:43:16 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -68,9 +68,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="coffee_compile">
-
-<a href="#coffee_compile" class="help-page-title"><h2 id="coffee_compile">Coffee Script</h2></a>
+<div class="container manual-page" id="coffee_compile"><div class="page-main">
+<a href="#coffee_compile" class="help-page-title"><h2>Coffee Script</h2></a>
 
 <h3>Description</h3>
 
@@ -80,20 +79,21 @@
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">coffee_compile<span class="token punctuation">(</span>code<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">coffee_compile(code, ...)
+</code><code class="language-r">coffee_compile<span class="token punctuation">(</span>code<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="coffee_compile_:_code">code</code></td>
+<td><code id="code">code</code></td>
 <td>
 <p>a string with JavaScript code</p>
 </td>
 </tr>
 <tr>
-<td><code id="coffee_compile_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
 <p>additional options passed to the compiler</p>
 </td>
@@ -101,7 +101,16 @@
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Hello world</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Hello world
+coffee_compile("square = (x) -&gt; x * x")
+coffee_compile("square = (x) -&gt; x * x", bare = TRUE)
+
+# Simple script
+demo &lt;- readLines(system.file("example/demo.coffee", package = "js"))
+js &lt;- coffee_compile(demo)
+cat(js)
+cat(uglify_optimize(js))
+</code><code class="language-r"><span class="token comment"># Hello world</span>
 coffee_compile<span class="token punctuation">(</span><span class="token string">"square = (x) -&gt; x * x"</span><span class="token punctuation">)</span>
 coffee_compile<span class="token punctuation">(</span><span class="token string">"square = (x) -&gt; x * x"</span><span class="token punctuation">,</span> bare <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
 
@@ -112,10 +121,9 @@ cat<span class="token punctuation">(</span>js<span class="token punctuation">)</
 cat<span class="token punctuation">(</span>uglify_optimize<span class="token punctuation">(</span>js<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="esprima">
-
-<a href="#esprima" class="help-page-title"><h2 id="esprima">JavaScrip Syntax Tree</h2></a>
+</div></div>
+<div class="container manual-page" id="esprima"><div class="page-main">
+<a href="#esprima" class="help-page-title"><h2>JavaScrip Syntax Tree</h2></a>
 
 <h3>Description</h3>
 
@@ -127,53 +135,57 @@ format as standardized by ESTree project.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">esprima_tokenize<span class="token punctuation">(</span>text<span class="token punctuation">,</span> range <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> loc <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">esprima_tokenize(text, range = FALSE, loc = FALSE, comment = FALSE)
+
+esprima_parse(text, jsx = FALSE, range = FALSE, loc = FALSE,
+  tolerant = FALSE, tokens = FALSE, comment = FALSE)
+</code><code class="language-r">esprima_tokenize<span class="token punctuation">(</span>text<span class="token punctuation">,</span> range <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> loc <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 esprima_parse<span class="token punctuation">(</span>text<span class="token punctuation">,</span> jsx <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> range <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> loc <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
   tolerant <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> tokens <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="esprima_:_text">text</code></td>
+<td><code id="text">text</code></td>
 <td>
 <p>a character vector with JavaScript code</p>
 </td>
 </tr>
 <tr>
-<td><code id="esprima_:_range">range</code></td>
+<td><code id="range">range</code></td>
 <td>
 <p>Annotate each token with its zero-based start and end location</p>
 </td>
 </tr>
 <tr>
-<td><code id="esprima_:_loc">loc</code></td>
+<td><code id="loc">loc</code></td>
 <td>
 <p>Annotate each token with its column and row-based location</p>
 </td>
 </tr>
 <tr>
-<td><code id="esprima_:_comment">comment</code></td>
+<td><code id="comment">comment</code></td>
 <td>
 <p>Include every line and block comment in the output</p>
 </td>
 </tr>
 <tr>
-<td><code id="esprima_:_jsx">jsx</code></td>
+<td><code id="jsx">jsx</code></td>
 <td>
 <p>Support JSX syntax</p>
 </td>
 </tr>
 <tr>
-<td><code id="esprima_:_tolerant">tolerant</code></td>
+<td><code id="tolerant">tolerant</code></td>
 <td>
 <p>Tolerate a few cases of syntax errors</p>
 </td>
 </tr>
 <tr>
-<td><code id="esprima_:_tokens">tokens</code></td>
+<td><code id="tokens">tokens</code></td>
 <td>
 <p>Collect every token</p>
 </td>
@@ -195,15 +207,17 @@ using e.g. <code>jsonlite::fromJSON</code>.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">code <span class="token operator">&lt;-</span> <span class="token string">"function test(x, y){ x = x || 1; y = y || 1; return x*y;}"</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">code &lt;- "function test(x, y){ x = x || 1; y = y || 1; return x*y;}"
+esprima_tokenize(code)
+esprima_parse(code)
+</code><code class="language-r">code <span class="token operator">&lt;-</span> <span class="token string">"function test(x, y){ x = x || 1; y = y || 1; return x*y;}"</span>
 esprima_tokenize<span class="token punctuation">(</span>code<span class="token punctuation">)</span>
 esprima_parse<span class="token punctuation">(</span>code<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="js_eval">
-
-<a href="#js_eval" class="help-page-title"><h2 id="js_eval">Evaluate JavaScript</h2></a>
+</div></div>
+<div class="container manual-page" id="js_eval"><div class="page-main">
+<a href="#js_eval" class="help-page-title"><h2>Evaluate JavaScript</h2></a>
 
 <h3>Description</h3>
 
@@ -213,20 +227,28 @@ esprima_parse<span class="token punctuation">(</span>code<span class="token punc
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">js_eval<span class="token punctuation">(</span>text<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">js_eval(text)
+</code><code class="language-r">js_eval<span class="token punctuation">(</span>text<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="js_eval_:_text">text</code></td>
+<td><code id="text">text</code></td>
 <td>
 <p>JavaScript code</p>
 </td>
 </tr></table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Stateless evaluation</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Stateless evaluation
+js_eval("(function() {return 'foo'})()")
+
+# Use V8 for stateful evaluation
+ct &lt;- V8::new_context()
+ct$eval("var foo = 123")
+ct$get("foo")
+</code><code class="language-r"><span class="token comment"># Stateless evaluation</span>
 js_eval<span class="token punctuation">(</span><span class="token string">"(function() {return 'foo'})()"</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Use V8 for stateful evaluation</span>
@@ -235,10 +257,9 @@ ct<span class="token operator">$</span>eval<span class="token punctuation">(</sp
 ct<span class="token operator">$</span>get<span class="token punctuation">(</span><span class="token string">"foo"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="js_typeof">
-
-<a href="#js_typeof" class="help-page-title"><h2 id="js_typeof">Get the type of a JavaScript object</h2></a>
+</div></div>
+<div class="container manual-page" id="js_typeof"><div class="page-main">
+<a href="#js_typeof" class="help-page-title"><h2>Get the type of a JavaScript object</h2></a>
 
 <h3>Description</h3>
 
@@ -250,52 +271,56 @@ verify that a piece of JavaScript code contains a proper function/object.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">js_typeof<span class="token punctuation">(</span>text<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">js_typeof(text)
+</code><code class="language-r">js_typeof<span class="token punctuation">(</span>text<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="js_typeof_:_text">text</code></td>
+<td><code id="text">text</code></td>
 <td>
 <p>JavaScript code</p>
 </td>
 </tr></table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">js_typeof<span class="token punctuation">(</span><span class="token string">"function(x){return x+1}"</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">js_typeof("function(x){return x+1}")
+js_typeof("(function() {return 'foo'})()")
+js_typeof("{foo : 123, bar : true}")
+</code><code class="language-r">js_typeof<span class="token punctuation">(</span><span class="token string">"function(x){return x+1}"</span><span class="token punctuation">)</span>
 js_typeof<span class="token punctuation">(</span><span class="token string">"(function() {return 'foo'})()"</span><span class="token punctuation">)</span>
 js_typeof<span class="token punctuation">(</span><span class="token string">"{foo : 123, bar : true}"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="js_validate_script">
-
-<a href="#js_validate_script" class="help-page-title"><h2 id="js_validate_script">Validate JavaScript</h2></a>
+</div></div>
+<div class="container manual-page" id="js_validate_script"><div class="page-main">
+<a href="#js_validate_script" class="help-page-title"><h2>Validate JavaScript</h2></a>
 
 <h3>Description</h3>
 
-<p>Simple wrapper for <code>ct$validate</code> in <code><a href="https://jeroen.r-universe.dev/V8/doc/manual.html#V8">V8</a></code>.
+<p>Simple wrapper for <code>ct$validate</code> in V8.
 Tests if code constitutes a syntactically valid JS script.
 </p>
 
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">js_validate_script<span class="token punctuation">(</span>text<span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">js_validate_script(text, error = TRUE)
+</code><code class="language-r">js_validate_script<span class="token punctuation">(</span>text<span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="js_validate_script_:_text">text</code></td>
+<td><code id="text">text</code></td>
 <td>
 <p>character vector with JavaScript code</p>
 </td>
 </tr>
 <tr>
-<td><code id="js_validate_script_:_error">error</code></td>
+<td><code id="error">error</code></td>
 <td>
 <p>raise error on invalid code</p>
 </td>
@@ -303,7 +328,16 @@ Tests if code constitutes a syntactically valid JS script.
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">js_validate_script<span class="token punctuation">(</span><span class="token string">"function foo(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">js_validate_script("function foo(x){2*x}") #TRUE
+js_validate_script("foo = function(x){2*x}") #TRUE
+
+# Anonymous functions in global scope are invalid
+js_validate_script("function(x){2*x}", error = FALSE) #FALSE
+
+# Use ! or () to check anonymous function syntax
+js_validate_script("!function(x){2*x}") #TRUE
+js_validate_script("(function(x){2*x})") #TRUE
+</code><code class="language-r">js_validate_script<span class="token punctuation">(</span><span class="token string">"function foo(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
 js_validate_script<span class="token punctuation">(</span><span class="token string">"foo = function(x){2*x}"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span>
 
 <span class="token comment"># Anonymous functions in global scope are invalid</span>
@@ -314,10 +348,9 @@ js_validate_script<span class="token punctuation">(</span><span class="token str
 js_validate_script<span class="token punctuation">(</span><span class="token string">"(function(x){2*x})"</span><span class="token punctuation">)</span> <span class="token comment">#TRUE</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="jshint">
-
-<a href="#jshint" class="help-page-title"><h2 id="jshint">Static analysis tool for JavaScript</h2></a>
+</div></div>
+<div class="container manual-page" id="jshint"><div class="page-main">
+<a href="#jshint" class="help-page-title"><h2>Static analysis tool for JavaScript</h2></a>
 
 <h3>Description</h3>
 
@@ -329,26 +362,27 @@ the environment you expect your code to execute in.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">jshint<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">,</span> globals <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">jshint(text, ..., globals = NULL)
+</code><code class="language-r">jshint<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">,</span> globals <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="jshint_:_text">text</code></td>
+<td><code id="text">text</code></td>
 <td>
 <p>a string of JavaScript code</p>
 </td>
 </tr>
 <tr>
-<td><code id="jshint_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
-<p>additional jshint <a href="http://jshint.com/docs/options/" target="_blank">configuration options</a></p>
+<p>additional jshint <a href="https://jshint.com/docs/options/" target="_blank">configuration options</a></p>
 </td>
 </tr>
 <tr>
-<td><code id="jshint_:_globals">globals</code></td>
+<td><code id="globals">globals</code></td>
 <td>
 <p>a white list of global variables that are not formally defined in the source code</p>
 </td>
@@ -362,15 +396,17 @@ the environment you expect your code to execute in.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">code <span class="token operator">=</span> <span class="token string">"var foo = 123"</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">code = "var foo = 123"
+jshint(code)
+jshint(code, asi = TRUE)
+</code><code class="language-r">code <span class="token operator">=</span> <span class="token string">"var foo = 123"</span>
 jshint<span class="token punctuation">(</span>code<span class="token punctuation">)</span>
 jshint<span class="token punctuation">(</span>code<span class="token punctuation">,</span> asi <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="uglify">
-
-<a href="#uglify" class="help-page-title"><h2 id="uglify">Compress and Reformat JavaScript Code</h2></a>
+</div></div>
+<div class="container manual-page" id="uglify"><div class="page-main">
+<a href="#uglify" class="help-page-title"><h2>Compress and Reformat JavaScript Code</h2></a>
 
 <h3>Description</h3>
 
@@ -382,57 +418,65 @@ to automate working with JavaScript code.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">uglify_reformat<span class="token punctuation">(</span>text<span class="token punctuation">,</span> beautify <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">uglify_reformat(text, beautify = FALSE, ...)
+
+uglify_optimize(text, ...)
+
+uglify_files(files, ...)
+</code><code class="language-r">uglify_reformat<span class="token punctuation">(</span>text<span class="token punctuation">,</span> beautify <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
 
 uglify_optimize<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span>
 
 uglify_files<span class="token punctuation">(</span>files<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="uglify_:_text">text</code></td>
+<td><code id="text">text</code></td>
 <td>
 <p>a character vector with JavaScript code</p>
 </td>
 </tr>
 <tr>
-<td><code id="uglify_:_beautify">beautify</code></td>
+<td><code id="beautify">beautify</code></td>
 <td>
 <p>prettify (instead of minify) code</p>
 </td>
 </tr>
 <tr>
-<td><code id="uglify_:_files">files</code></td>
+<td><code id="files">files</code></td>
 <td>
 <p>a character vector of filenames</p>
 </td>
 </tr>
 <tr>
-<td><code id="uglify_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
-<p>additional arguments for the <a href="http://lisperator.net/uglifyjs/compress" target="_blank">optimizer</a>
-or <a href="http://lisperator.net/uglifyjs/codegen" target="_blank">generator</a>.</p>
+<p>additional arguments for the <a href="https://lisperator.net/uglifyjs/compress" target="_blank">optimizer</a>
+or <a href="https://lisperator.net/uglifyjs/codegen" target="_blank">generator</a>.</p>
 </td>
 </tr>
 </table>
 <h3>References</h3>
 
-<p>UglifyJS2 Documentation: <a href="http://lisperator.net/uglifyjs/" target="_blank">http://lisperator.net/uglifyjs/</a>.
+<p>UglifyJS2 Documentation: <a href="https://lisperator.net/uglifyjs/" target="_blank">https://lisperator.net/uglifyjs/</a>.
 </p>
 
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">code <span class="token operator">&lt;-</span> <span class="token string">"function test(x, y){ x = x || 1; y = y || 1; return x*y;}"</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">code &lt;- "function test(x, y){ x = x || 1; y = y || 1; return x*y;}"
+cat(uglify_optimize(code))
+cat(uglify_reformat(code, beautify = TRUE, indent_level = 2))
+</code><code class="language-r">code <span class="token operator">&lt;-</span> <span class="token string">"function test(x, y){ x = x || 1; y = y || 1; return x*y;}"</span>
 cat<span class="token punctuation">(</span>uglify_optimize<span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">)</span>
 cat<span class="token punctuation">(</span>uglify_reformat<span class="token punctuation">(</span>code<span class="token punctuation">,</span> beautify <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> indent_level <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

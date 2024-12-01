@@ -1,116 +1,151 @@
 Package: V8
-Version: 4.3.0
+Version: 6.0.0
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-08 06:55:50 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-11 06:48:40 UTC; windows
 Archs: x64
-MD5sum: 616d606813b4d72a200c2c3c6b444cd6
-Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
+MD5sum: 5d17508294ab1abeec7c48550a5669e9
+Filesize: 8805082
+SHA256: 71c99faacf4f1aa0d5a3b65b7e52e604bdd0b11c24312ec17b0ce39a559aac63
 LinkingTo: Rcpp
+Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils
 Suggests: testthat, knitr, rmarkdown
 
-Package: base64
-Version: 2.0.1
+Package: badgen
+Version: 1.0.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-05-06 05:54:57 UTC; windows
-MD5sum: a1dc4e909f0d48f4791063655a80ca6a
+Built: R 4.3.3; ; 2024-11-02 05:43:52 UTC; windows
+MD5sum: f18dc01a277a507efda6d11ab07b7e6f
+Filesize: 20618
+SHA256: fb50ec72311e7c6918ea1aeae6cc592336de9b7d1961644f37cd96d14a55e0e6
+Imports: jsonlite, V8
+Suggests: rsvg
+
+Package: base64
+Version: 2.0.2
+License: MIT + file LICENSE
+NeedsCompilation: no
+Built: R 4.3.3; ; 2024-11-02 05:44:01 UTC; windows
+MD5sum: 36a1d002cca4cf7d95eebe06d4dd7551
+Filesize: 46470
+SHA256: b2cde51217a3d5a15284505e487c5db13aede69114c6a37d0045b917528a51be
 Imports: openssl
 
 Package: bcrypt
-Version: 1.2
+Version: 1.2.0
 License: BSD_2_clause + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-02 05:09:04 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-03 06:08:07 UTC; windows
 Archs: x64
-MD5sum: 5af0d97535b66c0f359bde838cd61dc0
+MD5sum: 79ce5fcbf7d67477f15829514c295c66
+Filesize: 33600
+SHA256: 1df07fd069c05a95a826546afafe79d8d1dd3f175612628a95bff09a865ee920
 Imports: openssl
 Suggests: spelling
 
 Package: brotli
-Version: 1.3.0
+Version: 1.3.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-11 06:13:05 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-02 06:00:46 UTC; windows
 Archs: x64
-MD5sum: fd9be929c4e394a8f04f435c6d8b6353
+MD5sum: 23d4292fe7c82c24621b1edacd927481
+Filesize: 1101473
+SHA256: c80443ccd7c601685c6e0e2dd369088a7f55daa5b0076e423aa8c8df2fda7964
 Suggests: spelling, knitr, R.rsp, microbenchmark, rmarkdown, ggplot2
 
 Package: curl
-Version: 5.0.9000
+Version: 6.0.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-24 16:48:04 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-29 15:50:47 UTC; windows
 Archs: x64
-MD5sum: 219dd8de4743257410152d552a916b69
+MD5sum: 6d69e4609c9a375c675c5b75b109be32
+Filesize: 2924368
+SHA256: 0870891504115a4be4475117803deb4e12ae7c8dd73a5dea37d2cc50f5d5fc20
 Depends: R (>= 3.0.0)
-Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, rmarkdown, magrittr, httpuv (>= 1.4.4), webutils
+Suggests: spelling, testthat (>= 1.0.0), knitr, jsonlite, later, rmarkdown, httpuv (>= 1.4.4), webutils
 
 Package: gpg
-Version: 1.2.9
+Version: 1.3.0
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-16 10:23:14 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-30 07:36:32 UTC; windows
 Archs: x64
-MD5sum: 91ccdf47ed4af204e2f2dffb5ae1f7ad
+MD5sum: 312cfb10c565b3bf1ab327cfc7b9a0db
+Filesize: 2201829
+SHA256: 510d5e28f1eea1355f5ba72de1200fc3c135332c9c577201b597711b70fb845a
 Imports: curl, askpass
 Suggests: knitr, rmarkdown
 
 Package: js
-Version: 1.2
+Version: 1.2.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-05-22 04:41:06 UTC; windows
-MD5sum: e2c45f397b79f0f25e92ab2d5d091396
+Built: R 4.3.3; ; 2024-11-02 05:44:43 UTC; windows
+MD5sum: 89ccef258b5a81b483d2beb5813f813d
+Filesize: 333761
+SHA256: 7e35e3fa4bb6a32d1ea6b528c58da0615f20f4c8919f241d08eb47cbe08bec2b
 Imports: V8 (>= 0.5)
 Suggests: knitr, rmarkdown
 
 Package: jsonlite
-Version: 1.8.5
+Version: 1.8.9
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-24 12:37:35 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-22 15:50:59 UTC; windows
 Archs: x64
-MD5sum: 4cddb512f7404003955f3aba0c64d0fe
+MD5sum: 929183c17d80e93b947d81f5a2188302
+Filesize: 473320
+SHA256: f77a7c30786b0076816c2eddd95614b2ae0e270502fe692e139eac1343043ff5
 Depends: methods
 Suggests: httr, vctrs, testthat, knitr, rmarkdown, R.rsp, sf
 
 Package: maketools
-Version: 1.2.4
+Version: 1.3.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-03-28 21:11:18 UTC; windows
-MD5sum: 56f70ef01d777609ce82d5b2fbcf44fa
+Built: R 4.3.3; ; 2024-11-04 05:51:21 UTC; windows
+MD5sum: f812a5aaeade5edffc070c0ed03e416b
+Filesize: 70762
+SHA256: 64835e66ef7ac1231e0d62c6395f80c42c1d053f97b272862bb39f738e4f8a44
 Imports: sys (>= 3.1)
 Suggests: curl, knitr, rmarkdown, testthat
 
 Package: mongolite
-Version: 2.7.2
+Version: 2.8.1
 License: Apache License 2.0
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-29 06:57:35 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-02 06:00:44 UTC; windows
 Archs: x64
-MD5sum: 16ac610decd244e08ac6f14e395ef963
+MD5sum: 8bb65f96e129d4f66e42f903cd33ba0d
+Filesize: 664137
+SHA256: 8c474aa9cfa5cb9e70ded63f65040f0767447389ef3fd561027ffa331f3c7a4b
 Imports: jsonlite (>= 1.4), openssl (>= 1.0), mime
 Suggests: spelling, nycflights13, ggplot2
 
 Package: openssl
-Version: 2.0.6
+Version: 2.2.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-07 06:56:13 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-24 18:17:51 UTC; windows
 Archs: x64
-MD5sum: b5c7ac5e3a52a6886699fa4296637af1
+MD5sum: a011c2c96d6d97c3bf6c0f9a01ef6758
+Filesize: 2537311
+SHA256: e2a43dca181dc5bedb2979460e38fb4c2aafb14071d54648e4467fdcbe3e99cf
 Imports: askpass
 Suggests: curl, testthat (>= 2.1.0), digest, knitr, rmarkdown, jsonlite, jose, sodium
 
 Package: protolite
-Version: 2.2.0
+Version: 2.3.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-02 05:40:22 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-02 06:00:30 UTC; windows
 Archs: x64
-MD5sum: 00f55d9b830a46f657e8020f11654822
+MD5sum: 5f68b6514537bf7ed488d4de49e82dcb
+Filesize: 1059520
+SHA256: 11a48dacdaf4cdab8d102a8226b2622eb62b63141500306a932d24faa956d43b
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.12.12), jsonlite
 Suggests: spelling, curl, testthat, sf
@@ -119,36 +154,44 @@ Package: rjade
 Version: 0.1.1
 License: MIT + file LICENSE
 NeedsCompilation: no
-Built: R 4.3.0; ; 2023-05-07 06:25:40 UTC; windows
-MD5sum: 0c5674420b02dd197bc07659925dd38d
+Built: R 4.3.3; ; 2024-11-02 05:29:51 UTC; windows
+MD5sum: b9c3378924a65baa0254c1c9079eea8b
+Filesize: 56318
+SHA256: 314ec05cee27d70fa152e8026153abab46bd9b565d81ac289310d17bf2d2a19c
 Imports: V8 (>= 0.5)
 Suggests: knitr, rmarkdown
 
 Package: sys
-Version: 3.4.2
+Version: 3.4.3
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-22 22:07:19 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-02 05:59:57 UTC; windows
 Archs: x64
-MD5sum: 58cc957de7f33a1474e81017f23d2251
+MD5sum: 01f208094c5a638da25187c1675d7758
+Filesize: 47056
+SHA256: 403c86765494d88de49b2610840543c97e4c9e11b928b4540a6d3b753c90de0e
 Suggests: unix (>= 1.4), spelling, testthat
 
 Package: webp
-Version: 1.1.0
+Version: 1.2.1
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-03 06:56:39 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-02 05:43:55 UTC; windows
 Archs: x64
-MD5sum: 3ac43d008ee81a9bd7594846a9ee0c6e
+MD5sum: 94a9a5fba55487031f4d370672b0f446
+Filesize: 396864
+SHA256: d2ac92a8fd9e797616e427c200ffcd2398bba1288a60343b4389d2edff9c8765
 Suggests: jpeg, png
 
 Package: webutils
-Version: 1.1
+Version: 1.2.2
 License: MIT + file LICENSE
 NeedsCompilation: yes
-Built: R 4.3.0; x86_64-w64-mingw32; 2023-05-29 07:27:58 UTC; windows
+Built: R 4.3.3; x86_64-w64-mingw32; 2024-11-02 05:45:11 UTC; windows
 Archs: x64
-MD5sum: 8282dbeb1fb247175f2c9a4f2b1c9391
+MD5sum: 334ed07178bf0f7b5f2b6a58f7f70a90
+Filesize: 41134
+SHA256: 2e88c7b572b00f61067ca4d20e8e1fa284b337138e32f6f2b32bc961acb447d7
 Imports: curl (>= 2.5), jsonlite
 Suggests: httpuv, testthat
 

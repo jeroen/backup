@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'RAppArmor'</h1>
     <table class="description-table">
       <tr>
@@ -25,15 +25,18 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Bindings to kernel methods for enforcing security restrictions. 
-    AppArmor can apply mandatory access control (MAC) policies on a given task 
-    (process) via security profiles with detailed ACL definitions. In addition
-    this package implements bindings for setting process resource limits (rlimit),
-    uid, gid, affinity and priority. The high level R function 'eval.secure' 
-    builds on these methods to perform dynamic sandboxing: it evaluates a single
-    R expression within a temporary fork which acts as a sandbox by enforcing 
-    fine grained restrictions without affecting the main R process. A portable 
-    version of this function is now available in the 'unix' package.</td>
+<td class="description-description">Bindings to kernel methods for enforcing security
+        restrictions. AppArmor can apply mandatory access control (MAC)
+        policies on a given task (process) via security profiles with
+        detailed ACL definitions. In addition this package implements
+        bindings for setting process resource limits (rlimit), uid,
+        gid, affinity and priority. The high level R function
+        'eval.secure' builds on these methods to perform dynamic
+        sandboxing: it evaluates a single R expression within a
+        temporary fork which acts as a sandbox by enforcing fine
+        grained restrictions without affecting the main R process. A
+        portable version of this function is now available in the
+        'unix' package.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -41,7 +44,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -49,11 +52,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">3.2.3</td>
+<td class="description-version">3.2.5</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-16 04:37:43 UTC</td>
+<td class="description-date">2024-11-02 05:58:25 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -71,9 +74,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="affinity">
-
-<a href="#affinity" class="help-page-title"><h2 id="affinity">Process Affinity</h2></a>
+<div class="container manual-page" id="affinity"><div class="page-main">
+<a href="#affinity" class="help-page-title"><h2>Process Affinity</h2></a>
 
 <h3>Description</h3>
 
@@ -85,7 +87,16 @@ shows if this is available.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">setaffinity<span class="token punctuation">(</span>cpus <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">:</span>ncores<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">setaffinity(cpus = 1:ncores())
+
+getaffinity_count()
+
+getaffinity()
+
+has_affinity()
+
+ncores()
+</code><code class="language-r">setaffinity<span class="token punctuation">(</span>cpus <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">:</span>ncores<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 getaffinity_count<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
@@ -96,10 +107,10 @@ has_affinity<span class="token punctuation">(</span><span class="token punctuati
 ncores<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="affinity_:_cpus">cpus</code></td>
+<td><code id="cpus">cpus</code></td>
 <td>
 <p>Which cpu cores to bind to: vector of integers between 1 and <code><a href="#affinity">ncores()</a></code></p>
 </td>
@@ -126,7 +137,22 @@ Linux capability value for CAP_SYS_NICE.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+# Current affinity
+ncores()
+getaffinity()
+getaffinity_count()
+
+# Restrict process to core number 1.
+setaffinity(1)
+getaffinity()
+
+# Reset
+setaffinity()
+getaffinity()
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: </span>
 <span class="token comment"># Current affinity</span>
 ncores<span class="token punctuation">(</span><span class="token punctuation">)</span>
 getaffinity<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -143,10 +169,9 @@ getaffinity<span class="token punctuation">(</span><span class="token punctuatio
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="apparmor">
-
-<a href="#apparmor" class="help-page-title"><h2 id="apparmor">Change hats</h2></a>
+</div></div>
+<div class="container manual-page" id="apparmor"><div class="page-main">
+<a href="#apparmor" class="help-page-title"><h2>Change hats</h2></a>
 
 <h3>Description</h3>
 
@@ -164,7 +189,20 @@ profile.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">aa_change_hat<span class="token punctuation">(</span>subprofile<span class="token punctuation">,</span> magic_token<span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">aa_change_hat(subprofile, magic_token)
+
+aa_revert_hat(magic_token)
+
+aa_change_profile(profile)
+
+aa_find_mountpoint()
+
+aa_getcon()
+
+aa_is_enabled()
+
+aa_is_compiled()
+</code><code class="language-r">aa_change_hat<span class="token punctuation">(</span>subprofile<span class="token punctuation">,</span> magic_token<span class="token punctuation">)</span>
 
 aa_revert_hat<span class="token punctuation">(</span>magic_token<span class="token punctuation">)</span>
 
@@ -179,23 +217,23 @@ aa_is_enabled<span class="token punctuation">(</span><span class="token punctuat
 aa_is_compiled<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="apparmor_:_subprofile">subprofile</code></td>
+<td><code id="subprofile">subprofile</code></td>
 <td>
 <p>character string identifying the subprofile (hat) name (without the "^")</p>
 </td>
 </tr>
 <tr>
-<td><code id="apparmor_:_magic_token">magic_token</code></td>
+<td><code id="magic_token">magic_token</code></td>
 <td>
 <p>a number that will be the key to revert out of the hat.</p>
 </td>
 </tr>
 <tr>
-<td><code id="apparmor_:_profile">profile</code></td>
+<td><code id="profile">profile</code></td>
 <td>
 <p>character string with the name of the profile.</p>
 </td>
@@ -203,7 +241,25 @@ aa_is_compiled<span class="token punctuation">(</span><span class="token punctua
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+aa_change_profile("testprofile");
+aa_getcon();
+test &lt;- read.table("/etc/group");
+aa_change_hat("testhat", 13337);
+aa_getcon();
+test &lt;- read.table("/etc/group");
+aa_revert_hat(13337);
+test &lt;- read.table("/etc/group");
+
+## End(Not run)
+ ## Not run: 
+test &lt;- read.table("/etc/passwd");
+aa_change_profile("testprofile");
+aa_getcon();
+test &lt;- read.table("/etc/passwd");
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: </span>
 aa_change_profile<span class="token punctuation">(</span><span class="token string">"testprofile"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 aa_getcon<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 test <span class="token operator">&lt;-</span> read.table<span class="token punctuation">(</span><span class="token string">"/etc/group"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -223,10 +279,9 @@ test <span class="token operator">&lt;-</span> read.table<span class="token punc
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="eval.secure">
-
-<a href="#eval.secure" class="help-page-title"><h2 id="eval.secure">eval.secure</h2></a>
+</div></div>
+<div class="container manual-page" id="eval.secure"><div class="page-main">
+<a href="#eval.secure" class="help-page-title"><h2>eval.secure</h2></a>
 
 <h3>Description</h3>
 
@@ -236,10 +291,9 @@ to this new function.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="unittests">
-
-<a href="#unittests" class="help-page-title"><h2 id="unittests">RAppArmor unit tests</h2></a>
+</div></div>
+<div class="container manual-page" id="unittests"><div class="page-main">
+<a href="#unittests" class="help-page-title"><h2>RAppArmor unit tests</h2></a>
 
 <h3>Description</h3>
 
@@ -252,7 +306,8 @@ user to cover both cases.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">unittests<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">unittests()
+</code><code class="language-r">unittests<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
 <h3>Details</h3>
@@ -264,8 +319,8 @@ in the background.
 </p>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

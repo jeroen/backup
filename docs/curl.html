@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'curl'</h1>
     <table class="description-table">
       <tr>
@@ -25,25 +25,23 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">The curl() and curl_download() functions provide highly
-    configurable drop-in replacements for base url() and download.file() with
-    better performance, support for encryption (https, ftps), gzip compression,
-    authentication, and other 'libcurl' goodies. The core of the package implements a
-    framework for performing fully customized requests where data can be processed
-    either in memory, on disk, or streaming via the callback or connection
-    interfaces. Some knowledge of 'libcurl' is recommended; for a more-user-friendly
-    web client see the 'httr' package which builds on this package with http
-    specific tools and logic.</td>
+<td class="description-description">Bindings to 'libcurl' &lt;https://curl.se/libcurl/&gt; for
+        performing fully configurable HTTP/FTP requests where responses
+        can be processed in memory, on disk, or streaming via the
+        callback or connection interfaces. Some knowledge of 'libcurl'
+        is recommended; for a more-user-friendly web client see the
+        'httr2' package which builds on this package with http specific
+        tools and logic.</td>
 </tr>
       <tr>
 <th>Authors:</th>
 <td class="description-author"><span>Jeroen Ooms [aut, cre] <a href="https://orcid.org/0000-0002-4035-0289" target="_blank"><img style="height:1em" src="https://cran.r-project.org/web/orcid.svg"></a>,
   Hadley Wickham [ctb],
-  RStudio [cph]</span></td>
+  Posit Software, PBC [cph]</span></td>
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -51,11 +49,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">5.0.9000</td>
+<td class="description-version">6.0.2</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-24 16:45:18 UTC</td>
+<td class="description-date">2024-11-29 15:49:16 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -71,6 +69,7 @@
 <li class="help-index-item"><a href="#curl_escape">URL encoding</a></li>
 <li class="help-index-item"><a href="#curl_fetch">Fetch the contents of a URL</a></li>
 <li class="help-index-item"><a href="#curl_options">List curl version and options.</a></li>
+<li class="help-index-item"><a href="#curl_parse_url">Normalizing URL parser</a></li>
 <li class="help-index-item"><a href="#curl_upload">Upload a File</a></li>
 <li class="help-index-item"><a href="#file_writer">Lazy File Writer</a></li>
 <li class="help-index-item"><a href="#handle">Create and configure a curl handle</a></li>
@@ -87,41 +86,41 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="curl">
-
-<a href="#curl" class="help-page-title"><h2 id="curl">Curl connection interface</h2></a>
+<div class="container manual-page" id="curl"><div class="page-main">
+<a href="#curl" class="help-page-title"><h2>Curl connection interface</h2></a>
 
 <h3>Description</h3>
 
-<p>Drop-in replacement for base <code><a href="https://r-universe.dev/manuals/base.html#connections">url</a></code> that supports https, ftps,
-gzip, deflate, etc. Default behavior is identical to <code><a href="https://r-universe.dev/manuals/base.html#connections">url</a></code>, but
-request can be fully configured by passing a custom <code><a href="#handle">handle</a></code>.
+<p>Drop-in replacement for base <code><a href="https://r-universe.dev/manuals/base.html#connections">url()</a></code> that supports https, ftps,
+gzip, deflate, etc. Default behavior is identical to <code><a href="https://r-universe.dev/manuals/base.html#connections">url()</a></code>, but
+request can be fully configured by passing a custom <code><a href="#handle">handle()</a></code>.
 </p>
 
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">curl<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"http://httpbin.org/get"</span><span class="token punctuation">,</span> open <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl(url = "https://hb.cran.dev/get", open = "", handle = new_handle())
+</code><code class="language-r">curl<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"https://hb.cran.dev/get"</span><span class="token punctuation">,</span> open <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="curl_:_url">url</code></td>
+<td><code id="url">url</code></td>
 <td>
 <p>character string. See examples.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_:_open">open</code></td>
+<td><code id="open">open</code></td>
 <td>
 <p>character string. How to open the connection if it should be opened
 initially. Currently only "r" and "rb" are supported.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_:_handle">handle</code></td>
+<td><code id="handle">handle</code></td>
 <td>
 <p>a curl handle object</p>
 </td>
@@ -132,15 +131,64 @@ initially. Currently only "r" and "rb" are supported.</p>
 <p>As of version 2.3 curl connections support <code>open(con, blocking = FALSE)</code>.
 In this case <code>readBin</code> and <code>readLines</code> will return immediately with data
 that is available without waiting. For such non-blocking connections the caller
-needs to call <code><a href="https://r-universe.dev/manuals/base.html#connections">isIncomplete</a></code> to check if the download has completed
+needs to call <code><a href="https://r-universe.dev/manuals/base.html#connections">isIncomplete()</a></code> to check if the download has completed
 yet.
 </p>
 
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
-con <span class="token operator">&lt;-</span> curl<span class="token punctuation">(</span><span class="token string">"https://httpbin.org/get"</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+con &lt;- curl("https://hb.cran.dev/get")
+readLines(con)
+
+# Auto-opened connections can be recycled
+open(con, "rb")
+bin &lt;- readBin(con, raw(), 999)
+close(con)
+rawToChar(bin)
+
+# HTTP error
+curl("https://hb.cran.dev/status/418", "r")
+
+# Follow redirects
+readLines(curl("https://hb.cran.dev/redirect/3"))
+
+# Error after redirect
+curl("https://hb.cran.dev/redirect-to?url=https://hb.cran.dev/status/418", "r")
+
+# Auto decompress Accept-Encoding: gzip / deflate (rfc2616 #14.3)
+readLines(curl("https://hb.cran.dev/gzip"))
+readLines(curl("https://hb.cran.dev/deflate"))
+
+# Binary support
+buf &lt;- readBin(curl("https://hb.cran.dev/bytes/98765", "rb"), raw(), 1e5)
+length(buf)
+
+# Read file from disk
+test &lt;- paste0("file://", system.file("DESCRIPTION"))
+readLines(curl(test))
+
+# Other protocols
+read.csv(curl("ftp://cran.r-project.org/pub/R/CRAN_mirrors.csv"))
+readLines(curl("ftps://test.rebex.net:990/readme.txt"))
+readLines(curl("gopher://quux.org/1"))
+
+# Streaming data
+con &lt;- curl("http://jeroen.github.io/data/diamonds.json", "r")
+while(length(x &lt;- readLines(con, n = 5))){
+  print(x)
+}
+
+# Stream large dataset over https with gzip
+library(jsonlite)
+con &lt;- gzcon(curl("https://jeroen.github.io/data/nycflights13.json.gz"))
+nycflights &lt;- stream_in(con)
+
+## End(Not run)
+
+</code><code class="language-r"><span class="token comment">## Not run: </span>
+con <span class="token operator">&lt;-</span> curl<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/get"</span><span class="token punctuation">)</span>
 readLines<span class="token punctuation">(</span>con<span class="token punctuation">)</span>
 
 <span class="token comment"># Auto-opened connections can be recycled</span>
@@ -150,20 +198,20 @@ close<span class="token punctuation">(</span>con<span class="token punctuation">
 rawToChar<span class="token punctuation">(</span>bin<span class="token punctuation">)</span>
 
 <span class="token comment"># HTTP error</span>
-curl<span class="token punctuation">(</span><span class="token string">"https://httpbin.org/status/418"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span>
+curl<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/status/418"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Follow redirects</span>
-readLines<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"https://httpbin.org/redirect/3"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+readLines<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/redirect/3"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Error after redirect</span>
-curl<span class="token punctuation">(</span><span class="token string">"https://httpbin.org/redirect-to?url=http://httpbin.org/status/418"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span>
+curl<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/redirect-to?url=https://hb.cran.dev/status/418"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Auto decompress Accept-Encoding: gzip / deflate (rfc2616 #14.3)</span>
-readLines<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/gzip"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-readLines<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/deflate"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+readLines<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/gzip"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+readLines<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/deflate"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Binary support</span>
-buf <span class="token operator">&lt;-</span> readBin<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/bytes/98765"</span><span class="token punctuation">,</span> <span class="token string">"rb"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> raw<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1e5</span><span class="token punctuation">)</span>
+buf <span class="token operator">&lt;-</span> readBin<span class="token punctuation">(</span>curl<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/bytes/98765"</span><span class="token punctuation">,</span> <span class="token string">"rb"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> raw<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1e5</span><span class="token punctuation">)</span>
 length<span class="token punctuation">(</span>buf<span class="token punctuation">)</span>
 
 <span class="token comment"># Read file from disk</span>
@@ -189,50 +237,50 @@ nycflights <span class="token operator">&lt;-</span> stream_in<span class="token
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="curl_download">
-
-<a href="#curl_download" class="help-page-title"><h2 id="curl_download">Download file to disk</h2></a>
+</div></div>
+<div class="container manual-page" id="curl_download"><div class="page-main">
+<a href="#curl_download" class="help-page-title"><h2>Download file to disk</h2></a>
 
 <h3>Description</h3>
 
 <p>Libcurl implementation of <code>C_download</code> (the "internal" download method)
 with added support for https, ftps, gzip, etc. Default behavior is identical
-to <code><a href="https://r-universe.dev/manuals/utils.html#download.file">download.file</a></code>, but request can be fully configured by passing
-a custom <code><a href="#handle">handle</a></code>.
+to <code><a href="https://r-universe.dev/manuals/utils.html#download.file">download.file()</a></code>, but request can be fully configured by passing
+a custom <code><a href="#handle">handle()</a></code>.
 </p>
 
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">curl_download<span class="token punctuation">(</span>url<span class="token punctuation">,</span> destfile<span class="token punctuation">,</span> quiet <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> mode <span class="token operator">=</span> <span class="token string">"wb"</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl_download(url, destfile, quiet = TRUE, mode = "wb", handle = new_handle())
+</code><code class="language-r">curl_download<span class="token punctuation">(</span>url<span class="token punctuation">,</span> destfile<span class="token punctuation">,</span> quiet <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> mode <span class="token operator">=</span> <span class="token string">"wb"</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="curl_download_:_url">url</code></td>
+<td><code id="url">url</code></td>
 <td>
 <p>A character string naming the URL of a resource to be downloaded.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_download_:_destfile">destfile</code></td>
+<td><code id="destfile">destfile</code></td>
 <td>
 <p>A character string with the name where the downloaded file
 is saved. Tilde-expansion is performed.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_download_:_quiet">quiet</code></td>
+<td><code id="quiet">quiet</code></td>
 <td>
 <p>If <code>TRUE</code>, suppress status messages (if any), and the
 progress bar.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_download_:_mode">mode</code></td>
+<td><code id="mode">mode</code></td>
 <td>
 <p>A character string specifying the mode with which to write the file.
 Useful values are <code>"w"</code>, <code>"wb"</code> (binary), <code>"a"</code> (append)
@@ -240,7 +288,7 @@ and <code>"ab"</code>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_download_:_handle">handle</code></td>
+<td><code id="handle">handle</code></td>
 <td>
 <p>a curl handle object</p>
 </td>
@@ -254,7 +302,9 @@ download, and raises an error when status is non-successful. The behavior of
 <code>curl_fetch_disk</code> on the other hand is to proceed as normal and write
 the error page to disk in case of a non success response.
 </p>
-<p>For a more advanced download interface which supports concurrent requests and
+<p>The <code>curl_download</code> function does support resuming and removes the temporary
+file if the download did not complete successfully.
+For a more advanced download interface which supports concurrent requests and
 resuming large files, have a look at the <a href="#multi_download">multi_download</a> function.
 </p>
 
@@ -273,7 +323,14 @@ resuming large files, have a look at the <a href="#multi_download">multi_downloa
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Download large file</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Download large file
+## Not run: 
+url &lt;- "http://www2.census.gov/acs2011_5yr/pums/csv_pus.zip"
+tmp &lt;- tempfile()
+curl_download(url, tmp)
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment"># Download large file</span>
 <span class="token comment">## Not run: </span>
 url <span class="token operator">&lt;-</span> <span class="token string">"http://www2.census.gov/acs2011_5yr/pums/csv_pus.zip"</span>
 tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -282,10 +339,9 @@ curl_download<span class="token punctuation">(</span>url<span class="token punct
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="curl_echo">
-
-<a href="#curl_echo" class="help-page-title"><h2 id="curl_echo">Echo Service</h2></a>
+</div></div>
+<div class="container manual-page" id="curl_echo"><div class="page-main">
+<a href="#curl_echo" class="help-page-title"><h2>Echo Service</h2></a>
 
 <h3>Description</h3>
 
@@ -296,41 +352,66 @@ echo the request body and content type in the response.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">curl_echo<span class="token punctuation">(</span>handle<span class="token punctuation">,</span> port <span class="token operator">=</span> <span class="token number">9359</span><span class="token punctuation">,</span> progress <span class="token operator">=</span> interactive<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> file <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl_echo(handle, port = find_port(), progress = interactive(), file = NULL)
+
+find_port(range = NULL)
+</code><code class="language-r">curl_echo<span class="token punctuation">(</span>handle<span class="token punctuation">,</span> port <span class="token operator">=</span> find_port<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> progress <span class="token operator">=</span> interactive<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> file <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+
+find_port<span class="token punctuation">(</span>range <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="curl_echo_:_handle">handle</code></td>
+<td><code id="handle">handle</code></td>
 <td>
 <p>a curl handle object</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_echo_:_port">port</code></td>
+<td><code id="port">port</code></td>
 <td>
 <p>the port number on which to run httpuv server</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_echo_:_progress">progress</code></td>
+<td><code id="progress">progress</code></td>
 <td>
 <p>show progress meter during http transfer</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_echo_:_file">file</code></td>
+<td><code id="file">file</code></td>
 <td>
 <p>path or connection to write body. Default returns body as raw vector.</p>
+</td>
+</tr>
+<tr>
+<td><code id="range">range</code></td>
+<td>
+<p>optional integer vector of ports to consider</p>
 </td>
 </tr>
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token keyword">if</span><span class="token punctuation">(</span>require<span class="token punctuation">(</span><span class="token string">'httpuv'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-h <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">'https://httpbin.org/post'</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">if(require('httpuv')){
+h &lt;- new_handle(url = 'https://hb.cran.dev/post')
+handle_setform(h, foo = "blabla", bar = charToRaw("test"),
+  myfile = form_file(system.file("DESCRIPTION"), "text/description"))
+
+# Echo the POST request data
+formdata &lt;- curl_echo(h)
+
+# Show the multipart body
+cat(rawToChar(formdata$body))
+
+# Parse multipart
+webutils::parse_http(formdata$body, formdata$content_type)
+}
+</code><code class="language-r"><span class="token keyword">if</span><span class="token punctuation">(</span>require<span class="token punctuation">(</span><span class="token string">'httpuv'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+h <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">'https://hb.cran.dev/post'</span><span class="token punctuation">)</span>
 handle_setform<span class="token punctuation">(</span>h<span class="token punctuation">,</span> foo <span class="token operator">=</span> <span class="token string">"blabla"</span><span class="token punctuation">,</span> bar <span class="token operator">=</span> charToRaw<span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   myfile <span class="token operator">=</span> form_file<span class="token punctuation">(</span>system.file<span class="token punctuation">(</span><span class="token string">"DESCRIPTION"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"text/description"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
@@ -345,10 +426,9 @@ webutils<span class="token operator">::</span>parse_http<span class="token punct
 <span class="token punctuation">}</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="curl_escape">
-
-<a href="#curl_escape" class="help-page-title"><h2 id="curl_escape">URL encoding</h2></a>
+</div></div>
+<div class="container manual-page" id="curl_escape"><div class="page-main">
+<a href="#curl_escape" class="help-page-title"><h2>URL encoding</h2></a>
 
 <h3>Description</h3>
 
@@ -359,15 +439,18 @@ webutils<span class="token operator">::</span>parse_http<span class="token punct
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">curl_escape<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl_escape(url)
+
+curl_unescape(url)
+</code><code class="language-r">curl_escape<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
 
 curl_unescape<span class="token punctuation">(</span>url<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="curl_escape_:_url">url</code></td>
+<td><code id="url">url</code></td>
 <td>
 <p>A character vector (typically containing urls or parameters) to be
 encoded/decoded</p>
@@ -375,7 +458,15 @@ encoded/decoded</p>
 </tr></table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Escape strings</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Escape strings
+out &lt;- curl_escape("foo = bar + 5")
+curl_unescape(out)
+
+# All non-ascii characters are encoded
+mu &lt;- "\u00b5"
+curl_escape(mu)
+curl_unescape(curl_escape(mu))
+</code><code class="language-r"><span class="token comment"># Escape strings</span>
 out <span class="token operator">&lt;-</span> curl_escape<span class="token punctuation">(</span><span class="token string">"foo = bar + 5"</span><span class="token punctuation">)</span>
 curl_unescape<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
 
@@ -385,23 +476,36 @@ curl_escape<span class="token punctuation">(</span>mu<span class="token punctuat
 curl_unescape<span class="token punctuation">(</span>curl_escape<span class="token punctuation">(</span>mu<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="curl_fetch">
-
-<a href="#curl_fetch" class="help-page-title"><h2 id="curl_fetch_memory">Fetch the contents of a URL</h2></a>
+</div></div>
+<div class="container manual-page" id="curl_fetch"><div class="page-main">
+<a href="#curl_fetch" class="help-page-title"><h2>Fetch the contents of a URL</h2></a>
 
 <h3>Description</h3>
 
 <p>Low-level bindings to write data from a URL into memory, disk or a callback
-function. These are mainly intended for <code>httr</code>, most users will be better
-off using the <code><a href="#curl">curl</a></code> or <code><a href="#curl_download">curl_download</a></code> function, or the
-http specific wrappers in the <code>httr</code> package.
+function.
 </p>
 
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">curl_fetch_memory<span class="token punctuation">(</span>url<span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl_fetch_memory(url, handle = new_handle())
+
+curl_fetch_disk(url, path, handle = new_handle())
+
+curl_fetch_stream(url, fun, handle = new_handle())
+
+curl_fetch_multi(
+  url,
+  done = NULL,
+  fail = NULL,
+  pool = NULL,
+  data = NULL,
+  handle = new_handle()
+)
+
+curl_fetch_echo(url, handle = new_handle())
+</code><code class="language-r">curl_fetch_memory<span class="token punctuation">(</span>url<span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 curl_fetch_disk<span class="token punctuation">(</span>url<span class="token punctuation">,</span> path<span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
@@ -419,56 +523,56 @@ curl_fetch_multi<span class="token punctuation">(</span>
 curl_fetch_echo<span class="token punctuation">(</span>url<span class="token punctuation">,</span> handle <span class="token operator">=</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="curl_fetch_memory_:_url">url</code></td>
+<td><code id="url">url</code></td>
 <td>
 <p>A character string naming the URL of a resource to be downloaded.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_fetch_memory_:_handle">handle</code></td>
+<td><code id="handle">handle</code></td>
 <td>
-<p>a curl handle object</p>
+<p>A curl handle object.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_fetch_memory_:_path">path</code></td>
+<td><code id="path">path</code></td>
 <td>
 <p>Path to save results</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_fetch_memory_:_fun">fun</code></td>
+<td><code id="fun">fun</code></td>
 <td>
 <p>Callback function. Should have one argument, which will be
 a raw vector.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_fetch_memory_:_done">done</code></td>
+<td><code id="done">done</code></td>
 <td>
 <p>callback function for completed request. Single argument with
 response data in same structure as <a href="#curl_fetch">curl_fetch_memory</a>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_fetch_memory_:_fail">fail</code></td>
+<td><code id="fail">fail</code></td>
 <td>
 <p>callback function called on failed request. Argument contains
 error message.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_fetch_memory_:_pool">pool</code></td>
+<td><code id="pool">pool</code></td>
 <td>
 <p>a multi handle created by <a href="#multi">new_pool</a>. Default uses a global pool.</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_fetch_memory_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>(advanced) callback function, file path, or connection object for writing
 incoming data. This callback should only be used for <em>streaming</em> applications,
@@ -481,39 +585,72 @@ the <code>done</code> callback (which is usually what you want).</p>
 </table>
 <h3>Details</h3>
 
-<p>The curl_fetch functions automatically raise an error upon protocol problems
-(network, disk, ssl) but do not implement application logic. For example for
-you need to check the status code of http requests yourself in the response,
+<p>The <code style="white-space: pre;">⁠curl_fetch_*()⁠</code> functions automatically raise an error upon protocol problems
+(network, disk, TLS, etc.) but do not implement application logic. For example,
+you need to check the status code of HTTP requests in the response by yourself,
 and deal with it accordingly.
 </p>
-<p>Both <code>curl_fetch_memory</code> and <code>curl_fetch_disk</code> have a blocking and
+<p>Both <code>curl_fetch_memory()</code> and <code>curl_fetch_disk</code> have a blocking and a
 non-blocking C implementation. The latter is slightly slower but allows for
 interrupting the download prematurely (using e.g. CTRL+C or ESC). Interrupting
 is enabled when R runs in interactive mode or when
 <code>getOption("curl_interrupt") == TRUE</code>.
 </p>
-<p>The <code>curl_fetch_multi</code> function is the asynchronous equivalent of
-<code>curl_fetch_memory</code>. It wraps <code>multi_add</code> to schedule requests which
-are executed concurrently when calling <code>multi_run</code>. For each successful
-request the <code>done</code> callback is triggered with response data. For failed
-requests (when <code>curl_fetch_memory</code> would raise an error), the <code>fail</code>
-function is triggered with the error message.
+<p>The <code>curl_fetch_multi()</code> function is the asynchronous equivalent of
+<code>curl_fetch_memory()</code>. It wraps <code><a href="#multi">multi_add()</a></code> to
+schedule requests which are executed concurrently when calling
+<code><a href="#multi">multi_run()</a></code>. For each successful request, the
+<code>done</code> callback is triggered with response data. For failed requests
+(when <code>curl_fetch_memory()</code> would raise an error), the <code>fail</code> function
+is triggered with the error message.
 </p>
 
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Load in memory</span>
-res <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/cookies/set?foo=123&amp;bar=ftw"</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">
+# Load in memory
+res &lt;- curl_fetch_memory("https://hb.cran.dev/cookies/set?foo=123&amp;bar=ftw")
+res$content
+
+# Save to disk
+res &lt;- curl_fetch_disk("https://hb.cran.dev/stream/10", tempfile())
+res$content
+readLines(res$content)
+
+# Stream with callback
+drip_url &lt;- "https://hb.cran.dev/drip?duration=3&amp;numbytes=15&amp;code=200"
+res &lt;- curl_fetch_stream(drip_url, function(x){
+  cat(rawToChar(x))
+})
+
+# Async API
+data &lt;- list()
+success &lt;- function(res){
+  cat("Request done! Status:", res$status, "\n")
+  data &lt;&lt;- c(data, list(res))
+}
+failure &lt;- function(msg){
+  cat("Oh noes! Request failed!", msg, "\n")
+}
+curl_fetch_multi("https://hb.cran.dev/get", success, failure)
+curl_fetch_multi("https://hb.cran.dev/status/418", success, failure)
+curl_fetch_multi("https://urldoesnotexist.xyz", success, failure)
+multi_run()
+str(data)
+
+</code><code class="language-r"><span class="token comment"># Load in memory</span>
+res <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/cookies/set?foo=123&amp;bar=ftw"</span><span class="token punctuation">)</span>
 res<span class="token operator">$</span>content
 
 <span class="token comment"># Save to disk</span>
-res <span class="token operator">&lt;-</span> curl_fetch_disk<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/stream/10"</span><span class="token punctuation">,</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+res <span class="token operator">&lt;-</span> curl_fetch_disk<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/stream/10"</span><span class="token punctuation">,</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 res<span class="token operator">$</span>content
 readLines<span class="token punctuation">(</span>res<span class="token operator">$</span>content<span class="token punctuation">)</span>
 
 <span class="token comment"># Stream with callback</span>
-res <span class="token operator">&lt;-</span> curl_fetch_stream<span class="token punctuation">(</span><span class="token string">"http://www.httpbin.org/drip?duration=3&amp;numbytes=15&amp;code=200"</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">{</span>
+drip_url <span class="token operator">&lt;-</span> <span class="token string">"https://hb.cran.dev/drip?duration=3&amp;numbytes=15&amp;code=200"</span>
+res <span class="token operator">&lt;-</span> curl_fetch_stream<span class="token punctuation">(</span>drip_url<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">{</span>
   cat<span class="token punctuation">(</span>rawToChar<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
@@ -526,17 +663,16 @@ success <span class="token operator">&lt;-</span> <span class="token keyword">fu
 failure <span class="token operator">&lt;-</span> <span class="token keyword">function</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">{</span>
   cat<span class="token punctuation">(</span><span class="token string">"Oh noes! Request failed!"</span><span class="token punctuation">,</span> msg<span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
-curl_fetch_multi<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/get"</span><span class="token punctuation">,</span> success<span class="token punctuation">,</span> failure<span class="token punctuation">)</span>
-curl_fetch_multi<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/status/418"</span><span class="token punctuation">,</span> success<span class="token punctuation">,</span> failure<span class="token punctuation">)</span>
+curl_fetch_multi<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/get"</span><span class="token punctuation">,</span> success<span class="token punctuation">,</span> failure<span class="token punctuation">)</span>
+curl_fetch_multi<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/status/418"</span><span class="token punctuation">,</span> success<span class="token punctuation">,</span> failure<span class="token punctuation">)</span>
 curl_fetch_multi<span class="token punctuation">(</span><span class="token string">"https://urldoesnotexist.xyz"</span><span class="token punctuation">,</span> success<span class="token punctuation">,</span> failure<span class="token punctuation">)</span>
 multi_run<span class="token punctuation">(</span><span class="token punctuation">)</span>
 str<span class="token punctuation">(</span>data<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="curl_options">
-
-<a href="#curl_options" class="help-page-title"><h2 id="curl_options">List curl version and options.</h2></a>
+</div></div>
+<div class="container manual-page" id="curl_options"><div class="page-main">
+<a href="#curl_options" class="help-page-title"><h2>List curl version and options.</h2></a>
 
 <h3>Description</h3>
 
@@ -550,24 +686,39 @@ including when support was added/removed from libcurl.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">curl_options<span class="token punctuation">(</span>filter <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl_options(filter = "")
+
+curl_symbols(filter = "")
+
+curl_version()
+</code><code class="language-r">curl_options<span class="token punctuation">(</span>filter <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">)</span>
 
 curl_symbols<span class="token punctuation">(</span>filter <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">)</span>
 
 curl_version<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="curl_options_:_filter">filter</code></td>
+<td><code id="filter">filter</code></td>
 <td>
 <p>string: only return options with string in name</p>
 </td>
 </tr></table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Available options</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Available options
+curl_options()
+
+# List proxy options
+curl_options("proxy")
+
+# Symbol table
+curl_symbols("proxy")
+# Curl/ssl version info
+curl_version()
+</code><code class="language-r"><span class="token comment"># Available options</span>
 curl_options<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token comment"># List proxy options</span>
@@ -579,71 +730,219 @@ curl_symbols<span class="token punctuation">(</span><span class="token string">"
 curl_version<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="curl_upload">
-
-<a href="#curl_upload" class="help-page-title"><h2 id="curl_upload">Upload a File</h2></a>
+</div></div>
+<div class="container manual-page" id="curl_parse_url"><div class="page-main">
+<a href="#curl_parse_url" class="help-page-title"><h2>Normalizing URL parser</h2></a>
 
 <h3>Description</h3>
 
-<p>Upload a file to an <code>http://</code>, <code>ftp://</code>, or <code>sftp://</code> (ssh)
-server. Uploading to HTTP means performing an <code>HTTP PUT</code> on that URL.
+<p>Interfaces the libcurl <a href="https://curl.se/libcurl/c/libcurl-url.html" target="_blank">URL parser</a>.
+URLs are automatically normalized where possible, such as in the case of
+relative paths or url-encoded queries (see examples).
+When parsing hyperlinks from a HTML document, it is possible to set <code>baseurl</code>
+to the location of the document itself such that relative links can be resolved.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl_parse_url(url, baseurl = NULL, decode = TRUE, params = TRUE)
+</code><code class="language-r">curl_parse_url<span class="token punctuation">(</span>url<span class="token punctuation">,</span> baseurl <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> decode <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> params <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
+
+
+<h3 class="r-arguments-title">Arguments</h3>
+
+<table>
+<tr>
+<td><code id="url">url</code></td>
+<td>
+<p>a character string of length one</p>
+</td>
+</tr>
+<tr>
+<td><code id="baseurl">baseurl</code></td>
+<td>
+<p>use this as the parent if <code>url</code> may be a relative path</p>
+</td>
+</tr>
+<tr>
+<td><code id="decode">decode</code></td>
+<td>
+<p>automatically <a href="#curl_escape">url-decode</a> output.
+Set to <code>FALSE</code> to get output in url-encoded format.</p>
+</td>
+</tr>
+<tr>
+<td><code id="params">params</code></td>
+<td>
+<p>parse individual parameters assuming query is in <code>application/x-www-form-urlencoded</code> format.</p>
+</td>
+</tr>
+</table>
+<h3>Details</h3>
+
+<p>A valid URL contains at least a scheme and a host, other pieces are optional.
+If these are missing, the parser raises an error. Otherwise it returns
+a list with the following elements:
+</p>
+
+<ul>
+<li> <p><em>url</em>: the normalized input URL
+</p>
+</li>
+<li> <p><em>scheme</em>: the protocol part before the <code style="white-space: pre;">⁠://⁠</code> (required)
+</p>
+</li>
+<li> <p><em>host</em>: name of host without port (required)
+</p>
+</li>
+<li> <p><em>port</em>: decimal between 0 and 65535
+</p>
+</li>
+<li> <p><em>path</em>: normalized path up till the <code style="white-space: pre;">⁠?⁠</code> of the url
+</p>
+</li>
+<li> <p><em>query</em>: search query: part between the <code style="white-space: pre;">⁠?⁠</code> and <code style="white-space: pre;">⁠#⁠</code> of the url. Use <code>params</code> below to get individual parameters from the query.
+</p>
+</li>
+<li> <p><em>fragment</em>: the hash part after the <code style="white-space: pre;">⁠#⁠</code> of the url
+</p>
+</li>
+<li> <p><em>user</em>: authentication username
+</p>
+</li>
+<li> <p><em>password</em>: authentication password
+</p>
+</li>
+<li> <p><em>params</em>: named vector with parameters from <code>query</code> if set
+</p>
+</li>
+</ul>
+<p>Each element above is either a string or <code>NULL</code>, except for <code>params</code> which
+is always a character vector with the length equal to the number of parameters.
+</p>
+<p>Note that the <code>params</code> field is only usable if the <code>query</code> is in the usual
+<code>application/x-www-form-urlencoded</code> format which is technically not part of
+the RFC. Some services may use e.g. a json blob as the query, in which case
+the parsed <code>params</code> field here can be ignored. There is no way for the parser
+to automatically infer or validate the query format, this is up to the caller.
+</p>
+<p>For more details on the URL format see
+<a href="https://datatracker.ietf.org/doc/html/rfc3986" target="_blank">rfc3986</a>
+or the steps explained in the <a href="https://url.spec.whatwg.org/#concept-basic-url-parser" target="_blank">whatwg basic url parser</a>.
+</p>
+<p>On platforms that do not have a recent enough curl version (basically only
+RHEL-8) the <a href="https://github.com/ada-url/ada" target="_blank">Ada URL</a> library is used as fallback.
+Results should be identical, though curl has nicer error messages. This is
+a temporary solution, we plan to remove the fallback when old systems are
+no longer supported.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre class="language-r"><code class="language-r-input" hidden="hidden">url &lt;- "https://jerry:secret@google.com:888/foo/bar?test=123#bla"
+curl_parse_url(url)
+
+# Resolve relative links from a baseurl
+curl_parse_url("/somelink", baseurl = url)
+
+# Paths get normalized
+curl_parse_url("https://foobar.com/foo/bar/../baz/../yolo")$url
+
+# Also normalizes URL-encoding (these URLs are equivalent):
+url1 &lt;- "https://ja.wikipedia.org/wiki/\u5bff\u53f8"
+url2 &lt;- "https://ja.wikipedia.org/wiki/%e5%af%bf%e5%8f%b8"
+curl_parse_url(url1)$path
+curl_parse_url(url2)$path
+curl_parse_url(url1, decode = FALSE)$path
+curl_parse_url(url1, decode = FALSE)$path
+</code><code class="language-r">url <span class="token operator">&lt;-</span> <span class="token string">"https://jerry:secret@google.com:888/foo/bar?test=123#bla"</span>
+curl_parse_url<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+
+<span class="token comment"># Resolve relative links from a baseurl</span>
+curl_parse_url<span class="token punctuation">(</span><span class="token string">"/somelink"</span><span class="token punctuation">,</span> baseurl <span class="token operator">=</span> url<span class="token punctuation">)</span>
+
+<span class="token comment"># Paths get normalized</span>
+curl_parse_url<span class="token punctuation">(</span><span class="token string">"https://foobar.com/foo/bar/../baz/../yolo"</span><span class="token punctuation">)</span><span class="token operator">$</span>url
+
+<span class="token comment"># Also normalizes URL-encoding (these URLs are equivalent):</span>
+url1 <span class="token operator">&lt;-</span> <span class="token string">"https://ja.wikipedia.org/wiki/\u5bff\u53f8"</span>
+url2 <span class="token operator">&lt;-</span> <span class="token string">"https://ja.wikipedia.org/wiki/%e5%af%bf%e5%8f%b8"</span>
+curl_parse_url<span class="token punctuation">(</span>url1<span class="token punctuation">)</span><span class="token operator">$</span>path
+curl_parse_url<span class="token punctuation">(</span>url2<span class="token punctuation">)</span><span class="token operator">$</span>path
+curl_parse_url<span class="token punctuation">(</span>url1<span class="token punctuation">,</span> decode <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span><span class="token operator">$</span>path
+curl_parse_url<span class="token punctuation">(</span>url1<span class="token punctuation">,</span> decode <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span><span class="token operator">$</span>path</code></pre>
+
+<hr>
+</div></div>
+<div class="container manual-page" id="curl_upload"><div class="page-main">
+<a href="#curl_upload" class="help-page-title"><h2>Upload a File</h2></a>
+
+<h3>Description</h3>
+
+<p>Upload a file to an <code style="white-space: pre;">⁠http://⁠</code>, <code style="white-space: pre;">⁠ftp://⁠</code>, or <code style="white-space: pre;">⁠sftp://⁠</code> (ssh)
+server. Uploading to HTTP means performing an <code style="white-space: pre;">⁠HTTP PUT⁠</code> on that URL.
 Be aware that sftp is only available for libcurl clients built with libssh2.
 </p>
 
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">curl_upload<span class="token punctuation">(</span>file<span class="token punctuation">,</span> url<span class="token punctuation">,</span> verbose <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> reuse <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">curl_upload(file, url, verbose = TRUE, reuse = TRUE, ...)
+</code><code class="language-r">curl_upload<span class="token punctuation">(</span>file<span class="token punctuation">,</span> url<span class="token punctuation">,</span> verbose <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> reuse <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="curl_upload_:_file">file</code></td>
+<td><code id="file">file</code></td>
 <td>
 <p>connection object or path to an existing file on disk</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_upload_:_url">url</code></td>
+<td><code id="url">url</code></td>
 <td>
-<p>where to upload, should start with e.g. <code>ftp://</code></p>
+<p>where to upload, should start with e.g. <code style="white-space: pre;">⁠ftp://⁠</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_upload_:_verbose">verbose</code></td>
+<td><code id="verbose">verbose</code></td>
 <td>
 <p>emit some progress output</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_upload_:_reuse">reuse</code></td>
+<td><code id="reuse">reuse</code></td>
 <td>
 <p>try to keep alive and recycle connections when possible</p>
 </td>
 </tr>
 <tr>
-<td><code id="curl_upload_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
-<p>other arguments passed to <code><a href="#handle">handle_setopt</a></code>, for
+<p>other arguments passed to <code><a href="#handle">handle_setopt()</a></code>, for
 example a <code>username</code> and <code>password</code>.</p>
 </td>
 </tr>
 </table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: # Upload package to winbuilder:</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: # Upload package to winbuilder:
+curl_upload('mypkg_1.3.tar.gz', 'ftp://win-builder.r-project.org/R-devel/')
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: # Upload package to winbuilder:</span>
 curl_upload<span class="token punctuation">(</span><span class="token string">'mypkg_1.3.tar.gz'</span><span class="token punctuation">,</span> <span class="token string">'ftp://win-builder.r-project.org/R-devel/'</span><span class="token punctuation">)</span>
 
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="file_writer">
-
-<a href="#file_writer" class="help-page-title"><h2 id="file_writer">Lazy File Writer</h2></a>
+</div></div>
+<div class="container manual-page" id="file_writer"><div class="page-main">
+<a href="#file_writer" class="help-page-title"><h2>Lazy File Writer</h2></a>
 
 <h3>Description</h3>
 
@@ -653,20 +952,21 @@ curl_upload<span class="token punctuation">(</span><span class="token string">'m
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">file_writer<span class="token punctuation">(</span>path<span class="token punctuation">,</span> append <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">file_writer(path, append = FALSE)
+</code><code class="language-r">file_writer<span class="token punctuation">(</span>path<span class="token punctuation">,</span> append <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="file_writer_:_path">path</code></td>
+<td><code id="path">path</code></td>
 <td>
 <p>file name or path on disk</p>
 </td>
 </tr>
 <tr>
-<td><code id="file_writer_:_append">append</code></td>
+<td><code id="append">append</code></td>
 <td>
 <p>open file in append mode</p>
 </td>
@@ -690,7 +990,20 @@ of file descriptors when performing thousands of concurrent requests.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Doesn't open yet</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Doesn't open yet
+tmp &lt;- tempfile()
+writer &lt;- file_writer(tmp)
+
+# Now it opens
+writer(charToRaw("Hello!\n"))
+writer(charToRaw("How are you?\n"))
+
+# Close it!
+writer(charToRaw("All done!\n"), close = TRUE)
+
+# Check it worked
+readLines(tmp)
+</code><code class="language-r"><span class="token comment"># Doesn't open yet</span>
 tmp <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
 writer <span class="token operator">&lt;-</span> file_writer<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
 
@@ -705,17 +1018,16 @@ writer<span class="token punctuation">(</span>charToRaw<span class="token punctu
 readLines<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="handle">
-
-<a href="#handle" class="help-page-title"><h2 id="handle">Create and configure a curl handle</h2></a>
+</div></div>
+<div class="container manual-page" id="handle"><div class="page-main">
+<a href="#handle" class="help-page-title"><h2>Create and configure a curl handle</h2></a>
 
 <h3>Description</h3>
 
 <p>Handles are the work horses of libcurl. A handle is used to configure a
 request with custom options, headers and payload. Once the handle has been
-set up, it can be passed to any of the download functions such as <code><a href="#curl">curl</a></code>
-,<code><a href="#curl_download">curl_download</a></code> or <code><a href="#curl_fetch">curl_fetch_memory</a></code>. The handle will maintain
+set up, it can be passed to any of the download functions such as <code><a href="#curl">curl()</a></code>
+,<code><a href="#curl_download">curl_download()</a></code> or <code><a href="#curl_fetch">curl_fetch_memory()</a></code>. The handle will maintain
 state in between requests, including keep-alive connections, cookies and
 settings.
 </p>
@@ -723,15 +1035,26 @@ settings.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">new_handle<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">new_handle(...)
+
+handle_setopt(handle, ..., .list = list())
+
+handle_setheaders(handle, ..., .list = list())
+
+handle_getheaders(handle)
+
+handle_setform(handle, ..., .list = list())
+
+handle_reset(handle)
+
+handle_data(handle)
+</code><code class="language-r">new_handle<span class="token punctuation">(</span><span class="token ellipsis">...</span><span class="token punctuation">)</span>
 
 handle_setopt<span class="token punctuation">(</span>handle<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">,</span> .list <span class="token operator">=</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 handle_setheaders<span class="token punctuation">(</span>handle<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">,</span> .list <span class="token operator">=</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 handle_getheaders<span class="token punctuation">(</span>handle<span class="token punctuation">)</span>
-
-handle_getcustom<span class="token punctuation">(</span>handle<span class="token punctuation">)</span>
 
 handle_setform<span class="token punctuation">(</span>handle<span class="token punctuation">,</span> <span class="token ellipsis">...</span><span class="token punctuation">,</span> .list <span class="token operator">=</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
@@ -740,25 +1063,25 @@ handle_reset<span class="token punctuation">(</span>handle<span class="token pun
 handle_data<span class="token punctuation">(</span>handle<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="handle_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
 <p>named options / headers to be set in the handle.
-To send a file, see <code><a href="#multipart">form_file</a></code>. To list all allowed options,
-see <code><a href="#curl_options">curl_options</a></code></p>
+To send a file, see <code><a href="#multipart">form_file()</a></code>. To list all allowed options,
+see <code><a href="#curl_options">curl_options()</a></code></p>
 </td>
 </tr>
 <tr>
-<td><code id="handle_:_handle">handle</code></td>
+<td><code id="handle">handle</code></td>
 <td>
 <p>Handle to modify</p>
 </td>
 </tr>
 <tr>
-<td><code id="handle_:_.list">.list</code></td>
+<td><code id=".list">.list</code></td>
 <td>
 <p>A named list of options. This is useful if you've created
 a list of options elsewhere, avoiding the use of <code>do.call()</code>.</p>
@@ -795,24 +1118,35 @@ so you can create a pipeline of operations.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">h <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">h &lt;- new_handle()
+handle_setopt(h, customrequest = "PUT")
+handle_setform(h, a = "1", b = "2")
+r &lt;- curl_fetch_memory("https://hb.cran.dev/put", h)
+cat(rawToChar(r$content))
+
+# Or use the list form
+h &lt;- new_handle()
+handle_setopt(h, .list = list(customrequest = "PUT"))
+handle_setform(h, .list = list(a = "1", b = "2"))
+r &lt;- curl_fetch_memory("https://hb.cran.dev/put", h)
+cat(rawToChar(r$content))
+</code><code class="language-r">h <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span>
 handle_setopt<span class="token punctuation">(</span>h<span class="token punctuation">,</span> customrequest <span class="token operator">=</span> <span class="token string">"PUT"</span><span class="token punctuation">)</span>
 handle_setform<span class="token punctuation">(</span>h<span class="token punctuation">,</span> a <span class="token operator">=</span> <span class="token string">"1"</span><span class="token punctuation">,</span> b <span class="token operator">=</span> <span class="token string">"2"</span><span class="token punctuation">)</span>
-r <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/put"</span><span class="token punctuation">,</span> h<span class="token punctuation">)</span>
+r <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/put"</span><span class="token punctuation">,</span> h<span class="token punctuation">)</span>
 cat<span class="token punctuation">(</span>rawToChar<span class="token punctuation">(</span>r<span class="token operator">$</span>content<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token comment"># Or use the list form</span>
 h <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span>
 handle_setopt<span class="token punctuation">(</span>h<span class="token punctuation">,</span> .list <span class="token operator">=</span> list<span class="token punctuation">(</span>customrequest <span class="token operator">=</span> <span class="token string">"PUT"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 handle_setform<span class="token punctuation">(</span>h<span class="token punctuation">,</span> .list <span class="token operator">=</span> list<span class="token punctuation">(</span>a <span class="token operator">=</span> <span class="token string">"1"</span><span class="token punctuation">,</span> b <span class="token operator">=</span> <span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-r <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/put"</span><span class="token punctuation">,</span> h<span class="token punctuation">)</span>
+r <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/put"</span><span class="token punctuation">,</span> h<span class="token punctuation">)</span>
 cat<span class="token punctuation">(</span>rawToChar<span class="token punctuation">(</span>r<span class="token operator">$</span>content<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="handle_cookies">
-
-<a href="#handle_cookies" class="help-page-title"><h2 id="handle_cookies">Extract cookies from a handle</h2></a>
+</div></div>
+<div class="container manual-page" id="handle_cookies"><div class="page-main">
+<a href="#handle_cookies" class="help-page-title"><h2>Extract cookies from a handle</h2></a>
 
 <h3>Description</h3>
 
@@ -823,13 +1157,14 @@ cat<span class="token punctuation">(</span>rawToChar<span class="token punctuati
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">handle_cookies<span class="token punctuation">(</span>handle<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">handle_cookies(handle)
+</code><code class="language-r">handle_cookies<span class="token punctuation">(</span>handle<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="handle_cookies_:_handle">handle</code></td>
+<td><code id="handle">handle</code></td>
 <td>
 <p>a curl handle object</p>
 </td>
@@ -843,15 +1178,29 @@ cat<span class="token punctuation">(</span>rawToChar<span class="token punctuati
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">h <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">h &lt;- new_handle()
+handle_cookies(h)
+
+# Server sets cookies
+req &lt;- curl_fetch_memory("https://hb.cran.dev/cookies/set?foo=123&amp;bar=ftw", handle = h)
+handle_cookies(h)
+
+# Server deletes cookies
+req &lt;- curl_fetch_memory("https://hb.cran.dev/cookies/delete?foo", handle = h)
+handle_cookies(h)
+
+# Cookies will survive a reset!
+handle_reset(h)
+handle_cookies(h)
+</code><code class="language-r">h <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span><span class="token punctuation">)</span>
 handle_cookies<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
 
 <span class="token comment"># Server sets cookies</span>
-req <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/cookies/set?foo=123&amp;bar=ftw"</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> h<span class="token punctuation">)</span>
+req <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/cookies/set?foo=123&amp;bar=ftw"</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> h<span class="token punctuation">)</span>
 handle_cookies<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
 
 <span class="token comment"># Server deletes cookies</span>
-req <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"http://httpbin.org/cookies/delete?foo"</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> h<span class="token punctuation">)</span>
+req <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/cookies/delete?foo"</span><span class="token punctuation">,</span> handle <span class="token operator">=</span> h<span class="token punctuation">)</span>
 handle_cookies<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
 
 <span class="token comment"># Cookies will survive a reset!</span>
@@ -859,10 +1208,9 @@ handle_reset<span class="token punctuation">(</span>h<span class="token punctuat
 handle_cookies<span class="token punctuation">(</span>h<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="ie_proxy">
-
-<a href="#ie_proxy" class="help-page-title"><h2 id="ie_proxy">Internet Explorer proxy settings</h2></a>
+</div></div>
+<div class="container manual-page" id="ie_proxy"><div class="page-main">
+<a href="#ie_proxy" class="help-page-title"><h2>Internet Explorer proxy settings</h2></a>
 
 <h3>Description</h3>
 
@@ -873,15 +1221,18 @@ Explorer. This can be used to configure curl to use the same proxy server.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">ie_proxy_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">ie_proxy_info()
+
+ie_get_proxy_for_url(target_url = "http://www.google.com")
+</code><code class="language-r">ie_proxy_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 ie_get_proxy_for_url<span class="token punctuation">(</span>target_url <span class="token operator">=</span> <span class="token string">"http://www.google.com"</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="ie_proxy_:_target_url">target_url</code></td>
+<td><code id="target_url">target_url</code></td>
 <td>
 <p>url with host for which to lookup the proxy server</p>
 </td>
@@ -896,10 +1247,9 @@ involves downloading and executing a PAC file, which can take a while.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="multi">
-
-<a href="#multi" class="help-page-title"><h2 id="multi">Async Concurrent Requests</h2></a>
+</div></div>
+<div class="container manual-page" id="multi"><div class="page-main">
+<a href="#multi" class="help-page-title"><h2>Async Concurrent Requests</h2></a>
 
 <h3>Description</h3>
 
@@ -911,7 +1261,20 @@ For downloading many files in parallel use <a href="#multi_download">multi_downl
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">multi_add<span class="token punctuation">(</span>handle<span class="token punctuation">,</span> done <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> fail <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> data <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> pool <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">multi_add(handle, done = NULL, fail = NULL, data = NULL, pool = NULL)
+
+multi_run(timeout = Inf, poll = FALSE, pool = NULL)
+
+multi_set(total_con = 50, host_con = 6, multiplex = TRUE, pool = NULL)
+
+multi_list(pool = NULL)
+
+multi_cancel(handle)
+
+new_pool(total_con = 100, host_con = 6, multiplex = TRUE)
+
+multi_fdset(pool = NULL)
+</code><code class="language-r">multi_add<span class="token punctuation">(</span>handle<span class="token punctuation">,</span> done <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> fail <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> data <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> pool <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
 multi_run<span class="token punctuation">(</span>timeout <span class="token operator">=</span> <span class="token number">Inf</span><span class="token punctuation">,</span> poll <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> pool <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
@@ -926,31 +1289,31 @@ new_pool<span class="token punctuation">(</span>total_con <span class="token ope
 multi_fdset<span class="token punctuation">(</span>pool <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="multi_:_handle">handle</code></td>
+<td><code id="handle">handle</code></td>
 <td>
 <p>a curl <a href="#handle">handle</a> with preconfigured <code>url</code> option.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_done">done</code></td>
+<td><code id="done">done</code></td>
 <td>
 <p>callback function for completed request. Single argument with
 response data in same structure as <a href="#curl_fetch">curl_fetch_memory</a>.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_fail">fail</code></td>
+<td><code id="fail">fail</code></td>
 <td>
 <p>callback function called on failed request. Argument contains
 error message.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>(advanced) callback function, file path, or connection object for writing
 incoming data. This callback should only be used for <em>streaming</em> applications,
@@ -961,39 +1324,39 @@ the <code>done</code> callback (which is usually what you want).</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_pool">pool</code></td>
+<td><code id="pool">pool</code></td>
 <td>
 <p>a multi handle created by <a href="#multi">new_pool</a>. Default uses a global pool.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_timeout">timeout</code></td>
+<td><code id="timeout">timeout</code></td>
 <td>
 <p>max time in seconds to wait for results. Use <code>0</code> to poll for results without
 waiting at all.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_poll">poll</code></td>
+<td><code id="poll">poll</code></td>
 <td>
 <p>If <code>TRUE</code> then return immediately after any of the requests has completed.
 May also be an integer in which case it returns after n requests have completed.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_total_con">total_con</code></td>
+<td><code id="total_con">total_con</code></td>
 <td>
 <p>max total concurrent connections.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_host_con">host_con</code></td>
+<td><code id="host_con">host_con</code></td>
 <td>
 <p>max concurrent connections per host.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_:_multiplex">multiplex</code></td>
+<td><code id="multiplex">multiplex</code></td>
 <td>
 <p>enable HTTP/2 multiplexing if supported by host and client.</p>
 </td>
@@ -1046,7 +1409,34 @@ descriptors.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">results <span class="token operator">&lt;-</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">results &lt;- list()
+success &lt;- function(x){
+  results &lt;&lt;- append(results, list(x))
+}
+failure &lt;- function(str){
+  cat(paste("Failed request:", str), file = stderr())
+}
+# This handle will take longest (3sec)
+h1 &lt;- new_handle(url = "https://hb.cran.dev/delay/3")
+multi_add(h1, done = success, fail = failure)
+
+# This handle writes data to a file
+con &lt;- file("output.txt")
+h2 &lt;- new_handle(url = "https://hb.cran.dev/post", postfields = "bla bla")
+multi_add(h2, done = success, fail = failure, data = con)
+
+# This handle raises an error
+h3 &lt;- new_handle(url = "https://urldoesnotexist.xyz")
+multi_add(h3, done = success, fail = failure)
+
+# Actually perform the requests
+multi_run(timeout = 2)
+multi_run()
+
+# Check the file
+readLines("output.txt")
+unlink("output.txt")
+</code><code class="language-r">results <span class="token operator">&lt;-</span> list<span class="token punctuation">(</span><span class="token punctuation">)</span>
 success <span class="token operator">&lt;-</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">{</span>
   results <span class="token operator">&lt;&lt;-</span> append<span class="token punctuation">(</span>results<span class="token punctuation">,</span> list<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
@@ -1054,12 +1444,12 @@ failure <span class="token operator">&lt;-</span> <span class="token keyword">fu
   cat<span class="token punctuation">(</span>paste<span class="token punctuation">(</span><span class="token string">"Failed request:"</span><span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">,</span> file <span class="token operator">=</span> stderr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
 <span class="token comment"># This handle will take longest (3sec)</span>
-h1 <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"https://eu.httpbin.org/delay/3"</span><span class="token punctuation">)</span>
+h1 <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"https://hb.cran.dev/delay/3"</span><span class="token punctuation">)</span>
 multi_add<span class="token punctuation">(</span>h1<span class="token punctuation">,</span> done <span class="token operator">=</span> success<span class="token punctuation">,</span> fail <span class="token operator">=</span> failure<span class="token punctuation">)</span>
 
 <span class="token comment"># This handle writes data to a file</span>
 con <span class="token operator">&lt;-</span> file<span class="token punctuation">(</span><span class="token string">"output.txt"</span><span class="token punctuation">)</span>
-h2 <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"https://eu.httpbin.org/post"</span><span class="token punctuation">,</span> postfields <span class="token operator">=</span> <span class="token string">"bla bla"</span><span class="token punctuation">)</span>
+h2 <span class="token operator">&lt;-</span> new_handle<span class="token punctuation">(</span>url <span class="token operator">=</span> <span class="token string">"https://hb.cran.dev/post"</span><span class="token punctuation">,</span> postfields <span class="token operator">=</span> <span class="token string">"bla bla"</span><span class="token punctuation">)</span>
 multi_add<span class="token punctuation">(</span>h2<span class="token punctuation">,</span> done <span class="token operator">=</span> success<span class="token punctuation">,</span> fail <span class="token operator">=</span> failure<span class="token punctuation">,</span> data <span class="token operator">=</span> con<span class="token punctuation">)</span>
 
 <span class="token comment"># This handle raises an error</span>
@@ -1075,10 +1465,9 @@ readLines<span class="token punctuation">(</span><span class="token string">"out
 unlink<span class="token punctuation">(</span><span class="token string">"output.txt"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="multi_download">
-
-<a href="#multi_download" class="help-page-title"><h2 id="multi_download">Advanced download interface</h2></a>
+</div></div>
+<div class="container manual-page" id="multi_download"><div class="page-main">
+<a href="#multi_download" class="help-page-title"><h2>Advanced download interface</h2></a>
 
 <h3>Description</h3>
 
@@ -1091,53 +1480,70 @@ out which of the downloads were completed successfully.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">multi_download<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">multi_download(
+  urls,
+  destfiles = NULL,
+  resume = FALSE,
+  progress = TRUE,
+  multi_timeout = Inf,
+  multiplex = FALSE,
+  ...
+)
+</code><code class="language-r">multi_download<span class="token punctuation">(</span>
   urls<span class="token punctuation">,</span>
   destfiles <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span>
   resume <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
   progress <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span>
-  timeout <span class="token operator">=</span> <span class="token number">Inf</span><span class="token punctuation">,</span>
+  multi_timeout <span class="token operator">=</span> <span class="token number">Inf</span><span class="token punctuation">,</span>
+  multiplex <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span>
   <span class="token ellipsis">...</span>
 <span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="multi_download_:_urls">urls</code></td>
+<td><code id="urls">urls</code></td>
 <td>
-<p>vector with files to download</p>
+<p>vector with URLs to download. Alternatively it may also be a
+list of <a href="#handle">handle</a> objects that have the <code>url</code> option already set.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_download_:_destfiles">destfiles</code></td>
+<td><code id="destfiles">destfiles</code></td>
 <td>
 <p>vector (of equal length as <code>urls</code>) with paths of output files,
 or <code>NULL</code> to use <a href="https://r-universe.dev/manuals/base.html#basename">basename</a> of urls.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_download_:_resume">resume</code></td>
+<td><code id="resume">resume</code></td>
 <td>
 <p>if the file already exists, resume the download. Note that this may
 change server responses, see details.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_download_:_progress">progress</code></td>
+<td><code id="progress">progress</code></td>
 <td>
 <p>print download progress information</p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_download_:_timeout">timeout</code></td>
+<td><code id="multi_timeout">multi_timeout</code></td>
 <td>
 <p>in seconds, passed to <a href="#multi">multi_run</a></p>
 </td>
 </tr>
 <tr>
-<td><code id="multi_download_:_...">...</code></td>
+<td><code id="multiplex">multiplex</code></td>
+<td>
+<p>passed to <a href="#multi">new_pool</a></p>
+</td>
+</tr>
+<tr>
+<td><code id="...">...</code></td>
 <td>
 <p>extra handle options passed to each request <a href="#handle">new_handle</a></p>
 </td>
@@ -1150,7 +1556,7 @@ The <code>success</code> column indicates if a request was successfully complete
 of the HTTP status code). If it failed, e.g. due to a networking issue, the error
 message is in the <code>error</code> column. A <code>success</code> value <code>NA</code> indicates that the request
 was still in progress when the function was interrupted or reached the elapsed
-<code>timeout</code> and perhaps the download can be resumed if the server supports it.
+<code>multi_timeout</code> and perhaps the download can be resumed if the server supports it.
 </p>
 <p>It is also important to inspect the <code>status_code</code> column to see if any of the
 requests were successful but had a non-success HTTP code, and hence the downloaded
@@ -1232,7 +1638,38 @@ requested content.
 </ul>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+# Example: some large files
+urls &lt;- sprintf(
+  "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-%02d.parquet", 1:12)
+res &lt;- multi_download(urls, resume = TRUE) # You can interrupt (ESC) and resume
+
+# Example: revdep checker
+# Download all reverse dependencies for the 'curl' package from CRAN:
+pkg &lt;- 'curl'
+mirror &lt;- 'https://cloud.r-project.org'
+db &lt;- available.packages(repos = mirror)
+packages &lt;- c(pkg, tools::package_dependencies(pkg, db = db, reverse = TRUE)[[pkg]])
+versions &lt;- db[packages,'Version']
+urls &lt;- sprintf("%s/src/contrib/%s_%s.tar.gz", mirror, packages,  versions)
+res &lt;- multi_download(urls)
+all.equal(unname(tools::md5sum(res$destfile)), unname(db[packages, 'MD5sum']))
+# And then you could use e.g.: tools:::check_packages_in_dir()
+
+# Example: URL checker
+pkg_url_checker &lt;- function(dir){
+  db &lt;- tools:::url_db_from_package_sources(dir)
+  res &lt;- multi_download(db$URL, rep('/dev/null', nrow(db)), nobody=TRUE)
+  db$OK &lt;- res$status_code == 200
+  db
+}
+
+# Use a local package source directory
+pkg_url_checker(".")
+
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: </span>
 <span class="token comment"># Example: some large files</span>
 urls <span class="token operator">&lt;-</span> sprintf<span class="token punctuation">(</span>
   <span class="token string">"https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-%02d.parquet"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token operator">:</span><span class="token number">12</span><span class="token punctuation">)</span>
@@ -1265,10 +1702,9 @@ pkg_url_checker<span class="token punctuation">(</span><span class="token string
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="multipart">
-
-<a href="#multipart" class="help-page-title"><h2 id="multipart">POST files or data</h2></a>
+</div></div>
+<div class="container manual-page" id="multipart"><div class="page-main">
+<a href="#multipart" class="help-page-title"><h2>POST files or data</h2></a>
 
 <h3>Description</h3>
 
@@ -1280,44 +1716,46 @@ with a custom content-type.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">form_file<span class="token punctuation">(</span>path<span class="token punctuation">,</span> type <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">form_file(path, type = NULL, name = NULL)
+
+form_data(value, type = NULL)
+</code><code class="language-r">form_file<span class="token punctuation">(</span>path<span class="token punctuation">,</span> type <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
 form_data<span class="token punctuation">(</span>value<span class="token punctuation">,</span> type <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="multipart_:_path">path</code></td>
+<td><code id="path">path</code></td>
 <td>
 <p>a string with a path to an existing file on disk</p>
 </td>
 </tr>
 <tr>
-<td><code id="multipart_:_type">type</code></td>
+<td><code id="type">type</code></td>
 <td>
 <p>MIME content-type of the file.</p>
 </td>
 </tr>
 <tr>
-<td><code id="multipart_:_name">name</code></td>
+<td><code id="name">name</code></td>
 <td>
 <p>a string with the file name to use for the upload</p>
 </td>
 </tr>
 <tr>
-<td><code id="multipart_:_value">value</code></td>
+<td><code id="value">value</code></td>
 <td>
 <p>a character or raw vector to post</p>
 </td>
 </tr>
 </table>
 <hr>
-</div>
-<div class="container manual-page" id="nslookup">
-
-<a href="#nslookup" class="help-page-title"><h2 id="nslookup">Lookup a hostname</h2></a>
+</div></div>
+<div class="container manual-page" id="nslookup"><div class="page-main">
+<a href="#nslookup" class="help-page-title"><h2>Lookup a hostname</h2></a>
 
 <h3>Description</h3>
 
@@ -1329,34 +1767,37 @@ error if lookup fails.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">nslookup<span class="token punctuation">(</span>host<span class="token punctuation">,</span> ipv4_only <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> multiple <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">nslookup(host, ipv4_only = FALSE, multiple = FALSE, error = TRUE)
+
+has_internet()
+</code><code class="language-r">nslookup<span class="token punctuation">(</span>host<span class="token punctuation">,</span> ipv4_only <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> multiple <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
 
 has_internet<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="nslookup_:_host">host</code></td>
+<td><code id="host">host</code></td>
 <td>
 <p>a string with a hostname</p>
 </td>
 </tr>
 <tr>
-<td><code id="nslookup_:_ipv4_only">ipv4_only</code></td>
+<td><code id="ipv4_only">ipv4_only</code></td>
 <td>
 <p>always return ipv4 address. Set to <code>FALSE</code> to allow for ipv6 as well.</p>
 </td>
 </tr>
 <tr>
-<td><code id="nslookup_:_multiple">multiple</code></td>
+<td><code id="multiple">multiple</code></td>
 <td>
 <p>returns multiple ip addresses if possible</p>
 </td>
 </tr>
 <tr>
-<td><code id="nslookup_:_error">error</code></td>
+<td><code id="error">error</code></td>
 <td>
 <p>raise an error for failed DNS lookup. Otherwise returns <code>NULL</code>.</p>
 </td>
@@ -1372,52 +1813,60 @@ connecting via the proxy.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Should always work if we are online</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Should always work if we are online
+nslookup("www.r-project.org")
+
+# If your OS supports IPv6
+nslookup("ipv6.test-ipv6.com", ipv4_only = FALSE, error = FALSE)
+</code><code class="language-r"><span class="token comment"># Should always work if we are online</span>
 nslookup<span class="token punctuation">(</span><span class="token string">"www.r-project.org"</span><span class="token punctuation">)</span>
 
 <span class="token comment"># If your OS supports IPv6</span>
 nslookup<span class="token punctuation">(</span><span class="token string">"ipv6.test-ipv6.com"</span><span class="token punctuation">,</span> ipv4_only <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="parse_date">
-
-<a href="#parse_date" class="help-page-title"><h2 id="parse_date">Parse date/time</h2></a>
+</div></div>
+<div class="container manual-page" id="parse_date"><div class="page-main">
+<a href="#parse_date" class="help-page-title"><h2>Parse date/time</h2></a>
 
 <h3>Description</h3>
 
 <p>Can be used to parse dates appearing in http response headers such
 as <code>Expires</code> or <code>Last-Modified</code>. Automatically recognizes
-most common formats. If the format is known, <code><a href="https://r-universe.dev/manuals/base.html#strptime">strptime</a></code>
+most common formats. If the format is known, <code><a href="https://r-universe.dev/manuals/base.html#strptime">strptime()</a></code>
 might be easier.
 </p>
 
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">parse_date<span class="token punctuation">(</span>datestring<span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">parse_date(datestring)
+</code><code class="language-r">parse_date<span class="token punctuation">(</span>datestring<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="parse_date_:_datestring">datestring</code></td>
+<td><code id="datestring">datestring</code></td>
 <td>
 <p>a string consisting of a timestamp</p>
 </td>
 </tr></table>
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment"># Parse dates in many formats</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden"># Parse dates in many formats
+parse_date("Sunday, 06-Nov-94 08:49:37 GMT")
+parse_date("06 Nov 1994 08:49:37")
+parse_date("20040911 +0200")
+</code><code class="language-r"><span class="token comment"># Parse dates in many formats</span>
 parse_date<span class="token punctuation">(</span><span class="token string">"Sunday, 06-Nov-94 08:49:37 GMT"</span><span class="token punctuation">)</span>
 parse_date<span class="token punctuation">(</span><span class="token string">"06 Nov 1994 08:49:37"</span><span class="token punctuation">)</span>
 parse_date<span class="token punctuation">(</span><span class="token string">"20040911 +0200"</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="parse_headers">
-
-<a href="#parse_headers" class="help-page-title"><h2 id="parse_headers">Parse response headers</h2></a>
+</div></div>
+<div class="container manual-page" id="parse_headers"><div class="page-main">
+<a href="#parse_headers" class="help-page-title"><h2>Parse response headers</h2></a>
 
 <h3>Description</h3>
 
@@ -1428,22 +1877,25 @@ or into a named list.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">parse_headers<span class="token punctuation">(</span>txt<span class="token punctuation">,</span> multiple <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">parse_headers(txt, multiple = FALSE)
+
+parse_headers_list(txt)
+</code><code class="language-r">parse_headers<span class="token punctuation">(</span>txt<span class="token punctuation">,</span> multiple <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 parse_headers_list<span class="token punctuation">(</span>txt<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="parse_headers_:_txt">txt</code></td>
+<td><code id="txt">txt</code></td>
 <td>
 <p>raw or character vector with the header data</p>
 </td>
 </tr>
 <tr>
-<td><code id="parse_headers_:_multiple">multiple</code></td>
+<td><code id="multiple">multiple</code></td>
 <td>
 <p>parse multiple sets of headers separated by a blank line. See details.</p>
 </td>
@@ -1462,7 +1914,13 @@ for each request. By default it only returns the headers of the final request.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">req <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"https://httpbin.org/redirect/3"</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">req &lt;- curl_fetch_memory("https://hb.cran.dev/redirect/3")
+parse_headers(req$headers)
+parse_headers(req$headers, multiple = TRUE)
+
+# Parse into named list
+parse_headers_list(req$headers)
+</code><code class="language-r">req <span class="token operator">&lt;-</span> curl_fetch_memory<span class="token punctuation">(</span><span class="token string">"https://hb.cran.dev/redirect/3"</span><span class="token punctuation">)</span>
 parse_headers<span class="token punctuation">(</span>req<span class="token operator">$</span>headers<span class="token punctuation">)</span>
 parse_headers<span class="token punctuation">(</span>req<span class="token operator">$</span>headers<span class="token punctuation">,</span> multiple <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
 
@@ -1470,10 +1928,9 @@ parse_headers<span class="token punctuation">(</span>req<span class="token opera
 parse_headers_list<span class="token punctuation">(</span>req<span class="token operator">$</span>headers<span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="send_mail">
-
-<a href="#send_mail" class="help-page-title"><h2 id="send_mail">Send email</h2></a>
+</div></div>
+<div class="container manual-page" id="send_mail"><div class="page-main">
+<a href="#send_mail" class="help-page-title"><h2>Send email</h2></a>
 
 <h3>Description</h3>
 
@@ -1485,7 +1942,16 @@ line breaks.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">send_mail<span class="token punctuation">(</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">send_mail(
+  mail_from,
+  mail_rcpt,
+  message,
+  smtp_server = "smtp://localhost",
+  use_ssl = c("try", "no", "force"),
+  verbose = TRUE,
+  ...
+)
+</code><code class="language-r">send_mail<span class="token punctuation">(</span>
   mail_from<span class="token punctuation">,</span>
   mail_rcpt<span class="token punctuation">,</span>
   message<span class="token punctuation">,</span>
@@ -1496,39 +1962,39 @@ line breaks.
 <span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="send_mail_:_mail_from">mail_from</code></td>
+<td><code id="mail_from">mail_from</code></td>
 <td>
 <p>email address of the sender.</p>
 </td>
 </tr>
 <tr>
-<td><code id="send_mail_:_mail_rcpt">mail_rcpt</code></td>
+<td><code id="mail_rcpt">mail_rcpt</code></td>
 <td>
 <p>one or more recipient email addresses. Do not include names,
 these go into the <code>message</code> headers.</p>
 </td>
 </tr>
 <tr>
-<td><code id="send_mail_:_message">message</code></td>
+<td><code id="message">message</code></td>
 <td>
 <p>either a string or connection with (properly formatted) email
 message, including sender/recipient/subject headers. See example.</p>
 </td>
 </tr>
 <tr>
-<td><code id="send_mail_:_smtp_server">smtp_server</code></td>
+<td><code id="smtp_server">smtp_server</code></td>
 <td>
 <p>hostname or address of the SMTP server, or, an
-<code>smtp://</code> or <code>smtps://</code> URL. See "Specifying the server, port,
+<code style="white-space: pre;">⁠smtp://⁠</code> or <code style="white-space: pre;">⁠smtps://⁠</code> URL. See "Specifying the server, port,
 and protocol" below.</p>
 </td>
 </tr>
 <tr>
-<td><code id="send_mail_:_use_ssl">use_ssl</code></td>
+<td><code id="use_ssl">use_ssl</code></td>
 <td>
 <p>Request to upgrade the connection to SSL using the STARTTLS command,
 see <a href="https://curl.se/libcurl/c/CURLOPT_USE_SSL.html" target="_blank">CURLOPT_USE_SSL</a>
@@ -1536,17 +2002,17 @@ for details. Default will try to SSL, proceed as normal otherwise.</p>
 </td>
 </tr>
 <tr>
-<td><code id="send_mail_:_verbose">verbose</code></td>
+<td><code id="verbose">verbose</code></td>
 <td>
 <p>print output</p>
 </td>
 </tr>
 <tr>
-<td><code id="send_mail_:_...">...</code></td>
+<td><code id="...">...</code></td>
 <td>
-<p>other options passed to <code><a href="#handle">handle_setopt</a></code>. In most cases
-you will need to set a <code>username</code> and <code>password</code> to authenticate
-with the SMTP server.</p>
+<p>other options passed to <code><a href="#handle">handle_setopt()</a></code>. In most cases
+you will need to set a <code>username</code> and <code>password</code> or <code>login_options</code>
+to authenticate with the SMTP server, see details.</p>
 </td>
 </tr>
 </table>
@@ -1562,18 +2028,25 @@ with the SMTP server.</p>
 <li> <p><code>mail.example.com:587</code> - hostname and port
 </p>
 </li>
-<li> <p><code>smtp://mail.example.com</code> - protocol and hostname
+<li> <p><code style="white-space: pre;">⁠smtp://mail.example.com⁠</code> - protocol and hostname
 </p>
 </li>
-<li> <p><code>smtp://mail.example.com:587</code> - full SMTP URL
+<li> <p><code style="white-space: pre;">⁠smtp://mail.example.com:587⁠</code> - full SMTP URL
 </p>
 </li>
-<li> <p><code>smtps://mail.example.com:465</code> - full SMTPS URL
+<li> <p><code style="white-space: pre;">⁠smtps://mail.example.com:465⁠</code> - full SMTPS URL
 </p>
 </li>
 </ul>
-<p>By default, the port will be 25, unless <code>smtps://</code> is specified–then
+<p>By default, the port will be 25, unless <code style="white-space: pre;">⁠smtps://⁠</code> is specified–then
 the default will be 465 instead.
+</p>
+<p>For internet SMTP servers you probably need to pass a
+<a href="https://curl.se/libcurl/c/CURLOPT_USERNAME.html" target="_blank">username</a> and
+<a href="https://curl.se/libcurl/c/CURLOPT_PASSWORD.html" target="_blank">passwords</a> option.
+For some servers you also need to pass a string with
+<a href="https://curl.se/libcurl/c/CURLOPT_LOGIN_OPTIONS.html" target="_blank">login_options</a>
+for example <code>login_options="AUTH=NTLM"</code>.
 </p>
 
 
@@ -1585,11 +2058,11 @@ Alternatively, a regular insecure smtp connection can be "upgraded" to a
 secure TLS connection using the STARTTLS command. It is important to know
 which method your server expects.
 </p>
-<p>If your smtp server listens on port 465, then use a  <code>smtps://hostname:465</code>
+<p>If your smtp server listens on port 465, then use a  <code style="white-space: pre;">⁠smtps://hostname:465⁠</code>
 URL. The SMTPS protocol <em>guarantees</em> that TLS will be used to protect
 all communications from the start.
 </p>
-<p>If your email server listens on port 25 or 587, use an <code>smtp://</code> URL in
+<p>If your email server listens on port 25 or 587, use an <code style="white-space: pre;">⁠smtp://⁠</code> URL in
 combination with the  <code>use_ssl</code> parameter to control if the connection
 should be upgraded with STARTTLS. The default value <code>"try"</code> will
 <em>opportunistically</em> try to upgrade to a secure connection if the server
@@ -1599,7 +2072,24 @@ supports it, and proceed as normal otherwise.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: # Set sender and recipients (email addresses only)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: # Set sender and recipients (email addresses only)
+recipients &lt;- readline("Enter your email address to receive test: ")
+sender &lt;- 'test@noreply.com'
+
+# Full email message in RFC2822 format
+message &lt;- 'From: "R (curl package)" &lt;test@noreply.com&gt;
+To: "Roger Recipient" &lt;roger@noreply.com&gt;
+Subject: Hello R user!
+
+Dear R user,
+
+I am sending this email using curl.'
+
+# Send the email
+send_mail(sender, recipients, message, smtp_server = 'smtps://smtp.gmail.com',
+  username = 'curlpackage', password  = 'qyyjddvphjsrbnlm')
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: # Set sender and recipients (email addresses only)</span>
 recipients <span class="token operator">&lt;-</span> readline<span class="token punctuation">(</span><span class="token string">"Enter your email address to receive test: "</span><span class="token punctuation">)</span>
 sender <span class="token operator">&lt;-</span> <span class="token string">'test@noreply.com'</span>
 
@@ -1618,8 +2108,8 @@ send_mail<span class="token punctuation">(</span>sender<span class="token punctu
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>

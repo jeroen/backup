@@ -5,18 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- styling for math and syntax -->
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/katex.min.css">
+    <!-- styling for math. katex.min.css expects fonts in same dir so use CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
     <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/R.css">
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/prism.css">
 
     <!-- for (future) customizations -->
     <script src="https://r-universe.dev/static/manual.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css?nocache=1">
+    <link rel="stylesheet" type="text/css" href="https://r-universe.dev/static/manual.css">
 
   </head>
 
-  <body class="macintosh">
+  <body class="postdoc macintosh">
     <h1 class="manual-title">Package 'gpg'</h1>
     <table class="description-table">
       <tr>
@@ -25,12 +25,13 @@
 </tr>
       <tr>
 <th>Description:</th>
-<td class="description-description">Bindings to GnuPG for working with OpenGPG (RFC4880) cryptographic 
-    methods. Includes utilities for public key encryption, creating and verifying
-    digital signatures, and managing your local keyring. Some functionality 
-    depends on the version of GnuPG that is installed on the system. On Windows
-    this package can be used together with 'GPG4Win' which provides a GUI for 
-    managing keys and entering passphrases.</td>
+<td class="description-description">Bindings to GnuPG for working with OpenGPG (RFC4880)
+        cryptographic methods. Includes utilities for public key
+        encryption, creating and verifying digital signatures, and
+        managing your local keyring. Some functionality depends on the
+        version of GnuPG that is installed on the system. On Windows
+        this package can be used together with 'GPG4Win' which provides
+        a GUI for managing keys and entering passphrases.</td>
 </tr>
       <tr>
 <th>Authors:</th>
@@ -38,7 +39,7 @@
 </tr>
       <tr>
 <th>Maintainer:</th>
-<td class="description-maintainer">Jeroen Ooms &lt;jeroen@berkeley.edu&gt;</td>
+<td class="description-maintainer">Jeroen Ooms &lt;jeroenooms@gmail.com&gt;</td>
 </tr>
       <tr>
 <th>License:</th>
@@ -46,11 +47,11 @@
 </tr>
       <tr>
 <th>Version:</th>
-<td class="description-version">1.2.9</td>
+<td class="description-version">1.3.0</td>
 </tr>
       <tr>
 <th>Built:</th>
-<td class="description-date">2023-05-16 10:21:18 UTC</td>
+<td class="description-date">2024-11-30 07:35:14 UTC</td>
 </tr>
       <tr>
 <th>Source:</th>
@@ -70,9 +71,8 @@
 
     <hr>
     <div class="manual-pages-content">
-<div class="container manual-page" id="gpg_encrypt">
-
-<a href="#gpg_encrypt" class="help-page-title"><h2 id="gpg_encrypt">Encryption</h2></a>
+<div class="container manual-page" id="gpg_encrypt"><div class="page-main">
+<a href="#gpg_encrypt" class="help-page-title"><h2>Encryption</h2></a>
 
 <h3>Description</h3>
 
@@ -83,42 +83,45 @@ Optionally the message can be signed using the private key of the sender.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">gpg_encrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> receiver<span class="token punctuation">,</span> signer <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gpg_encrypt(data, receiver, signer = NULL)
+
+gpg_decrypt(data, verify = TRUE, as_text = TRUE)
+</code><code class="language-r">gpg_encrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> receiver<span class="token punctuation">,</span> signer <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
 gpg_decrypt<span class="token punctuation">(</span>data<span class="token punctuation">,</span> verify <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> as_text <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="gpg_encrypt_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>path or raw vector with data to encrypt / decrypt</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_encrypt_:_receiver">receiver</code></td>
+<td><code id="receiver">receiver</code></td>
 <td>
 <p>key id(s) or fingerprint(s) for recepient(s)</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_encrypt_:_signer">signer</code></td>
+<td><code id="signer">signer</code></td>
 <td>
 <p>(optional) key id(s) or fingerprint(s) for the sender(s) to sign
 the message</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_encrypt_:_verify">verify</code></td>
+<td><code id="verify">verify</code></td>
 <td>
 <p>automatically checks that all signatures (if any) can be verified and
 raises an error otherwise</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_encrypt_:_as_text">as_text</code></td>
+<td><code id="as_text">as_text</code></td>
 <td>
 <p>convert output to text. Set to FALSE if you expect binary data.</p>
 </td>
@@ -133,10 +136,9 @@ raises an error otherwise</p>
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="gpg_keygen">
-
-<a href="#gpg_keygen" class="help-page-title"><h2 id="gpg_keygen">GPG key generation</h2></a>
+</div></div>
+<div class="container manual-page" id="gpg_keygen"><div class="page-main">
+<a href="#gpg_keygen" class="help-page-title"><h2>GPG key generation</h2></a>
 
 <h3>Description</h3>
 
@@ -148,26 +150,27 @@ official GPG key with custom fields and options.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">gpg_keygen<span class="token punctuation">(</span>name<span class="token punctuation">,</span> email<span class="token punctuation">,</span> passphrase <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gpg_keygen(name, email, passphrase = NULL)
+</code><code class="language-r">gpg_keygen<span class="token punctuation">(</span>name<span class="token punctuation">,</span> email<span class="token punctuation">,</span> passphrase <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="gpg_keygen_:_name">name</code></td>
+<td><code id="name">name</code></td>
 <td>
 <p>value for the <code>Name-Real</code> field</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_keygen_:_email">email</code></td>
+<td><code id="email">email</code></td>
 <td>
 <p>value for the <code>Name-Email</code> field</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_keygen_:_passphrase">passphrase</code></td>
+<td><code id="passphrase">passphrase</code></td>
 <td>
 <p>(optional) protect with a passphrase</p>
 </td>
@@ -189,10 +192,9 @@ official GPG key with custom fields and options.
 </p>
 
 <hr>
-</div>
-<div class="container manual-page" id="gpg_keys">
-
-<a href="#gpg_keys" class="help-page-title"><h2 id="gpg_keys">GPG keyring management</h2></a>
+</div></div>
+<div class="container manual-page" id="gpg_keys"><div class="page-main">
+<a href="#gpg_keys" class="help-page-title"><h2>GPG keyring management</h2></a>
 
 <h3>Description</h3>
 
@@ -204,7 +206,20 @@ you are using. Also see <a href="#gpg_keygen">gpg_keygen</a> for generating a ne
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">gpg_import<span class="token punctuation">(</span>file<span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gpg_import(file)
+
+gpg_recv(id, search = NULL, keyserver = NULL)
+
+gpg_send(id, keyserver = NULL)
+
+gpg_delete(id, secret = FALSE)
+
+gpg_export(id, secret = FALSE)
+
+gpg_list_keys(search = "", secret = FALSE)
+
+gpg_list_signatures(id)
+</code><code class="language-r">gpg_import<span class="token punctuation">(</span>file<span class="token punctuation">)</span>
 
 gpg_recv<span class="token punctuation">(</span>id<span class="token punctuation">,</span> search <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> keyserver <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">)</span>
 
@@ -219,37 +234,37 @@ gpg_list_keys<span class="token punctuation">(</span>search <span class="token o
 gpg_list_signatures<span class="token punctuation">(</span>id<span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="gpg_keys_:_file">file</code></td>
+<td><code id="file">file</code></td>
 <td>
 <p>path to the key file or raw vector with key data</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_keys_:_id">id</code></td>
+<td><code id="id">id</code></td>
 <td>
 <p>unique ID of the pubkey to import (starts with <code style="white-space: pre;">⁠0x⁠</code>). Alternatively you
 can specify a <code>search</code> string.</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_keys_:_search">search</code></td>
+<td><code id="search">search</code></td>
 <td>
 <p>string with name or email address to match the key info.</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_keys_:_keyserver">keyserver</code></td>
+<td><code id="keyserver">keyserver</code></td>
 <td>
 <p>address of http keyserver. Default behavior is to try several
 commonly used servers (MIT, Ubuntu, GnuPG, Surfnet)</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_keys_:_secret">secret</code></td>
+<td><code id="secret">secret</code></td>
 <td>
 <p>set to <code>TRUE</code> to list/export/delete private (secret) keys</p>
 </td>
@@ -266,7 +281,14 @@ commonly used servers (MIT, Ubuntu, GnuPG, Surfnet)</p>
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+# Submit key to a specific key server.
+gpg_send("87CC261267801A17", "https://keys.openpgp.org")
+# Submit key to many key servers.
+gpg_send("87CC261267801A17")
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: </span>
 <span class="token comment"># Submit key to a specific key server.</span>
 gpg_send<span class="token punctuation">(</span><span class="token string">"87CC261267801A17"</span><span class="token punctuation">,</span> <span class="token string">"https://keys.openpgp.org"</span><span class="token punctuation">)</span>
 <span class="token comment"># Submit key to many key servers.</span>
@@ -275,10 +297,9 @@ gpg_send<span class="token punctuation">(</span><span class="token string">"87CC
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="gpg_info">
-
-<a href="#gpg_info" class="help-page-title"><h2 id="gpg_restart">Manage the GPG engine</h2></a>
+</div></div>
+<div class="container manual-page" id="gpg_info"><div class="page-main">
+<a href="#gpg_info" class="help-page-title"><h2>Manage the GPG engine</h2></a>
 
 <h3>Description</h3>
 
@@ -290,7 +311,14 @@ do not need to run this function manually.
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">gpg_restart<span class="token punctuation">(</span>home <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> debug <span class="token operator">=</span> <span class="token string">"none"</span><span class="token punctuation">,</span> silent <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gpg_restart(home = NULL, path = NULL, debug = "none", silent = FALSE)
+
+gpg_version(silent = FALSE)
+
+gpg_info()
+
+gpg_options()
+</code><code class="language-r">gpg_restart<span class="token punctuation">(</span>home <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> debug <span class="token operator">=</span> <span class="token string">"none"</span><span class="token punctuation">,</span> silent <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
 gpg_version<span class="token punctuation">(</span>silent <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
 
@@ -299,29 +327,29 @@ gpg_info<span class="token punctuation">(</span><span class="token punctuation">
 gpg_options<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="gpg_restart_:_home">home</code></td>
+<td><code id="home">home</code></td>
 <td>
 <p>path to your GPG configuration directory (including keyrings)</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_restart_:_path">path</code></td>
+<td><code id="path">path</code></td>
 <td>
 <p>location of <code>gpg</code> or <code>gpg2</code> or <code>gpgconf</code> or (on windows) <code>gpgme-w32spawn.exe</code></p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_restart_:_debug">debug</code></td>
+<td><code id="debug">debug</code></td>
 <td>
 <p>debugging level, integer between 1 and 9</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_restart_:_silent">silent</code></td>
+<td><code id="silent">silent</code></td>
 <td>
 <p>suppress output of <code>gpg --version</code></p>
 </td>
@@ -340,14 +368,15 @@ other software using GnuPG.
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r">gpg_version<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gpg_version()
+gpg_info()
+</code><code class="language-r">gpg_version<span class="token punctuation">(</span><span class="token punctuation">)</span>
 gpg_info<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="gpg_sign">
-
-<a href="#gpg_sign" class="help-page-title"><h2 id="gpg_sign">PGP Signatures</h2></a>
+</div></div>
+<div class="container manual-page" id="gpg_sign"><div class="page-main">
+<a href="#gpg_sign" class="help-page-title"><h2>PGP Signatures</h2></a>
 
 <h3>Description</h3>
 
@@ -357,43 +386,46 @@ gpg_info<span class="token punctuation">(</span><span class="token punctuation">
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">gpg_verify<span class="token punctuation">(</span>signature<span class="token punctuation">,</span> data <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">gpg_verify(signature, data = NULL, error = TRUE)
+
+gpg_sign(data, signer = NULL, mode = c("detach", "normal", "clear"))
+</code><code class="language-r">gpg_verify<span class="token punctuation">(</span>signature<span class="token punctuation">,</span> data <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> error <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
 
 gpg_sign<span class="token punctuation">(</span>data<span class="token punctuation">,</span> signer <span class="token operator">=</span> <span class="token keyword">NULL</span><span class="token punctuation">,</span> mode <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"detach"</span><span class="token punctuation">,</span> <span class="token string">"normal"</span><span class="token punctuation">,</span> <span class="token string">"clear"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table>
 <tr>
-<td><code id="gpg_sign_:_signature">signature</code></td>
+<td><code id="signature">signature</code></td>
 <td>
 <p>path or raw vector for the gpg signature (contains the <code>PGP SIGNATURE</code> block)</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_sign_:_data">data</code></td>
+<td><code id="data">data</code></td>
 <td>
 <p>path or raw vector with data to sign or verify. In <code>gpg_verify</code> this
 should be <code>NULL</code> if <code>signature</code> is not detached (i.e. <code>clear</code> or <code>normal</code> signature)</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_sign_:_error">error</code></td>
+<td><code id="error">error</code></td>
 <td>
 <p>raise an error if verification fails because you do not have the
 signer public key in your keyring.</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_sign_:_signer">signer</code></td>
+<td><code id="signer">signer</code></td>
 <td>
 <p>(optional) vector with key ID's to use for signing. If <code>NULL</code>, GPG tries
 the user default private key.</p>
 </td>
 </tr>
 <tr>
-<td><code id="gpg_sign_:_mode">mode</code></td>
+<td><code id="mode">mode</code></td>
 <td>
 <p>use <code>normal</code> to create a full OpenPGP message containing both data and
 signature or <code>clear</code> append the signature to the clear-text data (for email messages).
@@ -412,7 +444,16 @@ Default <code>detach</code> only returns the signature itself.</p>
 
 <h3>Examples</h3>
 
-<pre class="language-r"><code class="language-r"><span class="token comment">## Not run: </span>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">## Not run: 
+# This requires you have the Debian master key in your keyring
+msg &lt;- tempfile()
+sig &lt;- tempfile()
+download.file("http://http.us.debian.org/debian/dists/stable/Release", msg)
+download.file("http://http.us.debian.org/debian/dists/stable/Release.gpg", sig)
+gpg_verify(sig, msg, error = FALSE)
+
+## End(Not run)
+</code><code class="language-r"><span class="token comment">## Not run: </span>
 <span class="token comment"># This requires you have the Debian master key in your keyring</span>
 msg <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
 sig <span class="token operator">&lt;-</span> tempfile<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -423,10 +464,9 @@ gpg_verify<span class="token punctuation">(</span>sig<span class="token punctuat
 <span class="token comment">## End(Not run)</span></code></pre>
 
 <hr>
-</div>
-<div class="container manual-page" id="pinentry">
-
-<a href="#pinentry" class="help-page-title"><h2 id="pinentry">Password Entry</h2></a>
+</div></div>
+<div class="container manual-page" id="pinentry"><div class="page-main">
+<a href="#pinentry" class="help-page-title"><h2>Password Entry</h2></a>
 
 <h3>Description</h3>
 
@@ -436,13 +476,14 @@ gpg_verify<span class="token punctuation">(</span>sig<span class="token punctuat
 
 <h3>Usage</h3>
 
-<pre class="language-r"><code class="language-r">pinentry<span class="token punctuation">(</span>prompt <span class="token operator">=</span> <span class="token string">"Enter your GPG passphrase:"</span><span class="token punctuation">)</span></code></pre>
+<pre class="language-r"><code class="language-r-input" hidden="hidden">pinentry(prompt = "Enter your GPG passphrase:")
+</code><code class="language-r">pinentry<span class="token punctuation">(</span>prompt <span class="token operator">=</span> <span class="token string">"Enter your GPG passphrase:"</span><span class="token punctuation">)</span></code></pre>
 
 
-<h3>Arguments</h3>
+<h3 class="r-arguments-title">Arguments</h3>
 
 <table><tr>
-<td><code id="pinentry_:_prompt">prompt</code></td>
+<td><code id="prompt">prompt</code></td>
 <td>
 <p>the string printed when prompting the user for input.</p>
 </td>
@@ -456,8 +497,8 @@ we default to <code><a href="https://r-universe.dev/manuals/base.html#readline">
 </p>
 
 <hr>
+</div></div>
 </div>
-</div>
-    <footer><p>Rendered with postdoc 1.2.1</p></footer>
+    <footer><p>Rendered with postdoc 1.4.0</p></footer>
   </body>
 </html>
